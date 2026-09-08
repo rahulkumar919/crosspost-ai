@@ -1,13 +1,6 @@
 import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
-import { z } from "zod";
 import axios from "axios";
-
-const loginSchema = z.object({
-    email: z.email(),
-    password: z.string().min(1),
-});
 
 const API_URL =
     process.env.NEXT_PUBLIC_API_URL ||
@@ -49,8 +42,6 @@ async function getBackendJwt(
         const loginStatus = axios.isAxiosError(loginErr) ? loginErr.response?.status : null;
 
         // Only attempt signup if the backend explicitly says "invalid credentials" (401)
-        // — meaning the user doesn't exist yet.
-        // Any other error (500, network, etc.) should surface, not be silently swallowed.
         if (loginStatus !== 401) {
             console.error("[auth] getBackendJwt login error:", loginErr);
             return null;
@@ -79,55 +70,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             clientId: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         }),
-        Credentials({
-            credentials: {
-                email: { label: "Email", type: "email" },
-                password: { label: "Password", type: "password" },
-            },
-            async authorize(credentials) {
-                const parsed = loginSchema.safeParse(credentials);
-                if (!parsed.success) return null;
-
-                // ── OTP flow: login page passes __otp_verified__<jwt> after OTP verified ──
-                // We decode the already-verified backend JWT instead of re-calling the backend.
-                if (parsed.data.password.startsWith("__otp_verified__")) {
-                    const backendToken = parsed.data.password.replace("__otp_verified__", "");
-                    try {
-                        const payload = JSON.parse(
-                            Buffer.from(backendToken.split(".")[1], "base64url").toString()
-                        ) as { id: string; email: string };
-                        return {
-                            id: payload.id,
-                            email: payload.email,
-                            name: null,
-                            image: null,
-                            backendToken,
-                        };
-                    } catch {
-                        return null;
-                    }
-                }
-
-                // ── Normal credentials (Google OAuth bridge & direct login) ──
-                try {
-                    const res = await axios.post<BackendAuthResponse>(
-                        `${API_URL}/auth/login`,
-                        { email: parsed.data.email, password: parsed.data.password },
-                        { timeout: 10_000 }
-                    );
-                    const { token, user } = res.data;
-                    return {
-                        id: user.id,
-                        name: user.name,
-                        email: user.email,
-                        image: null,
-                        backendToken: token,
-                    };
-                } catch {
-                    return null;
-                }
-            },
-        }),
     ],
     pages: {
         signIn: "/login",
@@ -138,13 +80,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     callbacks: {
         async jwt({ token, user, account, profile }) {
-            // Credentials provider — user object carries backendToken directly
             if (user) {
                 token.id = user.id;
-                const u = user as typeof user & { backendToken?: string };
-                if (u.backendToken) {
-                    token.backendToken = u.backendToken;
-                }
             }
 
             // Google OAuth — exchange for a backend JWT on first sign-in
