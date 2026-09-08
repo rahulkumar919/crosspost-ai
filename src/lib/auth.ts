@@ -68,10 +68,12 @@ async function getBackendJwt(
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+    secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || "crosspost-ai-secret-key-92837498234",
+    trustHost: true,
     providers: [
         Google({
-            clientId: process.env.GOOGLE_CLIENT_ID ?? "",
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+            clientId: process.env.GOOGLE_CLIENT_ID || "",
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
         }),
         Credentials({
             credentials: {
