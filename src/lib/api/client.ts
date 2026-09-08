@@ -1,7 +1,12 @@
 import axios from "axios";
 
+const defaultBaseUrl =
+    typeof window !== "undefined" && window.location.hostname !== "localhost"
+        ? "https://crosspost-bcakend.onrender.com"
+        : "http://localhost:4000";
+
 const apiClient = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000",
+    baseURL: process.env.NEXT_PUBLIC_API_URL || defaultBaseUrl,
     headers: {
         "Content-Type": "application/json",
         "X-Requested-With": "XMLHttpRequest",

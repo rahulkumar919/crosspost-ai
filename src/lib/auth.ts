@@ -9,7 +9,11 @@ const loginSchema = z.object({
     password: z.string().min(1),
 });
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
+const API_URL =
+    process.env.NEXT_PUBLIC_API_URL ||
+    (process.env.NODE_ENV === "production"
+        ? "https://crosspost-bcakend.onrender.com"
+        : "http://localhost:4000");
 
 interface BackendAuthResponse {
     token: string;
@@ -72,8 +76,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     trustHost: true,
     providers: [
         Google({
-            clientId: process.env.GOOGLE_CLIENT_ID || "",
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         }),
         Credentials({
             credentials: {
