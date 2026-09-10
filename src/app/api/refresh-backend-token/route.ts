@@ -39,12 +39,13 @@ export async function POST() {
     const googlePassword = `google_oauth_${email}_crosspost_ai`;
 
     // ─── Step 1: Wake up Render (free tier cold start) ────────────────────────
-    // Ping /health to give Render time to boot before the auth call.
+    // Ping /health/ping (instant 200) to give Render time to boot before the auth call.
+    // /health/ping is a lightweight endpoint that doesn't touch DB/AI/Cloudinary.
     // Vercel hobby plan allows up to 60s execution time.
     try {
-        await axios.get(`${API_URL}/health`, { timeout: 55_000 });
+        await axios.get(`${API_URL}/health/ping`, { timeout: 55_000 });
     } catch {
-        // Ignore — even if /health times out we still attempt auth below
+        // Ignore — even if /health/ping times out we still attempt auth below
     }
 
     let backendToken: string | null = null;
