@@ -17,7 +17,9 @@ export default auth((req: NextRequest & { auth: { user?: unknown } | null }) => 
     const isPublic =
         pathname === "/" ||
         pathname.startsWith("/login") ||
-        pathname.startsWith("/api/auth");
+        pathname.startsWith("/api/auth") ||
+        pathname.startsWith("/privacy-policy") ||
+        pathname.startsWith("/terms");
 
     if (isPublic) return;
 
