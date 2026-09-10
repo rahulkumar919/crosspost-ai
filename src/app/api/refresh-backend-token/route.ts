@@ -23,6 +23,9 @@ interface BackendAuthResponse {
  * Exchanges the NextAuth session email for a fresh backend JWT by calling
  * /auth/login (existing user) or /auth/signup (new Google OAuth user).
  * Stores the result in the httpOnly cookie so subsequent calls to /api/token succeed.
+ *
+ * NOTE: Render free tier sleeps after inactivity. The 55s timeout gives it
+ * time to cold-start (typically 30–50s). We ping /health first to wake it.
  */
 export async function POST() {
     const session = await auth();
@@ -35,25 +38,34 @@ export async function POST() {
     const name = session.user.name ?? null;
     const googlePassword = `google_oauth_${email}_crosspost_ai`;
 
+    // ─── Step 1: Wake up Render (free tier cold start) ────────────────────────
+    // Ping /health to give Render time to boot before the auth call.
+    // Vercel hobby plan allows up to 60s execution time.
+    try {
+        await axios.get(`${API_URL}/health`, { timeout: 55_000 });
+    } catch {
+        // Ignore — even if /health times out we still attempt auth below
+    }
+
     let backendToken: string | null = null;
 
-    // Try login first
+    // ─── Step 2: Try login (existing user) ───────────────────────────────────
     try {
         const res = await axios.post<BackendAuthResponse>(
             `${API_URL}/auth/login`,
             { email, password: googlePassword },
-            { timeout: 10_000 }
+            { timeout: 55_000 }
         );
         backendToken = res.data.token;
     } catch (loginErr) {
         const loginStatus = axios.isAxiosError(loginErr) ? loginErr.response?.status : null;
         if (loginStatus === 401) {
-            // User doesn't exist — sign them up
+            // User doesn't exist yet — auto-create them
             try {
                 const res = await axios.post<BackendAuthResponse>(
                     `${API_URL}/auth/signup`,
                     { email, password: googlePassword, name: name ?? undefined },
-                    { timeout: 10_000 }
+                    { timeout: 55_000 }
                 );
                 backendToken = res.data.token;
             } catch (signupErr) {
@@ -65,8 +77,12 @@ export async function POST() {
     }
 
     if (!backendToken) {
+        // retryable:true tells the client to show "Server starting…" rather than "Session expired"
         return NextResponse.json(
-            { error: "Could not obtain backend token. Is the backend running?" },
+            {
+                error: "Backend server is starting up. Please wait a moment and try again.",
+                retryable: true,
+            },
             { status: 503 }
         );
     }

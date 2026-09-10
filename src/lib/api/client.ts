@@ -77,12 +77,36 @@ apiClient.interceptors.response.use(
             try {
                 // Ask the Next.js backend to get a fresh token from our Express API
                 const refreshRes = await fetch("/api/refresh-backend-token", { method: "POST" });
+                const refreshData = (await refreshRes.json()) as { token?: string; retryable?: boolean; error?: string };
 
                 if (!refreshRes.ok) {
+                    if (refreshRes.status === 503 && refreshData.retryable) {
+                        // Render free-tier cold start — retry after 8s automatically
+                        processQueue(null, null);
+                        return new Promise((resolve, reject) => {
+                            setTimeout(async () => {
+                                try {
+                                    const retryRefresh = await fetch("/api/refresh-backend-token", { method: "POST" });
+                                    const retryData = (await retryRefresh.json()) as { token?: string };
+                                    if (retryRefresh.ok && retryData.token) {
+                                        if (typeof window !== "undefined") {
+                                            sessionStorage.setItem("crosspost_jwt", retryData.token);
+                                        }
+                                        originalRequest.headers.Authorization = `Bearer ${retryData.token}`;
+                                        resolve(apiClient(originalRequest));
+                                    } else {
+                                        reject(new Error("Server is still starting up. Please refresh the page."));
+                                    }
+                                } catch (retryErr) {
+                                    reject(retryErr);
+                                }
+                            }, 8_000);
+                        });
+                    }
                     throw new Error("Token refresh failed");
                 }
 
-                const { token: freshToken } = (await refreshRes.json()) as { token: string };
+                const freshToken = refreshData.token!;
 
                 if (typeof window !== "undefined") {
                     sessionStorage.setItem("crosspost_jwt", freshToken);
