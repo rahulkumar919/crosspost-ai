@@ -22,6 +22,13 @@ export const metadata: Metadata = {
   },
   description: "Publish your content to every platform, instantly — powered by AI.",
   keywords: ["cross-posting", "social media", "AI", "YouTube", "Instagram", "LinkedIn"],
+  // Google Search Console domain verification — set GOOGLE_SITE_VERIFICATION env var on Vercel
+  // to verify domain ownership for YouTube OAuth consent screen approval.
+  ...(process.env.GOOGLE_SITE_VERIFICATION && {
+    verification: {
+      google: process.env.GOOGLE_SITE_VERIFICATION,
+    },
+  }),
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
