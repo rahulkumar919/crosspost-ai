@@ -16,10 +16,32 @@ const queryClient = new QueryClient({
 /**
  * Syncs the backend JWT from the next-auth session into sessionStorage so
  * the axios client interceptor in client.ts can attach it to every request.
+ *
+ * On page reload the session is "loading" and sessionStorage is empty, which
+ * causes a 401 race condition. We fix this by also checking /api/token
+ * (which reads the httpOnly cookie) as a bootstrap step on mount.
  */
 function SessionSync() {
     const { data: session, status } = useSession();
 
+    // On mount: if sessionStorage is empty, try to bootstrap from the httpOnly cookie
+    // via the server-side /api/token route. This covers page refreshes and new tabs.
+    React.useEffect(() => {
+        if (typeof window === "undefined") return;
+        const existing = sessionStorage.getItem("crosspost_jwt");
+        if (!existing) {
+            fetch("/api/token")
+                .then((res) => (res.ok ? res.json() : null))
+                .then((data: { token?: string } | null) => {
+                    if (data?.token) {
+                        sessionStorage.setItem("crosspost_jwt", data.token);
+                    }
+                })
+                .catch(() => undefined); // silent — the 401 interceptor in client.ts will retry
+        }
+    }, []); // run once on mount
+
+    // Keep sessionStorage in sync as the session evolves
     React.useEffect(() => {
         const token = (session as (typeof session & { backendToken?: string }) | null)
             ?.backendToken;

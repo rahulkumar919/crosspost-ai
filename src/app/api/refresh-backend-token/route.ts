@@ -2,7 +2,14 @@ import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
 import axios from "axios";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
+// NEXT_PUBLIC_ vars are inlined at build time — they are undefined at runtime on the server.
+// Use a dedicated server-only env var (BACKEND_URL) with a safe production fallback.
+const API_URL =
+    process.env.BACKEND_URL ??
+    process.env.NEXT_PUBLIC_API_URL ??
+    (process.env.NODE_ENV === "production"
+        ? "https://crosspost-bcakend.onrender.com"
+        : "http://localhost:4000");
 
 interface BackendAuthResponse {
     token: string;

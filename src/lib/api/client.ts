@@ -19,6 +19,7 @@ const apiClient = axios.create({
  * Written to sessionStorage by:
  *   - OTP login flow (login/page.tsx after verifyOtp)
  *   - SessionSync component (providers.tsx) after next-auth session loads
+ *   - The 401 interceptor below after a successful token refresh
  */
 apiClient.interceptors.request.use((config) => {
     if (typeof window !== "undefined") {
@@ -30,15 +31,77 @@ apiClient.interceptors.request.use((config) => {
     return config;
 });
 
+// Track whether a token refresh is already in flight to avoid parallel refresh loops
+let isRefreshing = false;
+let pendingQueue: Array<{ resolve: (token: string) => void; reject: (err: unknown) => void }> = [];
+
+function processQueue(error: unknown, token: string | null) {
+    pendingQueue.forEach((p) => {
+        if (error || !token) {
+            p.reject(error);
+        } else {
+            p.resolve(token);
+        }
+    });
+    pendingQueue = [];
+}
+
 apiClient.interceptors.response.use(
     (response) => response,
-    (error) => {
-        if (error?.response?.status === 401) {
-            // Token expired or invalid — clear it so next request re-authenticates
-            if (typeof window !== "undefined") {
-                sessionStorage.removeItem("crosspost_jwt");
+    async (error) => {
+        const originalRequest = error.config;
+
+        if (error?.response?.status === 401 && !originalRequest._retry) {
+            // Avoid retrying the refresh endpoint itself
+            if (originalRequest.url?.includes("/api/refresh-backend-token")) {
+                if (typeof window !== "undefined") {
+                    sessionStorage.removeItem("crosspost_jwt");
+                }
+                return Promise.reject(new Error("Session expired. Please sign in again."));
+            }
+
+            originalRequest._retry = true;
+
+            if (isRefreshing) {
+                // Queue this request until the in-flight refresh completes
+                return new Promise<string>((resolve, reject) => {
+                    pendingQueue.push({ resolve, reject });
+                }).then((freshToken) => {
+                    originalRequest.headers.Authorization = `Bearer ${freshToken}`;
+                    return apiClient(originalRequest);
+                });
+            }
+
+            isRefreshing = true;
+
+            try {
+                // Ask the Next.js backend to get a fresh token from our Express API
+                const refreshRes = await fetch("/api/refresh-backend-token", { method: "POST" });
+
+                if (!refreshRes.ok) {
+                    throw new Error("Token refresh failed");
+                }
+
+                const { token: freshToken } = (await refreshRes.json()) as { token: string };
+
+                if (typeof window !== "undefined") {
+                    sessionStorage.setItem("crosspost_jwt", freshToken);
+                }
+
+                processQueue(null, freshToken);
+                originalRequest.headers.Authorization = `Bearer ${freshToken}`;
+                return apiClient(originalRequest);
+            } catch (refreshErr) {
+                processQueue(refreshErr, null);
+                if (typeof window !== "undefined") {
+                    sessionStorage.removeItem("crosspost_jwt");
+                }
+                return Promise.reject(new Error("Session expired. Please sign in again."));
+            } finally {
+                isRefreshing = false;
             }
         }
+
         const message: string =
             error?.response?.data?.error ??
             error?.response?.data?.message ??
