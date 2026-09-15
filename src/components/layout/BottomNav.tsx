@@ -77,10 +77,10 @@ export function BottomNav() {
         <nav
             className="lg:hidden fixed bottom-0 left-0 right-0 z-50 flex flex-col items-center"
             style={{
-                background: "rgba(255, 255, 255, 0.98)",
-                backdropFilter: "blur(20px)",
-                borderTop: "1px solid rgba(0, 0, 0, 0.06)",
-                boxShadow: "0 -4px 25px rgba(0, 0, 0, 0.05)",
+                background: "rgba(12,10,30,0.97)",
+                backdropFilter: "blur(24px)",
+                borderTop: "1px solid rgba(255,255,255,0.07)",
+                boxShadow: "0 -4px 30px rgba(0,0,0,0.5)",
             }}
             aria-label="Mobile navigation"
         >
@@ -122,8 +122,9 @@ export function BottomNav() {
                             href={href}
                             className={cn(
                                 "flex flex-1 flex-col items-center justify-center py-2 gap-1 transition-all duration-150",
-                                active ? "text-purple-600 font-bold" : "text-gray-400 hover:text-gray-600 font-medium"
+                                active ? "font-bold" : "font-medium"
                             )}
+                            style={{ color: active ? "#ec4899" : "rgba(255,255,255,0.4)" }}
                             aria-label={label}
                             aria-current={active ? "page" : undefined}
                         >
@@ -131,10 +132,8 @@ export function BottomNav() {
                                 {renderIcon(active)}
                             </div>
                             <span
-                                className={cn(
-                                    "text-[10px] leading-none transition-colors",
-                                    active ? "text-purple-600 font-bold" : "text-gray-400"
-                                )}
+                                className="text-[10px] leading-none transition-colors"
+                                style={{ color: active ? "#ec4899" : "rgba(255,255,255,0.35)", fontWeight: active ? 700 : 500 }}
                             >
                                 {label}
                             </span>
@@ -144,7 +143,7 @@ export function BottomNav() {
             </div>
 
             {/* iOS Home Indicator Bar */}
-            <div className="w-32 h-1 bg-gray-900/80 rounded-full mb-1 mt-0.5" />
+            <div className="w-32 h-1 rounded-full mb-1 mt-0.5" style={{ background: "rgba(255,255,255,0.15)" }} />
         </nav>
     );
 }

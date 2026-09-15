@@ -43,33 +43,33 @@ export function StepIndicator({ steps, currentStep }: StepIndicatorProps) {
                                         <span
                                             className="absolute -inset-1.5 rounded-full animate-ping"
                                             style={{
-                                                background: "rgba(108,92,231,0.2)",
-                                                animationDuration: "2s",
+                                                background: "rgba(167, 139, 250, 0.25)",
+                                                animationDuration: "2.5s",
                                             }}
                                         />
                                     )}
 
                                     <span
                                         aria-current={status === "current" ? "step" : undefined}
-                                        className="relative flex h-9 w-9 items-center justify-center rounded-full transition-all duration-500"
+                                        className="relative flex h-9 w-9 items-center justify-center rounded-full transition-all duration-500 font-bold"
                                         style={
                                             status === "complete"
                                                 ? {
-                                                    background: "linear-gradient(135deg, #5b21b6, #6C5CE7)",
-                                                    boxShadow: "0 4px 14px rgba(108,92,231,0.4)",
-                                                    color: "white",
+                                                    background: "linear-gradient(135deg, #6C5CE7, #8B5CF6)",
+                                                    boxShadow: "0 0 16px rgba(108, 92, 231, 0.45)",
+                                                    color: "#FFFFFF",
                                                 }
                                                 : status === "current"
                                                     ? {
-                                                        background: "white",
-                                                        border: "2.5px solid #6C5CE7",
-                                                        color: "#6C5CE7",
-                                                        boxShadow: "0 4px 16px rgba(108,92,231,0.25)",
+                                                        background: "#151224",
+                                                        border: "2px solid #A78BFA",
+                                                        color: "#A78BFA",
+                                                        boxShadow: "0 0 20px rgba(167, 139, 250, 0.35)",
                                                     }
                                                     : {
-                                                        background: "rgba(255,255,255,0.6)",
-                                                        border: "2px solid rgba(108,92,231,0.2)",
-                                                        color: "rgba(108,92,231,0.35)",
+                                                        background: "rgba(255, 255, 255, 0.04)",
+                                                        border: "1.5px solid rgba(255, 255, 255, 0.12)",
+                                                        color: "rgba(255, 255, 255, 0.35)",
                                                     }
                                         }
                                     >
@@ -87,10 +87,10 @@ export function StepIndicator({ steps, currentStep }: StepIndicatorProps) {
                                     style={{
                                         color:
                                             status === "current"
-                                                ? "#6C5CE7"
+                                                ? "#A78BFA"
                                                 : status === "complete"
-                                                    ? "#374151"
-                                                    : "rgba(107,101,133,0.5)",
+                                                    ? "#FFFFFF"
+                                                    : "rgba(255, 255, 255, 0.35)",
                                     }}
                                 >
                                     {label}
@@ -99,25 +99,25 @@ export function StepIndicator({ steps, currentStep }: StepIndicatorProps) {
 
                             {/* Connector */}
                             {!isLast && (
-                                <div className="flex-1 mx-3 mb-5" aria-hidden="true">
+                                <div className="flex-1 mx-2 sm:mx-3 mb-5" aria-hidden="true">
                                     <div
                                         className="relative h-[3px] w-full rounded-full overflow-hidden"
-                                        style={{ background: "rgba(108,92,231,0.1)" }}
+                                        style={{ background: "rgba(255, 255, 255, 0.08)" }}
                                     >
                                         {/* Filled portion */}
                                         <div
                                             className="absolute inset-y-0 left-0 rounded-full transition-all duration-700 ease-in-out"
                                             style={{
                                                 width: index < currentIndex ? "100%" : "0%",
-                                                background: "linear-gradient(90deg, #5b21b6, #6C5CE7, #a29bfe)",
-                                                boxShadow: index < currentIndex ? "0 0 8px rgba(108,92,231,0.5)" : "none",
+                                                background: "linear-gradient(90deg, #6C5CE7, #A78BFA, #60A5FA)",
+                                                boxShadow: index < currentIndex ? "0 0 10px rgba(167, 139, 250, 0.6)" : "none",
                                             }}
                                         />
                                         {/* Shimmer on active connector */}
                                         {index === currentIndex - 1 && (
                                             <div
                                                 className="absolute inset-y-0 w-1/3 rounded-full animate-shimmer pointer-events-none"
-                                                style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)" }}
+                                                style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)" }}
                                             />
                                         )}
                                     </div>

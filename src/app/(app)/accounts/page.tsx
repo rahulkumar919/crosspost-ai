@@ -7,9 +7,9 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useQueryClient } from "@tanstack/react-query";
 import {
-    AlertCircle, ChevronDown, ChevronUp,
-    Wand2, Hash, Lightbulb, CalendarDays, ChevronRight,
-    CloudUpload, MoreVertical,
+    AlertCircle, Wand2, Hash, Lightbulb, CalendarDays,
+    ChevronRight, CloudUpload, MoreVertical, Loader2,
+    CheckCircle2, Radio,
 } from "lucide-react";
 import { useConnectedAccounts } from "@/hooks/useConnectedAccounts";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -25,8 +25,9 @@ interface PlatformCfg {
     label: string;
     defaultHandle: string;
     icon: React.ComponentType<{ className?: string }>;
-    iconBg: string;
-    iconColor: string;
+    gradient: string;
+    glow: string;
+    color: string;
 }
 
 const PLATFORM_CONFIG: Record<Platform, PlatformCfg> = {
@@ -34,39 +35,42 @@ const PLATFORM_CONFIG: Record<Platform, PlatformCfg> = {
         label: "YouTube",
         defaultHandle: "Video platform",
         icon: YoutubeIcon,
-        iconBg: "#FFF1F0",
-        iconColor: "#FF0000",
+        gradient: "linear-gradient(135deg, #FF0000, #FF4444)",
+        glow: "rgba(255,0,0,0.2)",
+        color: "#FF0000",
     },
     instagram: {
         label: "Instagram",
         defaultHandle: "Photo & Reels platform",
         icon: InstagramIcon,
-        iconBg: "linear-gradient(135deg, #fdf2f8, #fff7ed)",
-        iconColor: "#E1306C",
+        gradient: "linear-gradient(135deg, #833AB4, #E1306C, #F77737)",
+        glow: "rgba(225,48,108,0.2)",
+        color: "#E1306C",
     },
     linkedin: {
         label: "LinkedIn",
         defaultHandle: "Professional network",
         icon: LinkedinIcon,
-        iconBg: "#EFF6FF",
-        iconColor: "#0077B5",
+        gradient: "linear-gradient(135deg, #0077B5, #00a0dc)",
+        glow: "rgba(0,119,181,0.2)",
+        color: "#0077B5",
     },
 };
 
 // ─── AI tools data ────────────────────────────────────────────────────────────
 
 const aiTools = [
-    { icon: Wand2, label: "AI Caption Generator", desc: "Generate engaging captions", color: "#8B5CF6", bg: "#F3F0FF" },
-    { icon: Hash, label: "Hashtag Generator", desc: "Find trending hashtags", color: "#F59E0B", bg: "#FFFBEB" },
-    { icon: Lightbulb, label: "Content Ideas", desc: "Get inspired content ideas", color: "#6C5CE7", bg: "#EDE9FE" },
-    { icon: CalendarDays, label: "Content Calendar", desc: "Plan your schedule", color: "#EF4444", bg: "#FFF1F0" },
+    { icon: Wand2, label: "AI Captions", desc: "Generate engaging captions", color: "#8B5CF6", bg: "rgba(139,92,246,0.1)" },
+    { icon: Hash, label: "Hashtags", desc: "Find trending hashtags", color: "#F59E0B", bg: "rgba(245,158,11,0.1)" },
+    { icon: Lightbulb, label: "Content Ideas", desc: "Get inspired ideas", color: "#10B981", bg: "rgba(16,185,129,0.1)" },
+    { icon: CalendarDays, label: "Calendar", desc: "Plan your schedule", color: "#EF4444", bg: "rgba(239,68,68,0.1)" },
 ];
 
 // ─── Page wrapper ─────────────────────────────────────────────────────────────
 
 export default function AccountsPage() {
     return (
-        <Suspense fallback={<div className="flex-1 min-h-screen" style={{ background: "#F5F3FF" }} />}>
+        <Suspense fallback={<div className="flex-1 min-h-screen" style={{ background: "var(--background)" }} />}>
             <AccountsPageInner />
         </Suspense>
     );
@@ -78,7 +82,6 @@ function AccountsPageInner() {
     const { data: session } = useSession();
     const searchParams = useSearchParams();
     const queryClient = useQueryClient();
-    const [showAll, setShowAll] = React.useState(false);
 
     const {
         accounts,
@@ -93,17 +96,14 @@ function AccountsPageInner() {
     } = useConnectedAccounts();
 
     const connectedCount = accounts.length;
-    const availableCount = PLATFORMS.length + 1 - connectedCount; // +1 for Facebook
+    const totalCount = PLATFORMS.length;
 
     const [oauthErrorMsg, setOauthErrorMsg] = React.useState<string | null>(null);
 
-    // Invalidate on OAuth callback
     React.useEffect(() => {
         const connected = searchParams.get("connected");
         const oauthError = searchParams.get("error");
-        if (oauthError) {
-            setOauthErrorMsg(decodeURIComponent(oauthError));
-        }
+        if (oauthError) setOauthErrorMsg(decodeURIComponent(oauthError));
         if (connected || oauthError) {
             queryClient.invalidateQueries({ queryKey: ["accounts"] });
             window.history.replaceState({}, "", "/accounts");
@@ -112,166 +112,169 @@ function AccountsPageInner() {
 
     const connectApiError = connectError instanceof Error ? connectError.message : null;
     const currentError = oauthErrorMsg || connectApiError;
+    const firstName = session?.user?.name?.split(" ")[0] ?? "there";
 
     return (
-        <div
-            className="flex flex-col flex-1 min-h-0"
-            style={{ background: "#F5F3FF" }}
-        >
-            {/* ── Main content ──────────────────────────────────── */}
-            <div className="flex flex-col flex-1 px-4 sm:px-6 lg:px-8 pt-6 pb-8">
+        <div className="flex flex-col flex-1 min-h-0" style={{ background: "var(--background)" }}>
 
-                {/* Error banner */}
-                {currentError && (
-                    <div className="mb-4 flex items-start justify-between gap-3 rounded-2xl p-4 border border-red-200 bg-red-50 animate-fade-in shadow-sm">
-                        <div className="flex items-start gap-3">
-                            <AlertCircle className="h-5 w-5 text-red-500 shrink-0 mt-0.5" aria-hidden="true" />
-                            <div>
-                                <p className="text-sm font-semibold text-red-700">Connection error</p>
-                                <p className="text-xs text-red-600 mt-1 whitespace-pre-line leading-relaxed">
-                                    {currentError}
-                                </p>
+            {/* ── Page hero strip ──────────────────────────────────── */}
+            <div
+                className="px-4 sm:px-6 lg:px-8 pt-5 pb-6"
+                style={{
+                    background: "linear-gradient(135deg, var(--surface) 0%, var(--surface-elevated) 50%, var(--surface) 100%)",
+                    position: "relative",
+                    overflow: "hidden",
+                }}
+            >
+                {/* Ambient blobs */}
+                <div className="absolute -top-20 -left-20 w-64 h-64 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(108,92,231,0.3) 0%, transparent 70%)" }} />
+                <div className="absolute -bottom-10 right-0 w-48 h-48 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(162,155,254,0.15) 0%, transparent 70%)" }} />
+
+                <div className="relative max-w-5xl mx-auto">
+                    {/* Error banner */}
+                    {currentError && (
+                        <div className="mb-5 flex items-start justify-between gap-3 rounded-2xl p-4 border border-red-400/30 bg-red-500/10 backdrop-blur-sm">
+                            <div className="flex items-start gap-3">
+                                <AlertCircle className="h-4 w-4 text-red-400 shrink-0 mt-0.5" />
+                                <div>
+                                    <p className="text-sm font-bold text-red-300">Connection error</p>
+                                    <p className="text-xs text-red-400 mt-0.5 leading-relaxed">{currentError}</p>
+                                </div>
                             </div>
+                            <button
+                                onClick={() => setOauthErrorMsg(null)}
+                                className="text-red-400 hover:text-red-200 transition-colors shrink-0 text-sm font-bold"
+                                aria-label="Dismiss error"
+                            >✕</button>
                         </div>
-                        <button
-                            onClick={() => setOauthErrorMsg(null)}
-                            className="text-red-400 hover:text-red-700 p-1 rounded-lg transition-colors font-bold text-sm shrink-0"
-                            aria-label="Dismiss error"
-                        >
-                            ✕
-                        </button>
-                    </div>
-                )}
+                    )}
 
-                {/* ── Heading + Stats ────────────────────────────── */}
-                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
-                    <div>
-                        <p className="text-sm font-semibold mb-1" style={{ color: "#6C5CE7" }}>
-                            Welcome back! 👋
-                        </p>
-                        <h1 className="text-2xl font-black text-gray-900">
-                            Connected{" "}
-                            <span style={{ color: "#6C5CE7" }}>Platforms</span>
-                        </h1>
-                        <p className="text-sm text-gray-500 mt-1.5 max-w-sm leading-relaxed">
-                            Manage your social accounts and publish content across all platforms in one place.
-                        </p>
-                    </div>
-
-                    {/* Stats cards */}
-                    <div className="flex gap-3 shrink-0">
-                        {/* Connected */}
-                        <div
-                            className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white"
-                            style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.06)", border: "1px solid rgba(0,0,0,0.05)" }}
-                        >
-                            <div
-                                className="flex h-9 w-9 items-center justify-center rounded-xl"
-                                style={{ background: "rgba(108,92,231,0.1)" }}
-                            >
-                                <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" style={{ color: "#6C5CE7" }} aria-hidden="true">
-                                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                            </div>
-                            <div>
-                                <p className="text-xl font-black" style={{ color: "#6C5CE7" }}>
-                                    {isLoading ? "–" : connectedCount}
-                                </p>
-                                <p className="text-[11px] font-medium text-gray-400">Connected</p>
-                            </div>
+                    {/* Heading row */}
+                    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+                        <div>
+                            <p className="text-xs font-bold tracking-widest uppercase mb-2" style={{ color: "rgba(162,155,254,0.7)" }}>
+                                Welcome back, {firstName} 👋
+                            </p>
+                            <h1 className="text-2xl sm:text-3xl font-black text-white leading-tight">
+                                Connected{" "}
+                                <span style={{ background: "linear-gradient(135deg, #a29bfe, #6C5CE7)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                                    Platforms
+                                </span>
+                            </h1>
+                            <p className="text-sm mt-2 leading-relaxed max-w-sm" style={{ color: "rgba(255,255,255,0.45)" }}>
+                                Manage your social accounts and publish content everywhere at once.
+                            </p>
                         </div>
 
-                        {/* Available */}
-                        <div
-                            className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white"
-                            style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.06)", border: "1px solid rgba(0,0,0,0.05)" }}
-                        >
-                            <div
-                                className="flex h-9 w-9 items-center justify-center rounded-xl"
-                                style={{ background: "rgba(16,185,129,0.1)" }}
-                            >
-                                <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4 text-emerald-500" aria-hidden="true">
-                                    <path d="M1 6s4-2 11-2 11 2 11 2M1 12s4-2 11-2 11 2 11 2M1 18s4-2 11-2 11 2 11 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                                </svg>
+                        {/* Stats pills */}
+                        <div className="flex gap-3 shrink-0">
+                            <div className="flex items-center gap-2 px-4 py-2.5 rounded-2xl" style={{ background: "var(--border-color)", border: "1px solid rgba(255,255,255,0.1)" }}>
+                                <div className="h-2 w-2 rounded-full" style={{ background: "#a29bfe", boxShadow: "0 0 6px #a29bfe" }} />
+                                <div>
+                                    <p className="text-lg font-black text-white leading-none">{isLoading ? "–" : connectedCount}</p>
+                                    <p className="text-[10px] mt-0.5 font-medium" style={{ color: "rgba(255,255,255,0.4)" }}>Connected</p>
+                                </div>
                             </div>
-                            <div>
-                                <p className="text-xl font-black text-emerald-500">
-                                    {isLoading ? "–" : availableCount}
-                                </p>
-                                <p className="text-[11px] font-medium text-gray-400">Available</p>
+                            <div className="flex items-center gap-2 px-4 py-2.5 rounded-2xl" style={{ background: "var(--border-color)", border: "1px solid rgba(255,255,255,0.1)" }}>
+                                <div className="h-2 w-2 rounded-full" style={{ background: "#34d399", boxShadow: "0 0 6px #34d399" }} />
+                                <div>
+                                    <p className="text-lg font-black leading-none" style={{ color: "#34d399" }}>{isLoading ? "–" : totalCount - connectedCount}</p>
+                                    <p className="text-[10px] mt-0.5 font-medium" style={{ color: "rgba(255,255,255,0.4)" }}>Available</p>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    {/* Progress bar */}
+                    {!isLoading && (
+                        <div className="mt-5">
+                            <div className="flex items-center justify-between mb-1.5">
+                                <span className="text-xs font-medium" style={{ color: "rgba(255,255,255,0.4)" }}>
+                                    {connectedCount} of {totalCount} platforms connected
+                                </span>
+                                <span className="text-xs font-bold" style={{ color: "#a29bfe" }}>
+                                    {Math.round((connectedCount / totalCount) * 100)}%
+                                </span>
+                            </div>
+                            <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "var(--border-color)" }}>
+                                <div
+                                    className="h-full rounded-full transition-all duration-700"
+                                    style={{
+                                        width: `${(connectedCount / totalCount) * 100}%`,
+                                        background: "linear-gradient(90deg, #6C5CE7, #a29bfe)",
+                                        boxShadow: "0 0 10px rgba(108,92,231,0.6)",
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    )}
                 </div>
+            </div>
 
-                {/* ── Two-column layout ────────────────────────── */}
-                <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-5">
+            {/* ── Content ──────────────────────────────────────────── */}
+            <div className="flex flex-col flex-1 px-4 sm:px-6 lg:px-8 py-4 max-w-5xl mx-auto w-full">
 
-                    {/* ─ Left: Platform cards ─ */}
-                    <div className="flex flex-col gap-4">
+                {/* Two-column layout */}
+                <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-5">
 
-                        {/* Mobile: Upload banner on top of platforms */}
+                    {/* Left: Platform cards */}
+                    <div className="flex flex-col gap-3">
+
+                        {/* Mobile upload banner */}
                         <UploadBanner className="lg:hidden" />
 
                         {/* Platform list */}
                         <div className="flex flex-col gap-3">
                             {isLoading ? (
                                 <>
-                                    <Skeleton height="h-[76px]" rounded="lg" />
-                                    <Skeleton height="h-[76px]" rounded="lg" />
-                                    <Skeleton height="h-[76px]" rounded="lg" />
-                                    <Skeleton height="h-[76px]" rounded="lg" />
+                                    <Skeleton height="h-[88px]" rounded="lg" />
+                                    <Skeleton height="h-[88px]" rounded="lg" />
+                                    <Skeleton height="h-[88px]" rounded="lg" />
                                 </>
                             ) : (
-                                <>
-                                    {PLATFORMS.map((platform) => {
-                                        const account = accounts.find((a) => a.platform === platform);
-                                        const isThisLoading =
-                                            (isConnecting && connectingPlatform === platform) ||
-                                            (isDisconnecting && disconnectingPlatform === platform);
-                                        const cfg = PLATFORM_CONFIG[platform];
+                                PLATFORMS.map((platform) => {
+                                    const account = accounts.find((a) => a.platform === platform);
+                                    const isThisLoading =
+                                        (isConnecting && connectingPlatform === platform) ||
+                                        (isDisconnecting && disconnectingPlatform === platform);
+                                    const cfg = PLATFORM_CONFIG[platform];
 
-                                        return (
-                                            <PlatformCard
-                                                key={platform}
-                                                label={cfg.label}
-                                                handle={account?.handle ?? cfg.defaultHandle}
-                                                connectedAt={account?.connectedAt}
-                                                icon={cfg.icon}
-                                                iconBg={cfg.iconBg}
-                                                iconColor={cfg.iconColor}
-                                                isConnected={!!account}
-                                                isLoading={isThisLoading}
-                                                onConnect={() => connect(platform)}
-                                                onDisconnect={() => disconnect(platform)}
-                                            />
-                                        );
-                                    })}
-
-
-                                </>
+                                    return (
+                                        <PlatformCard
+                                            key={platform}
+                                            label={cfg.label}
+                                            handle={account?.handle ?? cfg.defaultHandle}
+                                            connectedAt={account?.connectedAt}
+                                            icon={cfg.icon}
+                                            gradient={cfg.gradient}
+                                            glow={cfg.glow}
+                                            color={cfg.color}
+                                            isConnected={!!account}
+                                            isLoading={isThisLoading}
+                                            onConnect={() => connect(platform)}
+                                            onDisconnect={() => disconnect(platform)}
+                                        />
+                                    );
+                                })
                             )}
                         </div>
 
-
+                        {/* Mobile AI tools */}
+                        <div className="mt-2 lg:hidden">
+                            <AIToolsPanel />
+                        </div>
                     </div>
 
-                    {/* ─ Right column (desktop) ─ */}
+                    {/* Right column (desktop) */}
                     <div className="hidden lg:flex flex-col gap-4">
                         <UploadBanner />
                         <AIToolsPanel />
                     </div>
                 </div>
 
-                {/* Mobile / Tablet: AI Tools Section */}
-                <div className="mt-6 lg:hidden">
-                    <AIToolsPanel />
-                </div>
-
                 {/* Footer */}
-                <p className="mt-8 text-center text-xs text-gray-400">
-                    © 2026 CrossPost AI. All rights reserved.
+                <p className="mt-8 text-center text-[11px]" style={{ color: "rgba(0,0,0,0.25)" }}>
+                    © 2026 CrossPost AI — All rights reserved
                 </p>
             </div>
         </div>
@@ -281,23 +284,20 @@ function AccountsPageInner() {
 // ─── Platform Card ────────────────────────────────────────────────────────────
 
 function PlatformCard({
-    label, handle, connectedAt, icon: Icon, iconBg, iconColor,
+    label, handle, connectedAt, icon: Icon, gradient, glow, color,
     isConnected, isLoading, onConnect, onDisconnect,
-    badge, badgeStyle, comingSoon,
 }: {
     label: string;
     handle: string;
     connectedAt?: string;
     icon: React.ComponentType<{ className?: string }>;
-    iconBg: string;
-    iconColor: string;
+    gradient: string;
+    glow: string;
+    color: string;
     isConnected: boolean;
     isLoading: boolean;
     onConnect: () => void;
     onDisconnect: () => void;
-    badge?: string;
-    badgeStyle?: React.CSSProperties;
-    comingSoon?: boolean;
 }) {
     const formattedDate = connectedAt
         ? new Date(connectedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
@@ -305,79 +305,100 @@ function PlatformCard({
 
     return (
         <div
-            className="flex items-center gap-4 px-5 py-4 rounded-2xl bg-white transition-all duration-200 hover:shadow-md"
+            className="flex items-center gap-3 sm:gap-4 p-4 sm:p-5 rounded-2xl bg-[var(--surface)] transition-all duration-200 hover:shadow-none group"
             style={{
-                boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
-                border: "1px solid rgba(0,0,0,0.05)",
+                boxShadow: isConnected
+                    ? `0 2px 16px ${glow}`
+                    : "0 2px 10px rgba(0,0,0,0.06)",
+                border: isConnected
+                    ? `1.5px solid ${glow.replace("0.2)", "0.35)")}`
+                    : "1px solid rgba(0,0,0,0.07)",
             }}
         >
-            {/* Icon */}
+            {/* Platform icon */}
             <div
-                className="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-2xl"
-                style={{ background: iconBg, color: iconColor }}
+                className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-2xl relative"
+                style={{ background: gradient }}
             >
-                <Icon className="h-[28px] w-[28px]" />
+                <Icon className="h-6 w-6 sm:h-7 sm:w-7 text-white" />
+                {/* Connected indicator dot */}
+                {isConnected && (
+                    <div
+                        className="absolute -top-1 -right-1 h-4 w-4 rounded-full border-2 border-white flex items-center justify-center"
+                        style={{ background: "#10B981" }}
+                    >
+                        <div className="h-1.5 w-1.5 rounded-full bg-[var(--surface)]" />
+                    </div>
+                )}
             </div>
 
             {/* Info */}
             <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap mb-0.5">
-                    <span className="text-sm font-bold text-gray-900">{label}</span>
+                    <span className="text-sm font-bold text-[var(--foreground-color)]">{label}</span>
                     {isConnected && (
                         <span
-                            className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-                            style={{ background: "#DCFCE7", color: "#16A34A" }}
+                            className="hidden sm:inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full"
+                            style={{ background: "#D1FAE5", color: "#065F46" }}
                         >
+                            <CheckCircle2 className="h-2.5 w-2.5" />
                             Connected
                         </span>
                     )}
-                    {!isConnected && badge && (
-                        <span
-                            className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-                            style={badgeStyle}
-                        >
-                            {badge}
-                        </span>
-                    )}
                 </div>
-                <p className="text-xs text-gray-400 truncate">{handle}</p>
+
+                {/* Handle */}
+                <p className="text-xs text-[var(--foreground-muted)] truncate leading-snug">
+                    {isConnected ? `@${handle}` : handle}
+                </p>
+
+                {/* Connected date — desktop only */}
                 {formattedDate && (
-                    <p className="text-[10px] text-gray-400 mt-0.5">
-                        Connected {formattedDate}
+                    <p className="hidden sm:block text-[10px] text-gray-300 mt-0.5">
+                        Since {formattedDate}
                     </p>
                 )}
             </div>
 
-            {/* Action */}
-            {isConnected ? (
-                <button
-                    onClick={onDisconnect}
-                    disabled={isLoading}
-                    className="shrink-0 px-4 py-1.5 rounded-xl text-xs font-bold text-gray-600 bg-white border border-gray-200 hover:border-red-200 hover:text-red-500 transition-all disabled:opacity-50"
-                >
-                    {isLoading ? "…" : "Disconnect"}
-                </button>
-            ) : (
-                <button
-                    onClick={onConnect}
-                    disabled={isLoading}
-                    className="shrink-0 px-5 py-1.5 rounded-xl text-xs font-bold text-white transition-all disabled:opacity-50 hover:shadow-lg"
-                    style={{
-                        background: "linear-gradient(135deg, #6C5CE7, #a29bfe)",
-                        boxShadow: "0 4px 12px rgba(108,92,231,0.35)",
-                    }}
-                >
-                    {isLoading ? "…" : "Connect"}
-                </button>
-            )}
+            {/* Action button */}
+            <div className="flex items-center gap-2 shrink-0">
+                {isConnected ? (
+                    <button
+                        onClick={onDisconnect}
+                        disabled={isLoading}
+                        className="px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-50 hover:scale-[1.02] active:scale-95"
+                        style={{
+                            background: "rgba(239,68,68,0.07)",
+                            border: "1px solid rgba(239,68,68,0.2)",
+                            color: "#ef4444",
+                        }}
+                        aria-label={`Disconnect ${label}`}
+                    >
+                        {isLoading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Disconnect"}
+                    </button>
+                ) : (
+                    <button
+                        onClick={onConnect}
+                        disabled={isLoading}
+                        className="px-3 sm:px-5 py-2 rounded-xl text-xs font-bold text-white transition-all disabled:opacity-50 hover:shadow-lg hover:scale-[1.02] active:scale-95"
+                        style={{
+                            background: "linear-gradient(135deg, #6C5CE7, #a29bfe)",
+                            boxShadow: "0 4px 12px rgba(108,92,231,0.4)",
+                        }}
+                        aria-label={`Connect ${label}`}
+                    >
+                        {isLoading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Connect"}
+                    </button>
+                )}
 
-            {/* More button */}
-            <button
-                className="shrink-0 flex items-center justify-center h-8 w-8 rounded-xl text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-all"
-                aria-label={`More options for ${label}`}
-            >
-                <MoreVertical className="h-4 w-4" />
-            </button>
+                {/* More options */}
+                <button
+                    className="flex items-center justify-center h-8 w-8 rounded-xl text-gray-300 hover:bg-[var(--surface-elevated)] hover:text-[var(--foreground-muted)] transition-all"
+                    aria-label={`More options for ${label}`}
+                >
+                    <MoreVertical className="h-4 w-4" />
+                </button>
+            </div>
         </div>
     );
 }
@@ -390,90 +411,66 @@ function UploadBanner({ className }: { className?: string }) {
             href="/create"
             className={cn("relative block rounded-2xl overflow-hidden group", className)}
             style={{
-                background: "linear-gradient(135deg, #EDE9FE 0%, #DDD6FE 60%, #C7D2FE 100%)",
-                border: "1px solid rgba(108,92,231,0.2)",
+                background: "linear-gradient(135deg, var(--surface) 0%, var(--surface-elevated) 100%)",
+                border: "1px solid rgba(108,92,231,0.3)",
             }}
         >
-            <div className="p-5 relative z-10">
-                <div className="flex items-start gap-4">
-                    {/* Left content */}
-                    <div className="flex-1 min-w-0">
-                        <div
-                            className="flex h-[52px] w-[52px] mb-3 items-center justify-center rounded-2xl"
-                            style={{
-                                background: "linear-gradient(135deg, #6C5CE7, #a29bfe)",
-                                boxShadow: "0 6px 20px rgba(108,92,231,0.5)",
-                            }}
-                        >
-                            <CloudUpload className="h-6 w-6 text-white" aria-hidden="true" />
-                        </div>
-                        <p className="font-black text-gray-900 text-[16px] leading-snug">
-                            Upload Your{" "}
-                            <span style={{ color: "#6C5CE7" }}>Video</span>
-                        </p>
-                        <p className="text-xs text-gray-500 mt-1.5 leading-relaxed max-w-[200px]">
-                            Upload your video and let AI optimize it for all your connected platforms.
-                        </p>
+            {/* Glow */}
+            <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full" style={{ background: "radial-gradient(circle, rgba(108,92,231,0.4) 0%, transparent 70%)" }} />
+            </div>
 
-                        {/* CTA Button */}
-                        <button
-                            className="mt-4 flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold text-white transition-all group-hover:shadow-lg group-hover:scale-[1.02]"
-                            style={{
-                                background: "linear-gradient(135deg, #6C5CE7, #a29bfe)",
-                                boxShadow: "0 4px 14px rgba(108,92,231,0.4)",
-                            }}
-                            tabIndex={-1}
-                        >
-                            <CloudUpload className="h-3.5 w-3.5" aria-hidden="true" />
-                            Upload Your Video
-                        </button>
+            <div className="relative p-5">
+                {/* Top row */}
+                <div className="flex items-start justify-between gap-3 mb-4">
+                    <div
+                        className="flex h-12 w-12 items-center justify-center rounded-2xl shrink-0"
+                        style={{
+                            background: "linear-gradient(135deg, #6C5CE7, #a29bfe)",
+                            boxShadow: "0 6px 20px rgba(108,92,231,0.5)",
+                        }}
+                    >
+                        <CloudUpload className="h-5 w-5 text-white" />
                     </div>
 
-                    {/* Right: floating platform icon cluster */}
-                    <div className="relative shrink-0 w-[100px] h-[110px]">
-                        {/* Big center screen */}
-                        <div
-                            className="absolute top-2 right-0 w-16 h-[72px] rounded-xl flex items-center justify-center shadow-lg"
-                            style={{ background: "linear-gradient(135deg, #7C3AED, #6366F1)" }}
-                        >
-                            {/* Play button */}
-                            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
-                                <svg viewBox="0 0 24 24" fill="white" className="h-4 w-4 ml-0.5">
-                                    <polygon points="5 3 19 12 5 21 5 3" />
-                                </svg>
+                    {/* Platform icons */}
+                    <div className="flex items-center gap-1">
+                        {[
+                            { color: "#FF0000", label: "YT" },
+                            { color: "#E1306C", label: "IG" },
+                            { color: "#0077B5", label: "LI" },
+                        ].map((p) => (
+                            <div
+                                key={p.label}
+                                className="h-7 w-7 rounded-full flex items-center justify-center text-white text-[9px] font-black"
+                                style={{ background: p.color, boxShadow: `0 2px 8px ${p.color}60` }}
+                            >
+                                {p.label}
                             </div>
-                        </div>
-                        {/* Instagram pill */}
-                        <div
-                            className="absolute top-0 right-14 flex h-8 w-8 items-center justify-center rounded-full shadow-md"
-                            style={{ background: "linear-gradient(135deg, #E1306C, #833AB4)" }}
-                        >
-                            <svg viewBox="0 0 24 24" fill="white" className="h-4 w-4">
-                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="white" strokeWidth="2" />
-                                <circle cx="12" cy="12" r="4" fill="none" stroke="white" strokeWidth="2" />
-                                <circle cx="17.5" cy="6.5" r="1.5" fill="white" />
-                            </svg>
-                        </div>
-                        {/* YouTube pill */}
-                        <div
-                            className="absolute bottom-4 right-16 flex h-8 w-8 items-center justify-center rounded-full shadow-md"
-                            style={{ background: "#FF0000" }}
-                        >
-                            <svg viewBox="0 0 24 24" fill="white" className="h-4 w-4">
-                                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-2.75 1 1 0 0 0-1.82 0A4.83 4.83 0 0 1 10.23 6.7 4.73 4.73 0 0 1 5.5 2a1 1 0 0 0-2 0 13.5 13.5 0 0 0 13 13 13.5 13.5 0 0 0 13-13 1 1 0 0 0-2 0 4.73 4.73 0 0 1-4.91 4.69z" />
-                            </svg>
-                        </div>
-                        {/* LinkedIn pill */}
-                        <div
-                            className="absolute bottom-0 right-2 flex h-8 w-8 items-center justify-center rounded-full shadow-md"
-                            style={{ background: "#0077B5" }}
-                        >
-                            <svg viewBox="0 0 24 24" fill="white" className="h-4 w-4">
-                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z" />
-                                <circle cx="4" cy="4" r="2" />
-                            </svg>
-                        </div>
+                        ))}
                     </div>
+                </div>
+
+                {/* Text */}
+                <p className="font-black text-white text-[15px] leading-snug mb-1">
+                    Upload Your{" "}
+                    <span style={{ color: "#a29bfe" }}>Video</span>
+                </p>
+                <p className="text-xs leading-relaxed mb-4" style={{ color: "rgba(255,255,255,0.45)" }}>
+                    AI optimizes and publishes to all your connected platforms instantly.
+                </p>
+
+                {/* CTA */}
+                <div
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white transition-all group-hover:shadow-lg group-hover:scale-[1.02]"
+                    style={{
+                        background: "linear-gradient(135deg, #6C5CE7, #a29bfe)",
+                        boxShadow: "0 4px 14px rgba(108,92,231,0.4)",
+                    }}
+                >
+                    <CloudUpload className="h-3.5 w-3.5" />
+                    Start Uploading
+                    <ChevronRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
                 </div>
             </div>
         </Link>
@@ -485,42 +482,47 @@ function UploadBanner({ className }: { className?: string }) {
 function AIToolsPanel() {
     return (
         <div
-            className="rounded-2xl bg-white p-5"
+            className="rounded-2xl bg-[var(--surface)] p-5"
             style={{
-                boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+                boxShadow: "0 2px 16px rgba(0,0,0,0.06)",
                 border: "1px solid rgba(0,0,0,0.05)",
             }}
         >
-            <div className="flex items-center gap-2 mb-4">
-                <span style={{ fontSize: "18px" }} aria-hidden="true">✨</span>
-                <div>
-                    <h2 className="text-sm font-black text-gray-900">AI Tools</h2>
-                    <p className="text-xs text-gray-400">Smart tools to create better content</p>
+            <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                    <div
+                        className="h-8 w-8 flex items-center justify-center rounded-xl"
+                        style={{ background: "rgba(108,92,231,0.1)" }}
+                    >
+                        <span style={{ fontSize: "15px" }}>✨</span>
+                    </div>
+                    <div>
+                        <h2 className="text-sm font-black text-[var(--foreground-color)]">AI Tools</h2>
+                        <p className="text-[10px] text-[var(--foreground-muted)]">Smart content creation</p>
+                    </div>
                 </div>
             </div>
 
-            {/* 2x2 Grid matching reference */}
-            <div className="grid grid-cols-2 gap-2.5">
+            <div className="grid grid-cols-2 gap-2">
                 {aiTools.map(({ icon: Icon, label, desc, color, bg }) => (
                     <button
                         key={label}
-                        className="flex items-center gap-2.5 p-3 rounded-2xl text-left transition-all hover:shadow-md active:scale-95 group"
+                        className="flex flex-col gap-2 p-3 rounded-xl text-left transition-all hover:shadow-none active:scale-95 group"
                         style={{
                             background: "#FAFAFA",
                             border: "1px solid rgba(0,0,0,0.06)",
                         }}
                     >
                         <div
-                            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
+                            className="flex h-9 w-9 items-center justify-center rounded-xl"
                             style={{ background: bg }}
                         >
-                            <Icon className="h-4 w-4" style={{ color }} aria-hidden="true" />
+                            <Icon className="h-4 w-4" style={{ color }} />
                         </div>
-                        <div className="flex-1 min-w-0">
-                            <p className="text-[11px] font-bold text-gray-800 leading-tight">{label}</p>
-                            <p className="text-[9px] text-gray-400 mt-0.5 leading-tight">{desc}</p>
+                        <div>
+                            <p className="text-[11px] font-bold text-[var(--foreground-color)] leading-tight">{label}</p>
+                            <p className="text-[9px] text-[var(--foreground-muted)] mt-0.5 leading-tight">{desc}</p>
                         </div>
-                        <ChevronRight className="h-3 w-3 text-gray-300 shrink-0 group-hover:text-purple-400 transition-colors" aria-hidden="true" />
                     </button>
                 ))}
             </div>
@@ -528,12 +530,5 @@ function AIToolsPanel() {
     );
 }
 
-// ─── Facebook Icon ────────────────────────────────────────────────────────────
 
-function FacebookIcon({ className }: { className?: string }) {
-    return (
-        <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
-            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-        </svg>
-    );
-}
+

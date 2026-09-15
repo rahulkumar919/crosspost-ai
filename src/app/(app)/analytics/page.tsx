@@ -63,19 +63,19 @@ export default function AnalyticsPage() {
     }, [timeSeries]);
 
     return (
-        <div className="flex flex-col flex-1 min-h-0 p-4 sm:p-6 lg:p-8" style={{ background: "#F5F3FF" }}>
+        <div className="flex flex-col flex-1 min-h-0 p-4 sm:p-6 lg:p-8" style={{ background: "var(--background)" }}>
             {/* ── Header ──────────────────────────────────────────────────────── */}
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
                 <div>
                     <div className="flex items-center gap-2 mb-1">
                         <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full" style={{ background: "rgba(108,92,231,0.12)", color: "#6C5CE7" }}>
                             Real-Time Intelligence
                         </span>
                     </div>
-                    <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+                    <h1 className="text-2xl sm:text-3xl font-black text-[var(--foreground-color)] tracking-tight">
                         Analytics <span style={{ color: "#6C5CE7" }}>Dashboard</span>
                     </h1>
-                    <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                    <p className="text-xs sm:text-sm text-[var(--foreground-muted)] mt-1">
                         Unified performance metrics across all your connected social platforms.
                     </p>
                 </div>
@@ -83,7 +83,7 @@ export default function AnalyticsPage() {
                 {/* Range selectors & Sync button */}
                 <div className="flex flex-wrap items-center gap-2">
                     {/* Time range pill buttons */}
-                    <div className="flex items-center p-1 bg-white rounded-xl border border-purple-100 shadow-sm">
+                    <div className="flex items-center p-1 bg-[var(--surface)] rounded-xl border border-[var(--border-color)] shadow-sm">
                         {TIME_RANGES.map((item) => (
                             <button
                                 key={item.value}
@@ -92,7 +92,7 @@ export default function AnalyticsPage() {
                                     "px-3 py-1.5 rounded-lg text-xs font-bold transition-all",
                                     range === item.value
                                         ? "text-white shadow-sm"
-                                        : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+                                        : "text-[var(--foreground-muted)] hover:text-[var(--foreground-color)] hover:bg-[var(--surface-elevated)]"
                                 )}
                                 style={range === item.value ? { background: "linear-gradient(135deg, #5b21b6, #6C5CE7)" } : {}}
                             >
@@ -115,7 +115,7 @@ export default function AnalyticsPage() {
             </div>
 
             {/* ── Summary KPI Cards ───────────────────────────────────────────── */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-4">
                 {/* 1. Total Views / Reach */}
                 <KPICard
                     title="Total Reach"
@@ -190,7 +190,7 @@ export default function AnalyticsPage() {
             </div>
 
             {/* ── Engagement Banner + Trend Chart ─────────────────────────────── */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-4">
                 {/* Engagement Highlights Card */}
                 <div
                     className="flex flex-col justify-between rounded-2xl p-6 text-white relative overflow-hidden"
@@ -233,21 +233,21 @@ export default function AnalyticsPage() {
 
                 {/* 7-Day Performance Chart */}
                 <div
-                    className="lg:col-span-2 rounded-2xl p-6 bg-white flex flex-col justify-between shadow-sm border border-purple-100"
+                    className="lg:col-span-2 rounded-2xl p-6 bg-[var(--surface)] flex flex-col justify-between shadow-sm border border-[var(--border-color)]"
                 >
                     <div className="flex items-center justify-between mb-4">
                         <div>
-                            <h3 className="text-base font-black text-gray-900">Reach &amp; Views Trend</h3>
-                            <p className="text-xs text-gray-400 mt-0.5">Daily performance across all active networks</p>
+                            <h3 className="text-base font-black text-[var(--foreground-color)]">Reach &amp; Views Trend</h3>
+                            <p className="text-xs text-[var(--foreground-muted)] mt-0.5">Daily performance across all active networks</p>
                         </div>
                         <div className="flex items-center gap-4 text-xs font-semibold">
                             <div className="flex items-center gap-1.5">
                                 <span className="h-2.5 w-2.5 rounded-full bg-purple-600" />
-                                <span className="text-gray-600">Views</span>
+                                <span className="text-[var(--foreground-muted)]">Views</span>
                             </div>
                             <div className="flex items-center gap-1.5">
                                 <span className="h-2.5 w-2.5 rounded-full bg-pink-500" />
-                                <span className="text-gray-600">Likes</span>
+                                <span className="text-[var(--foreground-muted)]">Likes</span>
                             </div>
                         </div>
                     </div>
@@ -265,7 +265,7 @@ export default function AnalyticsPage() {
                                     </div>
 
                                     {/* Bar column */}
-                                    <div className="w-full flex items-end justify-center h-32 bg-purple-50/60 rounded-xl overflow-hidden p-1">
+                                    <div className="w-full flex items-end justify-center h-32 bg-[var(--surface-elevated)]/60 rounded-xl overflow-hidden p-1">
                                         <div
                                             className="w-full rounded-lg transition-all duration-500 group-hover:brightness-110"
                                             style={{
@@ -277,7 +277,7 @@ export default function AnalyticsPage() {
                                     </div>
 
                                     {/* Date label */}
-                                    <span className="text-[11px] font-bold text-gray-400 group-hover:text-purple-600 transition-colors">
+                                    <span className="text-[11px] font-bold text-[var(--foreground-muted)] group-hover:text-purple-600 transition-colors">
                                         {item.date}
                                     </span>
                                 </div>
@@ -288,11 +288,11 @@ export default function AnalyticsPage() {
             </div>
 
             {/* ── Cross-Platform Comparison ───────────────────────────────────── */}
-            <div className="mb-6">
+            <div className="mb-4">
                 <div className="flex items-center justify-between mb-4">
                     <div>
-                        <h2 className="text-lg font-black text-gray-900">Platform Comparison</h2>
-                        <p className="text-xs text-gray-500">Live audience, engagement, and reach breakdown per channel.</p>
+                        <h2 className="text-lg font-black text-[var(--foreground-color)]">Platform Comparison</h2>
+                        <p className="text-xs text-[var(--foreground-muted)]">Live audience, engagement, and reach breakdown per channel.</p>
                     </div>
                 </div>
 
@@ -333,34 +333,34 @@ export default function AnalyticsPage() {
             </div>
 
             {/* ── Post-Level Performance Table ────────────────────────────────── */}
-            <div className="rounded-2xl bg-white shadow-sm border border-purple-100 overflow-hidden">
+            <div className="rounded-2xl bg-[var(--surface)] shadow-sm border border-[var(--border-color)] overflow-hidden">
                 {/* Table Top Controls */}
-                <div className="p-5 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="p-5 border-b border-[var(--border-color)] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div>
-                        <h3 className="text-base font-black text-gray-900">Post-Level Performance</h3>
-                        <p className="text-xs text-gray-400 mt-0.5">Individual metrics and live links for all published content.</p>
+                        <h3 className="text-base font-black text-[var(--foreground-color)]">Post-Level Performance</h3>
+                        <p className="text-xs text-[var(--foreground-muted)] mt-0.5">Individual metrics and live links for all published content.</p>
                     </div>
 
                     <div className="flex items-center gap-3">
                         {/* Search input */}
                         <div className="relative">
-                            <Search className="h-3.5 w-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                            <Search className="h-3.5 w-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--foreground-muted)]" />
                             <input
                                 type="text"
                                 placeholder="Search posts..."
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                className="pl-9 pr-3 py-1.5 rounded-xl text-xs font-semibold text-gray-700 bg-gray-50 border border-gray-200 outline-none focus:border-purple-400 focus:bg-white transition-all w-44 sm:w-56"
+                                className="pl-9 pr-3 py-1.5 rounded-xl text-xs font-semibold text-[var(--foreground-muted)] bg-[var(--surface-elevated)] border border-[var(--border-color)] outline-none focus:border-purple-400 focus:bg-[var(--surface)] transition-all w-44 sm:w-56"
                             />
                         </div>
 
                         {/* Platform filter */}
-                        <div className="flex items-center gap-1 bg-gray-50 border border-gray-200 rounded-xl p-1 text-xs font-semibold text-gray-600">
-                            <Filter className="h-3 w-3 text-gray-400 ml-1.5" />
+                        <div className="flex items-center gap-1 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl p-1 text-xs font-semibold text-[var(--foreground-muted)]">
+                            <Filter className="h-3 w-3 text-[var(--foreground-muted)] ml-1.5" />
                             <select
                                 value={platformFilter}
                                 onChange={(e) => setPlatformFilter(e.target.value)}
-                                className="bg-transparent border-none outline-none text-xs font-semibold text-gray-700 pr-2 py-0.5 cursor-pointer"
+                                className="bg-transparent border-none outline-none text-xs font-semibold text-[var(--foreground-muted)] pr-2 py-0.5 cursor-pointer"
                             >
                                 <option value="all">All Channels</option>
                                 <option value="youtube">YouTube</option>
@@ -375,7 +375,7 @@ export default function AnalyticsPage() {
                 <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs">
                         <thead>
-                            <tr className="bg-gray-50/70 border-b border-gray-100 text-gray-400 font-bold uppercase tracking-wider text-[10px]">
+                            <tr className="bg-[var(--surface-elevated)]/70 border-b border-[var(--border-color)] text-[var(--foreground-muted)] font-bold uppercase tracking-wider text-[10px]">
                                 <th className="py-3.5 px-5">Content / Title</th>
                                 <th className="py-3.5 px-4">Channel</th>
                                 <th className="py-3.5 px-4 text-right">Views</th>
@@ -386,7 +386,7 @@ export default function AnalyticsPage() {
                                 <th className="py-3.5 px-5 text-right">Live Link</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-100 font-medium text-gray-700">
+                        <tbody className="divide-y divide-gray-100 font-medium text-[var(--foreground-muted)]">
                             {isPostsLoading && !posts ? (
                                 Array.from({ length: 3 }).map((_, idx) => (
                                     <tr key={idx} className="animate-pulse">
@@ -402,13 +402,13 @@ export default function AnalyticsPage() {
                                 ))
                             ) : filteredPosts.length === 0 ? (
                                 <tr>
-                                    <td colSpan={8} className="py-12 text-center text-gray-400">
+                                    <td colSpan={8} className="py-12 text-center text-[var(--foreground-muted)]">
                                         <div className="flex flex-col items-center justify-center gap-2">
-                                            <div className="h-10 w-10 rounded-full bg-purple-50 flex items-center justify-center text-purple-600">
+                                            <div className="h-10 w-10 rounded-full bg-[var(--surface-elevated)] flex items-center justify-center text-purple-600">
                                                 <Film className="h-5 w-5" />
                                             </div>
-                                            <p className="text-sm font-bold text-gray-700">No published posts found</p>
-                                            <p className="text-xs text-gray-400 max-w-sm">
+                                            <p className="text-sm font-bold text-[var(--foreground-muted)]">No published posts found</p>
+                                            <p className="text-xs text-[var(--foreground-muted)] max-w-sm">
                                                 Publish your first video or image to see real-time engagement and view counts here.
                                             </p>
                                             <Link
@@ -422,11 +422,11 @@ export default function AnalyticsPage() {
                                 </tr>
                             ) : (
                                 filteredPosts.map((item) => (
-                                    <tr key={item.id} className="hover:bg-purple-50/30 transition-colors">
+                                    <tr key={item.id} className="hover:bg-[var(--surface-elevated)]/30 transition-colors">
                                         {/* Post title & media type */}
                                         <td className="py-3.5 px-5">
                                             <div className="flex items-center gap-3">
-                                                <div className="h-9 w-9 rounded-lg bg-gray-100 overflow-hidden shrink-0 flex items-center justify-center border border-gray-200">
+                                                <div className="h-9 w-9 rounded-lg bg-[var(--surface-elevated)] overflow-hidden shrink-0 flex items-center justify-center border border-[var(--border-color)]">
                                                     {item.mediaType === "VIDEO" ? (
                                                         <Film className="h-4 w-4 text-purple-600" />
                                                     ) : (
@@ -434,8 +434,8 @@ export default function AnalyticsPage() {
                                                     )}
                                                 </div>
                                                 <div className="min-w-0 max-w-xs sm:max-w-sm">
-                                                    <p className="font-bold text-gray-900 truncate">{item.title || "Untitled Post"}</p>
-                                                    <p className="text-[10px] text-gray-400 mt-0.5">
+                                                    <p className="font-bold text-[var(--foreground-color)] truncate">{item.title || "Untitled Post"}</p>
+                                                    <p className="text-[10px] text-[var(--foreground-muted)] mt-0.5">
                                                         {new Date(item.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                                                     </p>
                                                 </div>
@@ -453,22 +453,22 @@ export default function AnalyticsPage() {
                                         </td>
 
                                         {/* Views */}
-                                        <td className="py-3.5 px-4 text-right font-bold text-gray-900 tabular-nums">
+                                        <td className="py-3.5 px-4 text-right font-bold text-[var(--foreground-color)] tabular-nums">
                                             {formatNumber(item.views)}
                                         </td>
 
                                         {/* Likes */}
-                                        <td className="py-3.5 px-4 text-right font-bold text-gray-900 tabular-nums">
+                                        <td className="py-3.5 px-4 text-right font-bold text-[var(--foreground-color)] tabular-nums">
                                             {formatNumber(item.likes)}
                                         </td>
 
                                         {/* Comments */}
-                                        <td className="py-3.5 px-4 text-right font-bold text-gray-900 tabular-nums">
+                                        <td className="py-3.5 px-4 text-right font-bold text-[var(--foreground-color)] tabular-nums">
                                             {formatNumber(item.comments)}
                                         </td>
 
                                         {/* Shares */}
-                                        <td className="py-3.5 px-4 text-right font-bold text-gray-900 tabular-nums">
+                                        <td className="py-3.5 px-4 text-right font-bold text-[var(--foreground-color)] tabular-nums">
                                             {formatNumber(item.shares)}
                                         </td>
 
@@ -498,7 +498,7 @@ export default function AnalyticsPage() {
                                                     <ExternalLink className="h-3.5 w-3.5" />
                                                 </a>
                                             ) : (
-                                                <span className="text-gray-400 text-[11px]">—</span>
+                                                <span className="text-[var(--foreground-muted)] text-[11px]">—</span>
                                             )}
                                         </td>
                                     </tr>
@@ -535,7 +535,7 @@ function KPICard({
 }) {
     return (
         <div
-            className="bg-white rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-sm border border-purple-100 hover:shadow-md transition-all"
+            className="bg-[var(--surface)] rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-sm border border-[var(--border-color)] hover:shadow-none transition-all"
         >
             <div className="flex items-center justify-between mb-3">
                 <div
@@ -554,11 +554,11 @@ function KPICard({
             </div>
 
             <div>
-                <p className={cn("text-xl sm:text-2xl font-black text-gray-900 tracking-tight", isLoading && "opacity-60 animate-pulse")}>
+                <p className={cn("text-xl sm:text-2xl font-black text-[var(--foreground-color)] tracking-tight", isLoading && "opacity-60 animate-pulse")}>
                     {value}
                 </p>
-                <p className="text-xs font-bold text-gray-700 mt-0.5">{title}</p>
-                <p className="text-[10px] text-gray-400 mt-0.5">{sub}</p>
+                <p className="text-xs font-bold text-[var(--foreground-muted)] mt-0.5">{title}</p>
+                <p className="text-[10px] text-[var(--foreground-muted)] mt-0.5">{sub}</p>
             </div>
         </div>
     );
@@ -589,7 +589,7 @@ function PlatformBreakdownCard({
 
     return (
         <div
-            className="bg-white rounded-2xl p-5 shadow-sm border border-purple-100 flex flex-col justify-between"
+            className="bg-[var(--surface)] rounded-2xl p-5 shadow-sm border border-[var(--border-color)] flex flex-col justify-between"
         >
             <div>
                 {/* Header */}
@@ -602,8 +602,8 @@ function PlatformBreakdownCard({
                             <Icon className="h-5 w-5" />
                         </div>
                         <div>
-                            <h4 className="font-black text-sm text-gray-900 leading-tight">{title}</h4>
-                            <p className="text-[11px] text-gray-400">
+                            <h4 className="font-black text-sm text-[var(--foreground-color)] leading-tight">{title}</h4>
+                            <p className="text-[11px] text-[var(--foreground-muted)]">
                                 {metrics?.accountName || (isConnected ? "Connected Account" : "Not connected")}
                             </p>
                         </div>
@@ -617,7 +617,7 @@ function PlatformBreakdownCard({
                     ) : (
                         <Link
                             href="/accounts"
-                            className="px-2.5 py-1 rounded-full bg-purple-50 text-purple-600 hover:bg-purple-100 text-[10px] font-bold transition-colors"
+                            className="px-2.5 py-1 rounded-full bg-[var(--surface-elevated)] text-purple-600 hover:bg-purple-100 text-[10px] font-bold transition-colors"
                         >
                             Connect +
                         </Link>
@@ -625,22 +625,22 @@ function PlatformBreakdownCard({
                 </div>
 
                 {/* Metrics Grid */}
-                <div className="grid grid-cols-3 gap-2 py-3 border-y border-gray-100 text-center">
+                <div className="grid grid-cols-3 gap-2 py-3 border-y border-[var(--border-color)] text-center">
                     <div>
-                        <p className="text-[10px] font-semibold text-gray-400 uppercase">Reach</p>
-                        <p className={cn("text-sm font-black text-gray-900 mt-0.5", isLoading && "opacity-60")}>
+                        <p className="text-[10px] font-semibold text-[var(--foreground-muted)] uppercase">Reach</p>
+                        <p className={cn("text-sm font-black text-[var(--foreground-color)] mt-0.5", isLoading && "opacity-60")}>
                             {formatNumber(views)}
                         </p>
                     </div>
                     <div>
-                        <p className="text-[10px] font-semibold text-gray-400 uppercase">Audience</p>
-                        <p className={cn("text-sm font-black text-gray-900 mt-0.5", isLoading && "opacity-60")}>
+                        <p className="text-[10px] font-semibold text-[var(--foreground-muted)] uppercase">Audience</p>
+                        <p className={cn("text-sm font-black text-[var(--foreground-color)] mt-0.5", isLoading && "opacity-60")}>
                             {formatNumber(followers)}
                         </p>
                     </div>
                     <div>
-                        <p className="text-[10px] font-semibold text-gray-400 uppercase">Posts</p>
-                        <p className={cn("text-sm font-black text-gray-900 mt-0.5", isLoading && "opacity-60")}>
+                        <p className="text-[10px] font-semibold text-[var(--foreground-muted)] uppercase">Posts</p>
+                        <p className={cn("text-sm font-black text-[var(--foreground-color)] mt-0.5", isLoading && "opacity-60")}>
                             {postCount}
                         </p>
                     </div>
@@ -650,20 +650,22 @@ function PlatformBreakdownCard({
             {/* Bottom Progress Bar */}
             <div className="mt-4">
                 <div className="flex items-center justify-between text-[11px] font-bold mb-1.5">
-                    <span className="text-gray-500">Share of Total Reach</span>
-                    <span className="text-gray-900">{shareOfTotal}%</span>
+                    <span className="text-[var(--foreground-muted)]">Share of Total Reach</span>
+                    <span className="text-[var(--foreground-color)]">{shareOfTotal}%</span>
                 </div>
-                <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+                <div className="h-2 w-full bg-[var(--surface-elevated)] rounded-full overflow-hidden">
                     <div
                         className="h-full rounded-full transition-all duration-700"
                         style={{ width: `${Math.max(5, shareOfTotal)}%`, background: color }}
                     />
                 </div>
-                <div className="flex items-center justify-between text-[10px] text-gray-400 mt-2 font-medium">
+                <div className="flex items-center justify-between text-[10px] text-[var(--foreground-muted)] mt-2 font-medium">
                     <span>Engagement rate</span>
-                    <span className="font-bold text-gray-700">{rate}%</span>
+                    <span className="font-bold text-[var(--foreground-muted)]">{rate}%</span>
                 </div>
             </div>
         </div>
     );
 }
+
+

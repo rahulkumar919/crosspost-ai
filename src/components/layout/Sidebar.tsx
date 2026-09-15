@@ -11,6 +11,8 @@ import {
     LogOut, ChevronUp,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { InstallButton } from "@/components/pwa/InstallButton";
+import { ThemeToggle } from "./ThemeToggle";
 
 const mainNav = [
     { href: "/accounts", label: "Connected Accounts", icon: Link2 },
@@ -34,6 +36,7 @@ export function Sidebar() {
     const userName = session?.user?.name ?? "User";
     const userEmail = session?.user?.email ?? "";
     const userInitial = userName.charAt(0).toUpperCase();
+    const userImage = session?.user?.image;
 
     return (
         <aside
@@ -138,6 +141,18 @@ export function Sidebar() {
 
             <div className="mx-5 my-2" style={{ height: "1px", background: "rgba(255,255,255,0.07)" }} />
 
+            {/* ── Install App button (only visible when installable) ── */}
+            <InstallButton variant="sidebar" />
+
+            {/* ── Theme Toggle ── */}
+            <div
+                className="mx-3 mb-2 flex items-center justify-between px-3 py-2.5 rounded-xl"
+                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
+            >
+                <span className="text-[11px] font-semibold" style={{ color: "rgba(255,255,255,0.45)" }}>Appearance</span>
+                <ThemeToggle />
+            </div>
+
             {/* ── User profile section ── */}
             <div className="px-3 py-3">
                 {/* Sign out popup */}
@@ -164,15 +179,25 @@ export function Sidebar() {
                     aria-label="User profile menu"
                 >
                     {/* Avatar */}
-                    <div
-                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-sm font-black text-white"
-                        style={{
-                            background: "linear-gradient(135deg, #6C5CE7, #a29bfe)",
-                            boxShadow: "0 2px 8px rgba(108,92,231,0.4)",
-                        }}
-                    >
-                        {userInitial}
-                    </div>
+                    {userImage ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                            src={userImage}
+                            alt={userName}
+                            className="h-8 w-8 shrink-0 rounded-xl object-cover"
+                            style={{ boxShadow: "0 0 0 2px rgba(162,155,254,0.5)" }}
+                        />
+                    ) : (
+                        <div
+                            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-sm font-black text-white"
+                            style={{
+                                background: "linear-gradient(135deg, #6C5CE7, #a29bfe)",
+                                boxShadow: "0 2px 8px rgba(108,92,231,0.4)",
+                            }}
+                        >
+                            {userInitial}
+                        </div>
+                    )}
 
                     {/* Name & email */}
                     <div className="flex-1 min-w-0 text-left">

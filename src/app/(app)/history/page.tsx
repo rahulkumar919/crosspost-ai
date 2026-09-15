@@ -86,18 +86,18 @@ export default function PostHistoryPage() {
     };
 
     return (
-        <div className="flex flex-col flex-1 min-h-0 p-4 sm:p-6 lg:p-8" style={{ background: "#F5F3FF" }}>
+        <div className="flex flex-col flex-1 min-h-0 p-4 sm:p-6 lg:p-8" style={{ background: "var(--background)" }}>
             {/* ── Top Header ────────────────────────────────────────────── */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
                 <div>
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-100/80 text-purple-700 text-xs font-bold mb-2">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold mb-2" style={{ background: "rgba(236,72,153,0.12)", border: "1px solid rgba(236,72,153,0.25)", color: "#f472b6" }}>
                         <Clock className="h-3.5 w-3.5" />
                         <span>PUBLISHING LOGS & ARCHIVE</span>
                     </div>
-                    <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+                    <h1 className="text-2xl sm:text-3xl font-black text-[var(--foreground-color)] tracking-tight">
                         Post <span style={{ color: "#6C5CE7" }}>History</span>
                     </h1>
-                    <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                    <p className="text-xs sm:text-sm text-[var(--foreground-muted)] mt-1">
                         Track multi-platform delivery statuses, inspect errors, retry failed targets, and view live posts.
                     </p>
                 </div>
@@ -106,15 +106,20 @@ export default function PostHistoryPage() {
                     <button
                         onClick={() => refetch()}
                         disabled={isFetching}
-                        className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-purple-100 text-xs font-bold text-gray-700 shadow-sm hover:bg-purple-50/50 hover:text-purple-600 transition-all disabled:opacity-50"
+                        className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50"
+                        style={{
+                            background: "rgba(108,92,231,0.08)",
+                            border: "1px solid rgba(108,92,231,0.18)",
+                            color: "#6C5CE7",
+                        }}
                     >
-                        <RefreshCw className={cn("h-3.5 w-3.5", isFetching && "animate-spin text-purple-600")} />
+                        <RefreshCw className={cn("h-3.5 w-3.5", isFetching && "animate-spin")} />
                         <span>{isFetching ? "Refreshing..." : "Refresh"}</span>
                     </button>
 
                     <Link
                         href="/create"
-                        className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white shadow-sm hover:shadow-md transition-all"
+                        className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white shadow-sm hover:shadow-none hover:scale-[1.02] active:scale-95 transition-all"
                         style={{
                             background: "linear-gradient(135deg, #6C5CE7, #a29bfe)",
                             boxShadow: "0 4px 14px rgba(108,92,231,0.35)",
@@ -127,20 +132,20 @@ export default function PostHistoryPage() {
             </div>
 
             {/* ── KPI Stat Chips ────────────────────────────────────────── */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-                <div className="bg-white rounded-2xl p-4 shadow-sm border border-purple-100/80 flex items-center justify-between">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+                <div className="bg-[var(--surface)] rounded-2xl p-4 shadow-sm border border-[var(--border-color)]/80 flex items-center justify-between">
                     <div>
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Total Posts</p>
-                        <p className="text-xl font-black text-gray-900 mt-0.5">{isLoading ? "..." : totalPosts}</p>
+                        <p className="text-[10px] font-bold text-[var(--foreground-muted)] uppercase tracking-wider">Total Posts</p>
+                        <p className="text-xl font-black text-[var(--foreground-color)] mt-0.5">{isLoading ? "..." : totalPosts}</p>
                     </div>
-                    <div className="h-9 w-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-xs">
+                    <div className="h-9 w-9 rounded-xl bg-[var(--surface-elevated)] text-purple-600 flex items-center justify-center font-bold text-xs">
                         <Clock className="h-4 w-4" />
                     </div>
                 </div>
 
-                <div className="bg-white rounded-2xl p-4 shadow-sm border border-purple-100/80 flex items-center justify-between">
+                <div className="bg-[var(--surface)] rounded-2xl p-4 shadow-sm border border-[var(--border-color)]/80 flex items-center justify-between">
                     <div>
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Live & Delivered</p>
+                        <p className="text-[10px] font-bold text-[var(--foreground-muted)] uppercase tracking-wider">Live & Delivered</p>
                         <p className="text-xl font-black text-emerald-600 mt-0.5">{isLoading ? "..." : publishedCount}</p>
                     </div>
                     <div className="h-9 w-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-xs">
@@ -148,9 +153,9 @@ export default function PostHistoryPage() {
                     </div>
                 </div>
 
-                <div className="bg-white rounded-2xl p-4 shadow-sm border border-purple-100/80 flex items-center justify-between">
+                <div className="bg-[var(--surface)] rounded-2xl p-4 shadow-sm border border-[var(--border-color)]/80 flex items-center justify-between">
                     <div>
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Needs Attention</p>
+                        <p className="text-[10px] font-bold text-[var(--foreground-muted)] uppercase tracking-wider">Needs Attention</p>
                         <p className="text-xl font-black text-red-600 mt-0.5">{isLoading ? "..." : failedCount}</p>
                     </div>
                     <div className="h-9 w-9 rounded-xl bg-red-50 text-red-600 flex items-center justify-center font-bold text-xs">
@@ -158,9 +163,9 @@ export default function PostHistoryPage() {
                     </div>
                 </div>
 
-                <div className="bg-white rounded-2xl p-4 shadow-sm border border-purple-100/80 flex items-center justify-between">
+                <div className="bg-[var(--surface)] rounded-2xl p-4 shadow-sm border border-[var(--border-color)]/80 flex items-center justify-between">
                     <div>
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">In Progress</p>
+                        <p className="text-[10px] font-bold text-[var(--foreground-muted)] uppercase tracking-wider">In Progress</p>
                         <p className="text-xl font-black text-amber-600 mt-0.5">{isLoading ? "..." : queuedCount}</p>
                     </div>
                     <div className="h-9 w-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-xs">
@@ -170,11 +175,11 @@ export default function PostHistoryPage() {
             </div>
 
             {/* ── Search & Filter Controls ──────────────────────────────── */}
-            <div className="bg-white rounded-2xl p-4 shadow-sm border border-purple-100/80 mb-6">
+            <div className="bg-[var(--surface)] rounded-2xl p-4 shadow-sm border border-[var(--border-color)]/80 mb-4">
                 <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
                     {/* Search bar */}
                     <div className="relative flex-1">
-                        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--foreground-muted)]" />
                         <input
                             type="text"
                             value={search}
@@ -183,12 +188,12 @@ export default function PostHistoryPage() {
                                 setPage(1);
                             }}
                             placeholder="Search by title, caption, or keywords..."
-                            className="w-full pl-10 pr-4 py-2 rounded-xl text-xs font-medium bg-gray-50 border border-gray-200 focus:outline-none focus:border-purple-400 focus:bg-white transition-all text-gray-800 placeholder:text-gray-400"
+                            className="w-full pl-10 pr-4 py-2 rounded-xl text-xs font-medium bg-[var(--surface-elevated)] border border-[var(--border-color)] focus:outline-none focus:border-purple-400 focus:bg-[var(--surface)] transition-all text-[var(--foreground-color)] placeholder:text-[var(--foreground-muted)]"
                         />
                         {search && (
                             <button
                                 onClick={() => setSearch("")}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--foreground-muted)] hover:text-[var(--foreground-muted)]"
                             >
                                 <X className="h-3.5 w-3.5" />
                             </button>
@@ -204,7 +209,7 @@ export default function PostHistoryPage() {
                                     setPlatformFilter(e.target.value);
                                     setPage(1);
                                 }}
-                                className="px-3.5 py-2 rounded-xl text-xs font-bold bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100 focus:outline-none focus:border-purple-400 transition-colors cursor-pointer"
+                                className="px-3.5 py-2 rounded-xl text-xs font-bold bg-[var(--surface-elevated)] border border-[var(--border-color)] text-[var(--foreground-muted)] hover:bg-[var(--surface-elevated)] focus:outline-none focus:border-purple-400 transition-colors cursor-pointer"
                             >
                                 <option value="ALL">All Platforms</option>
                                 <option value="YOUTUBE">YouTube</option>
@@ -221,7 +226,7 @@ export default function PostHistoryPage() {
                                     setStatusFilter(e.target.value);
                                     setPage(1);
                                 }}
-                                className="px-3.5 py-2 rounded-xl text-xs font-bold bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100 focus:outline-none focus:border-purple-400 transition-colors cursor-pointer"
+                                className="px-3.5 py-2 rounded-xl text-xs font-bold bg-[var(--surface-elevated)] border border-[var(--border-color)] text-[var(--foreground-muted)] hover:bg-[var(--surface-elevated)] focus:outline-none focus:border-purple-400 transition-colors cursor-pointer"
                             >
                                 <option value="ALL">All Statuses</option>
                                 <option value="PUBLISHED">Published</option>
@@ -253,7 +258,7 @@ export default function PostHistoryPage() {
                 {isLoading ? (
                     <div className="flex flex-col gap-3">
                         {Array.from({ length: 4 }).map((_, i) => (
-                            <div key={i} className="bg-white rounded-2xl p-5 shadow-sm border border-purple-100 flex items-center gap-4 animate-pulse">
+                            <div key={i} className="bg-[var(--surface)] rounded-2xl p-5 shadow-sm border border-[var(--border-color)] flex items-center gap-4 animate-pulse">
                                 <Skeleton height="h-16" width="w-20" rounded="lg" />
                                 <div className="flex-1 space-y-2">
                                     <Skeleton height="h-4" width="w-3/4" />
@@ -265,7 +270,7 @@ export default function PostHistoryPage() {
                     </div>
                 ) : posts.length === 0 ? (
                     <div
-                        className="flex flex-col items-center justify-center flex-1 rounded-2xl bg-white py-16 px-4 text-center border border-purple-100/80 shadow-sm"
+                        className="flex flex-col items-center justify-center flex-1 rounded-2xl bg-[var(--surface)] py-16 px-4 text-center border border-[var(--border-color)]/80 shadow-sm"
                     >
                         <div
                             className="flex h-16 w-16 items-center justify-center rounded-2xl mb-4"
@@ -273,12 +278,12 @@ export default function PostHistoryPage() {
                         >
                             <Film className="h-8 w-8 text-white" />
                         </div>
-                        <h2 className="text-lg font-black text-gray-900 mb-1">
+                        <h2 className="text-lg font-black text-[var(--foreground-color)] mb-1">
                             {search || statusFilter !== "ALL" || platformFilter !== "ALL"
                                 ? "No matching posts found"
                                 : "No published posts yet"}
                         </h2>
-                        <p className="text-xs text-gray-500 max-w-sm mb-5 leading-relaxed">
+                        <p className="text-xs text-[var(--foreground-muted)] max-w-sm mb-5 leading-relaxed">
                             {search || statusFilter !== "ALL" || platformFilter !== "ALL"
                                 ? "Try adjusting your search query or reset your filters to view all posts."
                                 : "Your post history and real-time delivery logs will appear here once you publish content across your channels."}
@@ -306,14 +311,14 @@ export default function PostHistoryPage() {
                             return (
                                 <div
                                     key={post.id}
-                                    className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-purple-100/80 hover:shadow-md transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 group"
+                                    className="bg-[var(--surface)] rounded-2xl p-4 sm:p-5 shadow-sm border border-[var(--border-color)]/80 hover:shadow-none transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 group"
                                 >
                                     {/* Left: Thumbnail + Title + Meta */}
                                     <div className="flex items-start gap-3.5 flex-1 min-w-0">
                                         {/* Media thumbnail container */}
                                         <div
                                             onClick={() => setSelectedPost(post)}
-                                            className="relative h-16 w-20 sm:h-20 sm:w-24 rounded-xl overflow-hidden bg-gray-900 shrink-0 border border-gray-200 cursor-pointer group-hover:ring-2 group-hover:ring-purple-400 transition-all flex items-center justify-center"
+                                            className="relative h-16 w-20 sm:h-20 sm:w-24 rounded-xl overflow-hidden bg-gray-900 shrink-0 border border-[var(--border-color)] cursor-pointer group-hover:ring-2 group-hover:ring-purple-400 transition-all flex items-center justify-center"
                                         >
                                             {post.media_url ? (
                                                 post.media_type === "VIDEO" ? (
@@ -332,7 +337,7 @@ export default function PostHistoryPage() {
                                                     />
                                                 )
                                             ) : (
-                                                <Film className="h-6 w-6 text-gray-500" />
+                                                <Film className="h-6 w-6 text-[var(--foreground-muted)]" />
                                             )}
 
                                             <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -349,23 +354,23 @@ export default function PostHistoryPage() {
                                             <div className="flex items-center gap-2 flex-wrap mb-1">
                                                 <h3
                                                     onClick={() => setSelectedPost(post)}
-                                                    className="font-black text-sm sm:text-base text-gray-900 truncate hover:text-purple-600 transition-colors cursor-pointer"
+                                                    className="font-black text-sm sm:text-base text-[var(--foreground-color)] truncate hover:text-purple-600 transition-colors cursor-pointer"
                                                 >
                                                     {post.ai_title || post.raw_caption || "Untitled Post"}
                                                 </h3>
                                             </div>
 
-                                            <p className="text-xs text-gray-500 line-clamp-1 mb-2">
+                                            <p className="text-xs text-[var(--foreground-muted)] line-clamp-1 mb-2">
                                                 {post.raw_caption || "No extra description provided."}
                                             </p>
 
-                                            <div className="flex items-center gap-3 text-[11px] text-gray-400">
+                                            <div className="flex items-center gap-3 text-[11px] text-[var(--foreground-muted)]">
                                                 <span className="flex items-center gap-1 font-medium">
                                                     <Calendar className="h-3 w-3" />
                                                     {formattedDate}
                                                 </span>
                                                 <span>•</span>
-                                                <span className="font-semibold text-gray-600">
+                                                <span className="font-semibold text-[var(--foreground-muted)]">
                                                     {post.targets?.length || 0} {post.targets?.length === 1 ? "Target" : "Targets"}
                                                 </span>
                                             </div>
@@ -373,7 +378,7 @@ export default function PostHistoryPage() {
                                     </div>
 
                                     {/* Middle: Platform delivery badges */}
-                                    <div className="flex flex-wrap items-center gap-2 shrink-0 py-2 border-t border-gray-100 md:border-0">
+                                    <div className="flex flex-wrap items-center gap-2 shrink-0 py-2 border-t border-[var(--border-color)] md:border-0">
                                         {post.targets?.map((target) => (
                                             <PlatformStatusBadge
                                                 key={target.id}
@@ -390,7 +395,7 @@ export default function PostHistoryPage() {
                                     <div className="flex items-center gap-1.5 shrink-0 self-end md:self-auto">
                                         <button
                                             onClick={() => setSelectedPost(post)}
-                                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-gray-700 bg-gray-50 hover:bg-purple-50 hover:text-purple-600 border border-gray-200 transition-colors"
+                                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-[var(--foreground-muted)] bg-[var(--surface-elevated)] hover:bg-[var(--surface-elevated)] hover:text-purple-600 border border-[var(--border-color)] transition-colors"
                                             title="View Details"
                                         >
                                             <Eye className="h-3.5 w-3.5" />
@@ -399,7 +404,7 @@ export default function PostHistoryPage() {
 
                                         <button
                                             onClick={() => handleCopyCaption(post)}
-                                            className="p-1.5 rounded-xl text-gray-400 hover:text-purple-600 hover:bg-purple-50 transition-colors border border-transparent hover:border-purple-100"
+                                            className="p-1.5 rounded-xl text-[var(--foreground-muted)] hover:text-purple-600 hover:bg-[var(--surface-elevated)] transition-colors border border-transparent hover:border-[var(--border-color)]"
                                             title="Copy Caption"
                                         >
                                             {copiedPostId === post.id ? (
@@ -411,7 +416,7 @@ export default function PostHistoryPage() {
 
                                         <button
                                             onClick={() => handleDelete(post.id)}
-                                            className="p-1.5 rounded-xl text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors border border-transparent hover:border-red-100"
+                                            className="p-1.5 rounded-xl text-[var(--foreground-muted)] hover:text-red-600 hover:bg-red-50 transition-colors border border-transparent hover:border-red-100"
                                             title="Delete Post"
                                         >
                                             <Trash2 className="h-4 w-4" />
@@ -424,14 +429,14 @@ export default function PostHistoryPage() {
                         {/* Pagination Bar */}
                         {pagination && pagination.totalPages > 1 && (
                             <div className="flex items-center justify-between pt-4 pb-2 px-2">
-                                <p className="text-xs font-bold text-gray-500">
-                                    Showing page <span className="text-gray-900">{pagination.page}</span> of {pagination.totalPages} ({pagination.total} posts)
+                                <p className="text-xs font-bold text-[var(--foreground-muted)]">
+                                    Showing page <span className="text-[var(--foreground-color)]">{pagination.page}</span> of {pagination.totalPages} ({pagination.total} posts)
                                 </p>
                                 <div className="flex items-center gap-2">
                                     <button
                                         onClick={() => setPage((p) => Math.max(1, p - 1))}
                                         disabled={page === 1}
-                                        className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-gray-200 text-gray-700 disabled:opacity-40 hover:bg-gray-50 transition-colors"
+                                        className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold bg-[var(--surface)] border border-[var(--border-color)] text-[var(--foreground-muted)] disabled:opacity-40 hover:bg-[var(--surface-elevated)] transition-colors"
                                     >
                                         <ChevronLeft className="h-3.5 w-3.5" />
                                         <span>Prev</span>
@@ -439,7 +444,7 @@ export default function PostHistoryPage() {
                                     <button
                                         onClick={() => setPage((p) => Math.min(pagination.totalPages, p + 1))}
                                         disabled={!pagination.hasMore}
-                                        className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-gray-200 text-gray-700 disabled:opacity-40 hover:bg-gray-50 transition-colors"
+                                        className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold bg-[var(--surface)] border border-[var(--border-color)] text-[var(--foreground-muted)] disabled:opacity-40 hover:bg-[var(--surface-elevated)] transition-colors"
                                     >
                                         <span>Next</span>
                                         <ChevronRight className="h-3.5 w-3.5" />
@@ -563,22 +568,22 @@ function PostDetailsModal({
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-            <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-purple-100 flex flex-col">
+            <div className="bg-[var(--surface)] rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-[var(--border-color)] flex flex-col">
                 {/* Modal Header */}
-                <div className="flex items-center justify-between p-5 sm:p-6 border-b border-gray-100 sticky top-0 bg-white/95 backdrop-blur-sm z-10">
+                <div className="flex items-center justify-between p-5 sm:p-6 border-b border-[var(--border-color)] sticky top-0 bg-[var(--surface)]/95 backdrop-blur-sm z-10">
                     <div className="flex items-center gap-2.5">
                         <div className="h-9 w-9 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold">
                             <Eye className="h-4 w-4" />
                         </div>
                         <div>
-                            <h2 className="font-black text-lg text-gray-900">Post Inspection</h2>
-                            <p className="text-xs text-gray-400">Created on {formattedDate}</p>
+                            <h2 className="font-black text-lg text-[var(--foreground-color)]">Post Inspection</h2>
+                            <p className="text-xs text-[var(--foreground-muted)]">Created on {formattedDate}</p>
                         </div>
                     </div>
 
                     <button
                         onClick={onClose}
-                        className="h-8 w-8 rounded-xl text-gray-400 hover:text-gray-600 hover:bg-gray-100 flex items-center justify-center transition-colors"
+                        className="h-8 w-8 rounded-xl text-[var(--foreground-muted)] hover:text-[var(--foreground-muted)] hover:bg-[var(--surface-elevated)] flex items-center justify-center transition-colors"
                     >
                         <X className="h-5 w-5" />
                     </button>
@@ -589,8 +594,8 @@ function PostDetailsModal({
                     {/* Media preview section */}
                     {post.media_url && (
                         <div>
-                            <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Media Asset</p>
-                            <div className="relative rounded-2xl overflow-hidden bg-black max-h-64 flex items-center justify-center border border-gray-200">
+                            <p className="text-xs font-bold text-[var(--foreground-muted)] uppercase tracking-wider mb-2">Media Asset</p>
+                            <div className="relative rounded-2xl overflow-hidden bg-black max-h-64 flex items-center justify-center border border-[var(--border-color)]">
                                 {post.media_type === "VIDEO" ? (
                                     <video
                                         src={post.media_url}
@@ -611,16 +616,16 @@ function PostDetailsModal({
 
                     {/* Title & Caption */}
                     <div>
-                        <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Content Details</p>
-                        <div className="bg-gray-50 rounded-2xl p-4 border border-gray-200 space-y-3">
+                        <p className="text-xs font-bold text-[var(--foreground-muted)] uppercase tracking-wider mb-2">Content Details</p>
+                        <div className="bg-[var(--surface-elevated)] rounded-2xl p-4 border border-[var(--border-color)] space-y-3">
                             <div>
                                 <span className="text-[10px] font-bold text-purple-600 uppercase">Title</span>
-                                <p className="font-bold text-sm text-gray-900 mt-0.5">{post.ai_title || "—"}</p>
+                                <p className="font-bold text-sm text-[var(--foreground-color)] mt-0.5">{post.ai_title || "—"}</p>
                             </div>
                             {post.raw_caption && (
                                 <div>
                                     <span className="text-[10px] font-bold text-purple-600 uppercase">Caption / Description</span>
-                                    <p className="text-xs text-gray-700 whitespace-pre-wrap mt-0.5 leading-relaxed">{post.raw_caption}</p>
+                                    <p className="text-xs text-[var(--foreground-muted)] whitespace-pre-wrap mt-0.5 leading-relaxed">{post.raw_caption}</p>
                                 </div>
                             )}
                         </div>
@@ -628,7 +633,7 @@ function PostDetailsModal({
 
                     {/* Platform Target Statuses */}
                     <div>
-                        <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Platform Delivery Statuses</p>
+                        <p className="text-xs font-bold text-[var(--foreground-muted)] uppercase tracking-wider mb-2">Platform Delivery Statuses</p>
                         <div className="space-y-3">
                             {post.targets?.map((target) => {
                                 const isPublished = target.publish_status === "PUBLISHED";
@@ -650,7 +655,7 @@ function PostDetailsModal({
                                                 {target.platform === "YOUTUBE" && <YoutubeIcon className="h-4 w-4 text-red-600" />}
                                                 {target.platform === "INSTAGRAM" && <InstagramIcon className="h-4 w-4 text-pink-600" />}
                                                 {target.platform === "LINKEDIN" && <LinkedinIcon className="h-4 w-4 text-blue-600" />}
-                                                <span className="font-black text-sm text-gray-900">{target.platform}</span>
+                                                <span className="font-black text-sm text-[var(--foreground-color)]">{target.platform}</span>
                                             </div>
 
                                             <span
@@ -716,7 +721,7 @@ function PostDetailsModal({
                 </div>
 
                 {/* Modal Footer */}
-                <div className="p-4 sm:p-5 border-t border-gray-100 bg-gray-50 flex items-center justify-between rounded-b-3xl">
+                <div className="p-4 sm:p-5 border-t border-[var(--border-color)] bg-[var(--surface-elevated)] flex items-center justify-between rounded-b-3xl">
                     <button
                         onClick={() => onDeletePost(post.id)}
                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-red-600 hover:bg-red-100/50 transition-colors"
@@ -727,7 +732,7 @@ function PostDetailsModal({
 
                     <button
                         onClick={onClose}
-                        className="px-4 py-2 rounded-xl text-xs font-bold text-gray-700 bg-white border border-gray-200 hover:bg-gray-100 transition-colors"
+                        className="px-4 py-2 rounded-xl text-xs font-bold text-[var(--foreground-muted)] bg-[var(--surface)] border border-[var(--border-color)] hover:bg-[var(--surface-elevated)] transition-colors"
                     >
                         Close
                     </button>
@@ -736,3 +741,6 @@ function PostDetailsModal({
         </div>
     );
 }
+
+
+

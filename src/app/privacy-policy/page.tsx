@@ -15,16 +15,23 @@ const APP_URL = "https://crosspost-ai-teal.vercel.app";
 
 export default function PrivacyPolicyPage() {
   return (
-    <div style={{ margin: 0, padding: 0, backgroundColor: "#ffffff", color: "#1a1a1a", fontFamily: "Georgia, serif", lineHeight: "1.7" }}>
-      <nav style={{ backgroundColor: "#0f0f23", padding: "16px 40px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Link href="/" style={{ color: "#ffffff", textDecoration: "none", fontWeight: "bold", fontSize: "18px", fontFamily: "Arial, sans-serif" }}>
-          CrossPost AI
-        </Link>
-        <div style={{ display: "flex", gap: "24px" }}>
-          <Link href="/terms" style={{ color: "#a0a0c0", textDecoration: "none", fontFamily: "Arial, sans-serif", fontSize: "14px" }}>Terms of Service</Link>
-          <Link href="/login" style={{ color: "#ffffff", textDecoration: "none", backgroundColor: "#6c63ff", padding: "8px 16px", borderRadius: "6px", fontFamily: "Arial, sans-serif", fontSize: "14px" }}>Go to App</Link>
+    <div style={{ margin: 0, padding: 0, backgroundColor: "#ffffff", color: "#111827", fontFamily: "Georgia, serif", lineHeight: "1.7" }}>
+      {/* Sticky white navbar matching landing page */}
+      <nav style={{ position: "sticky", top: 0, zIndex: 100, backgroundColor: "rgba(255,255,255,0.95)", backdropFilter: "blur(20px)", borderBottom: "1px solid #f3f4f6", boxShadow: "0 1px 12px rgba(0,0,0,0.06)", padding: "0 clamp(16px,4vw,40px)" }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", height: 64 }}>
+          <Link href="/" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
+            <span style={{ fontSize: 17, fontWeight: 900, background: "linear-gradient(135deg,#6c63ff,#a78bfa)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", letterSpacing: "-0.03em", fontFamily: "Arial, sans-serif" }}>
+              CrossPost AI
+            </span>
+          </Link>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <Link href="/terms" style={{ color: "#6b7280", textDecoration: "none", fontFamily: "Arial, sans-serif", fontSize: "14px", fontWeight: 500 }}>Terms of Service</Link>
+            <Link href="/" style={{ color: "#6b7280", textDecoration: "none", fontFamily: "Arial, sans-serif", fontSize: "14px", fontWeight: 500 }}>Home</Link>
+            <Link href="/login" style={{ color: "#ffffff", textDecoration: "none", backgroundColor: "#6c63ff", padding: "9px 20px", borderRadius: "10px", fontFamily: "Arial, sans-serif", fontSize: "14px", fontWeight: 700, boxShadow: "0 4px 14px rgba(108,99,255,.35)" }}>Go to App</Link>
+          </div>
         </div>
       </nav>
+
       <main style={{ maxWidth: "860px", margin: "0 auto", padding: "40px 32px 80px" }}>
         <h1 style={{ fontSize: "36px", fontWeight: "bold", color: "#0f0f23", marginBottom: "8px", fontFamily: "Arial, sans-serif" }}>Privacy Policy</h1>
         <p style={{ color: "#666", marginBottom: "32px", fontFamily: "Arial, sans-serif", fontSize: "14px" }}>

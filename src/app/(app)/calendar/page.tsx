@@ -79,18 +79,18 @@ export default function ContentCalendarPage() {
     const monthName = currentDate.toLocaleDateString("en-US", { month: "long", year: "numeric" });
 
     return (
-        <div className="flex flex-col flex-1 min-h-0 p-4 sm:p-6 lg:p-8" style={{ background: "#F5F3FF" }}>
+        <div className="flex flex-col flex-1 min-h-0 p-4 sm:p-6 lg:p-8" style={{ background: "var(--background)" }}>
             {/* ── Top Header ────────────────────────────────────────────── */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
                 <div>
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-100/80 text-purple-700 text-xs font-bold mb-2">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold mb-2" style={{ background: "rgba(236,72,153,0.12)", border: "1px solid rgba(236,72,153,0.25)", color: "#f472b6" }}>
                         <CalendarDays className="h-3.5 w-3.5" />
                         <span>CONTENT SCHEDULER & PIPELINE</span>
                     </div>
-                    <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+                    <h1 className="text-2xl sm:text-3xl font-black text-[var(--foreground-color)] tracking-tight">
                         Content <span style={{ color: "#6C5CE7" }}>Calendar</span>
                     </h1>
-                    <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                    <p className="text-xs sm:text-sm text-[var(--foreground-muted)] mt-1">
                         Plan, schedule, and automate multi-channel publishing with platform-specific timing.
                     </p>
                 </div>
@@ -98,15 +98,16 @@ export default function ContentCalendarPage() {
                 {/* Top Actions */}
                 <div className="flex items-center gap-2.5 self-start sm:self-auto flex-wrap">
                     {/* View Mode Toggle */}
-                    <div className="flex items-center bg-white p-1 rounded-xl border border-purple-100 shadow-sm">
+                    <div className="flex items-center bg-[var(--surface)] p-1 rounded-xl border border-[var(--border-color)] shadow-sm">
                         <button
                             onClick={() => setViewMode("MONTH")}
                             className={cn(
                                 "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all",
                                 viewMode === "MONTH"
-                                    ? "bg-purple-600 text-white shadow-sm"
-                                    : "text-gray-500 hover:text-gray-900"
+                                    ? "text-white shadow-sm"
+                                    : "text-[var(--foreground-muted)] hover:text-[var(--foreground-color)]"
                             )}
+                            style={viewMode === "MONTH" ? { background: "linear-gradient(135deg, #6C5CE7, #a29bfe)" } : {}}
                         >
                             <LayoutGrid className="h-3.5 w-3.5" />
                             <span>Month</span>
@@ -116,9 +117,10 @@ export default function ContentCalendarPage() {
                             className={cn(
                                 "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all",
                                 viewMode === "WEEK"
-                                    ? "bg-purple-600 text-white shadow-sm"
-                                    : "text-gray-500 hover:text-gray-900"
+                                    ? "text-white shadow-sm"
+                                    : "text-[var(--foreground-muted)] hover:text-[var(--foreground-color)]"
                             )}
+                            style={viewMode === "WEEK" ? { background: "linear-gradient(135deg, #6C5CE7, #a29bfe)" } : {}}
                         >
                             <CalendarIcon className="h-3.5 w-3.5" />
                             <span>Week</span>
@@ -143,30 +145,30 @@ export default function ContentCalendarPage() {
             {/* ── Main Layout: Calendar + Upcoming Sidebar ──────────────── */}
             <div className="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-6 flex-1 min-h-0">
                 {/* Left: Main Calendar View */}
-                <div className="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-purple-100 flex flex-col min-h-0">
+                <div className="bg-[var(--surface)] rounded-3xl p-5 sm:p-6 shadow-sm border border-[var(--border-color)] flex flex-col min-h-0">
                     {/* Calendar Control Bar */}
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-5 border-b border-gray-100">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-5 border-b border-[var(--border-color)]">
                         {/* Month/Week Label + Navigation */}
                         <div className="flex items-center gap-2">
-                            <h2 className="text-lg sm:text-xl font-black text-gray-900 mr-2 min-w-[170px]">
+                            <h2 className="text-lg sm:text-xl font-black text-[var(--foreground-color)] mr-2 min-w-[170px]">
                                 {monthName}
                             </h2>
                             <div className="flex items-center gap-1">
                                 <button
                                     onClick={handlePrev}
-                                    className="h-8 w-8 rounded-xl border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors"
+                                    className="h-8 w-8 rounded-xl border border-[var(--border-color)] flex items-center justify-center text-[var(--foreground-muted)] hover:bg-[var(--surface-elevated)] transition-colors"
                                 >
                                     <ChevronLeft className="h-4 w-4" />
                                 </button>
                                 <button
                                     onClick={handleToday}
-                                    className="px-3 py-1.5 rounded-xl border border-gray-200 text-xs font-bold text-gray-700 hover:bg-gray-50 transition-colors"
+                                    className="px-3 py-1.5 rounded-xl border border-[var(--border-color)] text-xs font-bold text-[var(--foreground-muted)] hover:bg-[var(--surface-elevated)] transition-colors"
                                 >
                                     Today
                                 </button>
                                 <button
                                     onClick={handleNext}
-                                    className="h-8 w-8 rounded-xl border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors"
+                                    className="h-8 w-8 rounded-xl border border-[var(--border-color)] flex items-center justify-center text-[var(--foreground-muted)] hover:bg-[var(--surface-elevated)] transition-colors"
                                 >
                                     <ChevronRight className="h-4 w-4" />
                                 </button>
@@ -175,12 +177,12 @@ export default function ContentCalendarPage() {
 
                         {/* Platform Filter */}
                         <div className="flex items-center gap-2 self-start sm:self-auto">
-                            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gray-50 border border-gray-200 text-xs font-bold text-gray-700">
-                                <Filter className="h-3.5 w-3.5 text-gray-400" />
+                            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border-color)] text-xs font-bold text-[var(--foreground-muted)]">
+                                <Filter className="h-3.5 w-3.5 text-[var(--foreground-muted)]" />
                                 <select
                                     value={platformFilter}
                                     onChange={(e) => setPlatformFilter(e.target.value)}
-                                    className="bg-transparent text-xs font-bold text-gray-700 outline-none cursor-pointer"
+                                    className="bg-transparent text-xs font-bold text-[var(--foreground-muted)] outline-none cursor-pointer"
                                 >
                                     <option value="ALL">All Platforms</option>
                                     <option value="YOUTUBE">YouTube</option>
@@ -214,11 +216,11 @@ export default function ContentCalendarPage() {
                 {/* Right: Upcoming Posts Sidebar */}
                 <div className="flex flex-col gap-4">
                     {/* Upcoming header card */}
-                    <div className="bg-white rounded-3xl p-5 shadow-sm border border-purple-100 flex flex-col flex-1">
+                    <div className="bg-[var(--surface)] rounded-3xl p-5 shadow-sm border border-[var(--border-color)] flex flex-col flex-1">
                         <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-2">
                                 <Clock className="h-4 w-4 text-purple-600" />
-                                <h3 className="font-black text-sm text-gray-900">Upcoming Posts</h3>
+                                <h3 className="font-black text-sm text-[var(--foreground-color)]">Upcoming Posts</h3>
                             </div>
                             <span className="px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 text-[10px] font-bold">
                                 {upcoming.length} Scheduled
@@ -228,22 +230,26 @@ export default function ContentCalendarPage() {
                         {isUpcomingLoading ? (
                             <div className="space-y-3">
                                 {Array.from({ length: 3 }).map((_, i) => (
-                                    <div key={i} className="p-3 rounded-2xl bg-gray-50 animate-pulse space-y-2">
+                                    <div key={i} className="p-3 rounded-2xl bg-[var(--surface-elevated)] animate-pulse space-y-2">
                                         <Skeleton height="h-4" width="w-3/4" />
                                         <Skeleton height="h-3" width="w-1/2" />
                                     </div>
                                 ))}
                             </div>
                         ) : upcoming.length === 0 ? (
-                            <div className="flex-1 flex flex-col items-center justify-center text-center p-6 bg-purple-50/40 rounded-2xl border border-purple-100/50">
+                            <div className="flex-1 flex flex-col items-center justify-center text-center p-6 bg-[var(--surface-elevated)]/40 rounded-2xl border border-[var(--border-color)]/50">
                                 <Clock className="h-8 w-8 text-purple-300 mb-2" />
-                                <p className="text-xs font-bold text-gray-700">No upcoming posts</p>
-                                <p className="text-[10px] text-gray-400 mt-1 max-w-[180px]">
+                                <p className="text-xs font-bold text-[var(--foreground-muted)]">No upcoming posts</p>
+                                <p className="text-[10px] text-[var(--foreground-muted)] mt-1 max-w-[180px]">
                                     Pick a date on the calendar to schedule your next video release.
                                 </p>
                                 <button
                                     onClick={() => openScheduleForDate(new Date())}
-                                    className="mt-3 px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-[10px] font-bold transition-colors"
+                                    className="mt-3 px-3 py-1.5 rounded-xl text-white text-[10px] font-bold transition-all hover:scale-[1.02] active:scale-95"
+                                    style={{
+                                        background: "linear-gradient(135deg, #6C5CE7, #a29bfe)",
+                                        boxShadow: "0 4px 10px rgba(108,92,231,0.35)",
+                                    }}
                                 >
                                     Schedule Now +
                                 </button>
@@ -263,7 +269,7 @@ export default function ContentCalendarPage() {
                                                 const matched = events.find((ev) => ev.postId === post.id);
                                                 if (matched) setSelectedEvent(matched);
                                             }}
-                                            className="p-3.5 rounded-2xl bg-gray-50 hover:bg-purple-50/70 border border-gray-200/70 hover:border-purple-200 transition-all cursor-pointer group"
+                                            className="p-3.5 rounded-2xl bg-[var(--surface-elevated)] hover:bg-[var(--surface-elevated)]/70 border border-[var(--border-color)]/70 hover:border-purple-200 transition-all cursor-pointer group"
                                         >
                                             <div className="flex items-start gap-2.5">
                                                 <div className="h-11 w-11 rounded-xl bg-gray-900 shrink-0 overflow-hidden relative flex items-center justify-center">
@@ -278,7 +284,7 @@ export default function ContentCalendarPage() {
                                                 </div>
 
                                                 <div className="flex-1 min-w-0">
-                                                    <p className="text-xs font-black text-gray-900 truncate group-hover:text-purple-600 transition-colors">
+                                                    <p className="text-xs font-black text-[var(--foreground-color)] truncate group-hover:text-purple-600 transition-colors">
                                                         {post.title}
                                                     </p>
 
@@ -289,7 +295,7 @@ export default function ContentCalendarPage() {
 
                                                     <div className="flex items-center gap-1 mt-1.5">
                                                         {post.targets?.map((t) => (
-                                                            <span key={t.id} className="p-0.5 rounded bg-white border border-gray-200 shadow-2xs">
+                                                            <span key={t.id} className="p-0.5 rounded bg-[var(--surface)] border border-[var(--border-color)] shadow-2xs">
                                                                 {t.platform === "YOUTUBE" && <YoutubeIcon className="h-3 w-3 text-red-600" />}
                                                                 {t.platform === "INSTAGRAM" && <InstagramIcon className="h-3 w-3 text-pink-600" />}
                                                                 {t.platform === "LINKEDIN" && <LinkedinIcon className="h-3 w-3 text-blue-600" />}
@@ -401,7 +407,7 @@ function MonthGridView({
     return (
         <div className="flex flex-col h-full">
             {/* Weekday headers */}
-            <div className="grid grid-cols-7 border-b border-gray-100 pb-2 text-center text-[11px] font-black text-gray-400 uppercase tracking-wider">
+            <div className="grid grid-cols-7 border-b border-[var(--border-color)] pb-2 text-center text-[11px] font-black text-[var(--foreground-muted)] uppercase tracking-wider">
                 <div>Sun</div>
                 <div>Mon</div>
                 <div>Tue</div>
@@ -431,9 +437,9 @@ function MonthGridView({
                                 "group rounded-2xl p-1.5 sm:p-2 border flex flex-col justify-between transition-all min-h-[90px] relative cursor-pointer",
                                 isCurrentMonth
                                     ? isToday
-                                        ? "bg-purple-50/70 border-purple-300 shadow-sm"
-                                        : "bg-white border-gray-100 hover:border-purple-200 hover:shadow-xs"
-                                    : "bg-gray-50/50 border-transparent opacity-40"
+                                        ? "bg-[var(--surface-elevated)]/70 border-purple-300 shadow-sm"
+                                        : "bg-[var(--surface)] border-[var(--border-color)] hover:border-pink-400/30"
+                                    : "bg-[var(--surface-elevated)]/50 border-transparent opacity-40"
                             )}
                         >
                             {/* Date number + Quick Add Button */}
@@ -441,7 +447,7 @@ function MonthGridView({
                                 <span
                                     className={cn(
                                         "h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold",
-                                        isToday ? "bg-purple-600 text-white" : isCurrentMonth ? "text-gray-800" : "text-gray-400"
+                                        isToday ? "bg-purple-600 text-white" : isCurrentMonth ? "text-[var(--foreground-color)]" : "text-[var(--foreground-muted)]"
                                     )}
                                 >
                                     {date.getDate()}
@@ -494,7 +500,7 @@ function MonthGridView({
                                 })}
 
                                 {dayEvents.length > 2 && (
-                                    <span className="text-[9px] font-bold text-gray-400 pl-1">
+                                    <span className="text-[9px] font-bold text-[var(--foreground-muted)] pl-1">
                                         +{dayEvents.length - 2} more
                                     </span>
                                 )}
@@ -544,16 +550,16 @@ function WeekGridView({
                         key={idx}
                         className={cn(
                             "rounded-2xl p-3 border flex flex-col justify-between transition-all min-h-[160px]",
-                            isToday ? "bg-purple-50/70 border-purple-300 shadow-sm" : "bg-white border-gray-100"
+                            isToday ? "bg-[var(--surface-elevated)]/70 border-purple-300 shadow-sm" : "bg-[var(--surface)] border-[var(--border-color)]"
                         )}
                     >
                         {/* Day Header */}
-                        <div className="flex items-center justify-between border-b border-gray-100 pb-2 mb-2">
+                        <div className="flex items-center justify-between border-b border-[var(--border-color)] pb-2 mb-2">
                             <div>
-                                <p className="text-[10px] font-bold text-gray-400 uppercase">
+                                <p className="text-[10px] font-bold text-[var(--foreground-muted)] uppercase">
                                     {date.toLocaleDateString("en-US", { weekday: "short" })}
                                 </p>
-                                <p className="text-base font-black text-gray-900 mt-0.5">
+                                <p className="text-base font-black text-[var(--foreground-color)] mt-0.5">
                                     {date.getDate()}
                                 </p>
                             </div>
@@ -568,15 +574,15 @@ function WeekGridView({
                         {/* Events list for day */}
                         <div className="space-y-2 flex-1 overflow-y-auto max-h-72">
                             {dayEvents.length === 0 ? (
-                                <p className="text-[10px] text-gray-400 text-center py-4 font-medium">No posts</p>
+                                <p className="text-[10px] text-[var(--foreground-muted)] text-center py-4 font-medium">No posts</p>
                             ) : (
                                 dayEvents.map((ev) => (
                                     <div
                                         key={ev.id}
                                         onClick={() => onSelectEvent(ev)}
-                                        className="p-2.5 rounded-xl bg-gray-50 hover:bg-purple-100/60 border border-gray-200/80 transition-all cursor-pointer group space-y-1.5"
+                                        className="p-2.5 rounded-xl bg-[var(--surface-elevated)] hover:bg-purple-100/60 border border-[var(--border-color)]/80 transition-all cursor-pointer group space-y-1.5"
                                     >
-                                        <p className="text-xs font-black text-gray-900 line-clamp-1 group-hover:text-purple-700">
+                                        <p className="text-xs font-black text-[var(--foreground-color)] line-clamp-1 group-hover:text-purple-700">
                                             {ev.title}
                                         </p>
                                         <div className="flex items-center justify-between">
@@ -716,19 +722,19 @@ function SchedulePostModal({
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-            <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-purple-100 flex flex-col">
+            <div className="bg-[var(--surface)] rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-[var(--border-color)] flex flex-col">
                 {/* Header */}
-                <div className="flex items-center justify-between p-5 sm:p-6 border-b border-gray-100 sticky top-0 bg-white/95 backdrop-blur-sm z-10">
+                <div className="flex items-center justify-between p-5 sm:p-6 border-b border-[var(--border-color)] sticky top-0 bg-[var(--surface)]/95 backdrop-blur-sm z-10">
                     <div className="flex items-center gap-2.5">
                         <div className="h-9 w-9 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold">
                             <Plus className="h-4 w-4" />
                         </div>
                         <div>
-                            <h2 className="font-black text-lg text-gray-900">Schedule New Post</h2>
-                            <p className="text-xs text-gray-400">Plan multi-channel delivery in advance</p>
+                            <h2 className="font-black text-lg text-[var(--foreground-color)]">Schedule New Post</h2>
+                            <p className="text-xs text-[var(--foreground-muted)]">Plan multi-channel delivery in advance</p>
                         </div>
                     </div>
-                    <button onClick={onClose} className="h-8 w-8 rounded-xl text-gray-400 hover:text-gray-600 hover:bg-gray-100 flex items-center justify-center">
+                    <button onClick={onClose} className="h-8 w-8 rounded-xl text-[var(--foreground-muted)] hover:text-[var(--foreground-muted)] hover:bg-[var(--surface-elevated)] flex items-center justify-center">
                         <X className="h-5 w-5" />
                     </button>
                 </div>
@@ -737,11 +743,11 @@ function SchedulePostModal({
                 <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-5 flex-1">
                     {/* 1. Select Media from Library */}
                     <div>
-                        <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+                        <label className="block text-xs font-bold text-[var(--foreground-muted)] uppercase tracking-wider mb-2">
                             1. Select Media Asset from Library / Past Posts
                         </label>
                         {libraryPosts.length > 0 ? (
-                            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5 max-h-36 overflow-y-auto p-1 border border-gray-200 rounded-2xl">
+                            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5 max-h-36 overflow-y-auto p-1 border border-[var(--border-color)] rounded-2xl">
                                 {libraryPosts.map((item) => (
                                     <div
                                         key={item.id}
@@ -750,7 +756,7 @@ function SchedulePostModal({
                                             "relative rounded-xl overflow-hidden aspect-video bg-gray-900 border cursor-pointer transition-all flex items-center justify-center",
                                             selectedLibraryId === item.id
                                                 ? "ring-2 ring-purple-600 border-transparent shadow-sm scale-95"
-                                                : "border-gray-200 hover:opacity-80"
+                                                : "border-[var(--border-color)] hover:opacity-80"
                                         )}
                                     >
                                         {item.media_url ? (
@@ -786,14 +792,14 @@ function SchedulePostModal({
                                 setSelectedLibraryId("");
                             }}
                             placeholder="Or paste media URL (e.g. https://res.cloudinary.com/...)"
-                            className="mt-2 w-full px-3.5 py-2 rounded-xl text-xs bg-gray-50 border border-gray-200 focus:outline-none focus:border-purple-500 font-medium"
+                            className="mt-2 w-full px-3.5 py-2 rounded-xl text-xs bg-[var(--surface-elevated)] border border-[var(--border-color)] focus:outline-none focus:border-purple-500 font-medium"
                             required
                         />
                     </div>
 
                     {/* 2. Content Details */}
                     <div className="space-y-3">
-                        <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
+                        <label className="block text-xs font-bold text-[var(--foreground-muted)] uppercase tracking-wider">
                             2. Content Details
                         </label>
                         <input
@@ -801,7 +807,7 @@ function SchedulePostModal({
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                             placeholder="Post Title (e.g. 5 AI Tools You Must Know)"
-                            className="w-full px-3.5 py-2.5 rounded-xl text-xs font-bold bg-gray-50 border border-gray-200 focus:outline-none focus:border-purple-500"
+                            className="w-full px-3.5 py-2.5 rounded-xl text-xs font-bold bg-[var(--surface-elevated)] border border-[var(--border-color)] focus:outline-none focus:border-purple-500"
                             required
                         />
                         <textarea
@@ -809,13 +815,13 @@ function SchedulePostModal({
                             onChange={(e) => setCaption(e.target.value)}
                             placeholder="Write your post caption or description..."
                             rows={3}
-                            className="w-full px-3.5 py-2.5 rounded-xl text-xs font-medium bg-gray-50 border border-gray-200 focus:outline-none focus:border-purple-500"
+                            className="w-full px-3.5 py-2.5 rounded-xl text-xs font-medium bg-[var(--surface-elevated)] border border-[var(--border-color)] focus:outline-none focus:border-purple-500"
                         />
                     </div>
 
                     {/* 3. Platform Selection */}
                     <div>
-                        <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+                        <label className="block text-xs font-bold text-[var(--foreground-muted)] uppercase tracking-wider mb-2">
                             3. Select Publishing Channels
                         </label>
                         <div className="grid grid-cols-3 gap-3">
@@ -824,7 +830,7 @@ function SchedulePostModal({
                                 onClick={() => togglePlatform("YOUTUBE")}
                                 className={cn(
                                     "flex items-center justify-center gap-2 p-3 rounded-xl border text-xs font-bold transition-all",
-                                    selectedPlatforms.YOUTUBE ? "bg-red-50 border-red-300 text-red-700" : "bg-gray-50 border-gray-200 text-gray-400"
+                                    selectedPlatforms.YOUTUBE ? "bg-red-50 border-red-300 text-red-700" : "bg-[var(--surface-elevated)] border-[var(--border-color)] text-[var(--foreground-muted)]"
                                 )}
                             >
                                 <YoutubeIcon className="h-4 w-4" />
@@ -836,7 +842,7 @@ function SchedulePostModal({
                                 onClick={() => togglePlatform("INSTAGRAM")}
                                 className={cn(
                                     "flex items-center justify-center gap-2 p-3 rounded-xl border text-xs font-bold transition-all",
-                                    selectedPlatforms.INSTAGRAM ? "bg-pink-50 border-pink-300 text-pink-700" : "bg-gray-50 border-gray-200 text-gray-400"
+                                    selectedPlatforms.INSTAGRAM ? "bg-pink-50 border-pink-300 text-pink-700" : "bg-[var(--surface-elevated)] border-[var(--border-color)] text-[var(--foreground-muted)]"
                                 )}
                             >
                                 <InstagramIcon className="h-4 w-4" />
@@ -848,7 +854,7 @@ function SchedulePostModal({
                                 onClick={() => togglePlatform("LINKEDIN")}
                                 className={cn(
                                     "flex items-center justify-center gap-2 p-3 rounded-xl border text-xs font-bold transition-all",
-                                    selectedPlatforms.LINKEDIN ? "bg-blue-50 border-blue-300 text-blue-700" : "bg-gray-50 border-gray-200 text-gray-400"
+                                    selectedPlatforms.LINKEDIN ? "bg-blue-50 border-blue-300 text-blue-700" : "bg-[var(--surface-elevated)] border-[var(--border-color)] text-[var(--foreground-muted)]"
                                 )}
                             >
                                 <LinkedinIcon className="h-4 w-4" />
@@ -858,9 +864,9 @@ function SchedulePostModal({
                     </div>
 
                     {/* 4. Date + Time & Platform-Specific Scheduling */}
-                    <div className="p-4 rounded-2xl bg-purple-50/50 border border-purple-100 space-y-3">
+                    <div className="p-4 rounded-2xl bg-[var(--surface-elevated)]/50 border border-[var(--border-color)] space-y-3">
                         <div className="flex items-center justify-between">
-                            <label className="text-xs font-bold text-gray-800 uppercase tracking-wider">
+                            <label className="text-xs font-bold text-[var(--foreground-color)] uppercase tracking-wider">
                                 4. Date & Time
                             </label>
                             <label className="flex items-center gap-2 text-xs font-bold text-purple-700 cursor-pointer">
@@ -876,22 +882,22 @@ function SchedulePostModal({
 
                         <div className="grid grid-cols-2 gap-3">
                             <div>
-                                <span className="text-[10px] font-bold text-gray-500 uppercase">Publish Date</span>
+                                <span className="text-[10px] font-bold text-[var(--foreground-muted)] uppercase">Publish Date</span>
                                 <input
                                     type="date"
                                     value={scheduleDate}
                                     onChange={(e) => setScheduleDate(e.target.value)}
-                                    className="w-full px-3 py-2 rounded-xl text-xs font-bold bg-white border border-gray-200 focus:outline-none focus:border-purple-400 mt-1"
+                                    className="w-full px-3 py-2 rounded-xl text-xs font-bold bg-[var(--surface)] border border-[var(--border-color)] focus:outline-none focus:border-purple-400 mt-1"
                                     required
                                 />
                             </div>
                             <div>
-                                <span className="text-[10px] font-bold text-gray-500 uppercase">Global Time</span>
+                                <span className="text-[10px] font-bold text-[var(--foreground-muted)] uppercase">Global Time</span>
                                 <input
                                     type="time"
                                     value={scheduleTime}
                                     onChange={(e) => setScheduleTime(e.target.value)}
-                                    className="w-full px-3 py-2 rounded-xl text-xs font-bold bg-white border border-gray-200 focus:outline-none focus:border-purple-400 mt-1"
+                                    className="w-full px-3 py-2 rounded-xl text-xs font-bold bg-[var(--surface)] border border-[var(--border-color)] focus:outline-none focus:border-purple-400 mt-1"
                                     required
                                 />
                             </div>
@@ -899,38 +905,38 @@ function SchedulePostModal({
 
                         {/* Platform Specific Times */}
                         {isPlatformSpecificTiming && (
-                            <div className="pt-2 border-t border-purple-100/80 space-y-2">
+                            <div className="pt-2 border-t border-[var(--border-color)]/80 space-y-2">
                                 <p className="text-[10px] font-bold text-purple-700">Custom Channel Times:</p>
                                 {selectedPlatforms.YOUTUBE && (
                                     <div className="flex items-center justify-between gap-3 text-xs">
-                                        <span className="flex items-center gap-1.5 font-bold text-gray-700"><YoutubeIcon className="h-3.5 w-3.5 text-red-600" /> YouTube</span>
+                                        <span className="flex items-center gap-1.5 font-bold text-[var(--foreground-muted)]"><YoutubeIcon className="h-3.5 w-3.5 text-red-600" /> YouTube</span>
                                         <input
                                             type="time"
                                             value={platformTimes.YOUTUBE}
                                             onChange={(e) => setPlatformTimes({ ...platformTimes, YOUTUBE: e.target.value })}
-                                            className="px-2.5 py-1 rounded-lg text-xs font-bold bg-white border border-gray-200"
+                                            className="px-2.5 py-1 rounded-lg text-xs font-bold bg-[var(--surface)] border border-[var(--border-color)]"
                                         />
                                     </div>
                                 )}
                                 {selectedPlatforms.INSTAGRAM && (
                                     <div className="flex items-center justify-between gap-3 text-xs">
-                                        <span className="flex items-center gap-1.5 font-bold text-gray-700"><InstagramIcon className="h-3.5 w-3.5 text-pink-600" /> Instagram</span>
+                                        <span className="flex items-center gap-1.5 font-bold text-[var(--foreground-muted)]"><InstagramIcon className="h-3.5 w-3.5 text-pink-600" /> Instagram</span>
                                         <input
                                             type="time"
                                             value={platformTimes.INSTAGRAM}
                                             onChange={(e) => setPlatformTimes({ ...platformTimes, INSTAGRAM: e.target.value })}
-                                            className="px-2.5 py-1 rounded-lg text-xs font-bold bg-white border border-gray-200"
+                                            className="px-2.5 py-1 rounded-lg text-xs font-bold bg-[var(--surface)] border border-[var(--border-color)]"
                                         />
                                     </div>
                                 )}
                                 {selectedPlatforms.LINKEDIN && (
                                     <div className="flex items-center justify-between gap-3 text-xs">
-                                        <span className="flex items-center gap-1.5 font-bold text-gray-700"><LinkedinIcon className="h-3.5 w-3.5 text-blue-600" /> LinkedIn</span>
+                                        <span className="flex items-center gap-1.5 font-bold text-[var(--foreground-muted)]"><LinkedinIcon className="h-3.5 w-3.5 text-blue-600" /> LinkedIn</span>
                                         <input
                                             type="time"
                                             value={platformTimes.LINKEDIN}
                                             onChange={(e) => setPlatformTimes({ ...platformTimes, LINKEDIN: e.target.value })}
-                                            className="px-2.5 py-1 rounded-lg text-xs font-bold bg-white border border-gray-200"
+                                            className="px-2.5 py-1 rounded-lg text-xs font-bold bg-[var(--surface)] border border-[var(--border-color)]"
                                         />
                                     </div>
                                 )}
@@ -943,7 +949,7 @@ function SchedulePostModal({
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-4 py-2 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-100 transition-colors"
+                            className="px-4 py-2 rounded-xl text-xs font-bold text-[var(--foreground-muted)] hover:bg-[var(--surface-elevated)] transition-colors"
                         >
                             Cancel
                         </button>
@@ -984,13 +990,13 @@ function EventDetailModal({
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-            <div className="bg-white rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-purple-100 flex flex-col">
-                <div className="flex items-center justify-between p-5 border-b border-gray-100">
+            <div className="bg-[var(--surface)] rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-[var(--border-color)] flex flex-col">
+                <div className="flex items-center justify-between p-5 border-b border-[var(--border-color)]">
                     <div className="flex items-center gap-2">
                         <Clock className="h-4 w-4 text-purple-600" />
-                        <h3 className="font-black text-base text-gray-900">Scheduled Event Details</h3>
+                        <h3 className="font-black text-base text-[var(--foreground-color)]">Scheduled Event Details</h3>
                     </div>
-                    <button onClick={onClose} className="h-8 w-8 rounded-xl text-gray-400 hover:text-gray-600 hover:bg-gray-100 flex items-center justify-center">
+                    <button onClick={onClose} className="h-8 w-8 rounded-xl text-[var(--foreground-muted)] hover:text-[var(--foreground-muted)] hover:bg-[var(--surface-elevated)] flex items-center justify-center">
                         <X className="h-5 w-5" />
                     </button>
                 </div>
@@ -1007,19 +1013,19 @@ function EventDetailModal({
                     )}
 
                     <div>
-                        <h4 className="font-black text-base text-gray-900">{event.title}</h4>
+                        <h4 className="font-black text-base text-[var(--foreground-color)]">{event.title}</h4>
                         <p className="text-xs text-purple-700 font-bold mt-1">Scheduled for: {formattedDate}</p>
                         {event.rawCaption && (
-                            <p className="text-xs text-gray-600 mt-2 bg-gray-50 p-3 rounded-xl whitespace-pre-wrap">{event.rawCaption}</p>
+                            <p className="text-xs text-[var(--foreground-muted)] mt-2 bg-[var(--surface-elevated)] p-3 rounded-xl whitespace-pre-wrap">{event.rawCaption}</p>
                         )}
                     </div>
 
                     {/* Platform Targets Breakdown */}
                     <div className="space-y-2">
-                        <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Target Channels</p>
+                        <p className="text-xs font-bold text-[var(--foreground-muted)] uppercase tracking-wider">Target Channels</p>
                         {event.targets.map((t) => (
-                            <div key={t.id} className="flex items-center justify-between p-3 rounded-xl bg-gray-50 border border-gray-200/70 text-xs">
-                                <div className="flex items-center gap-2 font-bold text-gray-800">
+                            <div key={t.id} className="flex items-center justify-between p-3 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border-color)]/70 text-xs">
+                                <div className="flex items-center gap-2 font-bold text-[var(--foreground-color)]">
                                     {t.platform === "YOUTUBE" && <YoutubeIcon className="h-4 w-4 text-red-600" />}
                                     {t.platform === "INSTAGRAM" && <InstagramIcon className="h-4 w-4 text-pink-600" />}
                                     {t.platform === "LINKEDIN" && <LinkedinIcon className="h-4 w-4 text-blue-600" />}
@@ -1040,7 +1046,7 @@ function EventDetailModal({
                     </div>
                 </div>
 
-                <div className="p-4 border-t border-gray-100 bg-gray-50 flex items-center justify-between rounded-b-3xl">
+                <div className="p-4 border-t border-[var(--border-color)] bg-[var(--surface-elevated)] flex items-center justify-between rounded-b-3xl">
                     {isScheduled ? (
                         <button
                             onClick={() => onCancel(event.postId)}
@@ -1061,7 +1067,7 @@ function EventDetailModal({
                                 <span>Edit / Reschedule</span>
                             </button>
                         )}
-                        <button onClick={onClose} className="px-3.5 py-1.5 rounded-xl text-xs font-bold text-gray-700 bg-white border border-gray-200">
+                        <button onClick={onClose} className="px-3.5 py-1.5 rounded-xl text-xs font-bold text-[var(--foreground-muted)] bg-[var(--surface)] border border-[var(--border-color)]">
                             Close
                         </button>
                     </div>
@@ -1110,61 +1116,61 @@ function EditScheduledPostModal({
 
     return (
         <div className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
-            <div className="bg-white rounded-3xl max-w-md w-full shadow-2xl border border-purple-100 flex flex-col">
-                <div className="flex items-center justify-between p-5 border-b border-gray-100">
-                    <h3 className="font-black text-base text-gray-900">Edit / Reschedule Post</h3>
-                    <button onClick={onClose} className="h-8 w-8 rounded-xl text-gray-400 hover:text-gray-600 hover:bg-gray-100 flex items-center justify-center">
+            <div className="bg-[var(--surface)] rounded-3xl max-w-md w-full shadow-2xl border border-[var(--border-color)] flex flex-col">
+                <div className="flex items-center justify-between p-5 border-b border-[var(--border-color)]">
+                    <h3 className="font-black text-base text-[var(--foreground-color)]">Edit / Reschedule Post</h3>
+                    <button onClick={onClose} className="h-8 w-8 rounded-xl text-[var(--foreground-muted)] hover:text-[var(--foreground-muted)] hover:bg-[var(--surface-elevated)] flex items-center justify-center">
                         <X className="h-5 w-5" />
                     </button>
                 </div>
 
                 <form onSubmit={handleSubmit} className="p-5 space-y-4">
                     <div>
-                        <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Post Title</label>
+                        <label className="block text-xs font-bold text-[var(--foreground-muted)] uppercase mb-1">Post Title</label>
                         <input
                             type="text"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
-                            className="w-full px-3 py-2 rounded-xl text-xs font-bold bg-gray-50 border border-gray-200"
+                            className="w-full px-3 py-2 rounded-xl text-xs font-bold bg-[var(--surface-elevated)] border border-[var(--border-color)]"
                             required
                         />
                     </div>
 
                     <div>
-                        <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Caption</label>
+                        <label className="block text-xs font-bold text-[var(--foreground-muted)] uppercase mb-1">Caption</label>
                         <textarea
                             value={caption}
                             onChange={(e) => setCaption(e.target.value)}
                             rows={3}
-                            className="w-full px-3 py-2 rounded-xl text-xs bg-gray-50 border border-gray-200"
+                            className="w-full px-3 py-2 rounded-xl text-xs bg-[var(--surface-elevated)] border border-[var(--border-color)]"
                         />
                     </div>
 
                     <div className="grid grid-cols-2 gap-3">
                         <div>
-                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Date</label>
+                            <label className="block text-xs font-bold text-[var(--foreground-muted)] uppercase mb-1">Date</label>
                             <input
                                 type="date"
                                 value={date}
                                 onChange={(e) => setDate(e.target.value)}
-                                className="w-full px-3 py-2 rounded-xl text-xs font-bold bg-gray-50 border border-gray-200"
+                                className="w-full px-3 py-2 rounded-xl text-xs font-bold bg-[var(--surface-elevated)] border border-[var(--border-color)]"
                                 required
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Time</label>
+                            <label className="block text-xs font-bold text-[var(--foreground-muted)] uppercase mb-1">Time</label>
                             <input
                                 type="time"
                                 value={time}
                                 onChange={(e) => setTime(e.target.value)}
-                                className="w-full px-3 py-2 rounded-xl text-xs font-bold bg-gray-50 border border-gray-200"
+                                className="w-full px-3 py-2 rounded-xl text-xs font-bold bg-[var(--surface-elevated)] border border-[var(--border-color)]"
                                 required
                             />
                         </div>
                     </div>
 
                     <div className="pt-2 flex items-center justify-end gap-2">
-                        <button type="button" onClick={onClose} className="px-4 py-2 rounded-xl text-xs font-bold text-gray-600">
+                        <button type="button" onClick={onClose} className="px-4 py-2 rounded-xl text-xs font-bold text-[var(--foreground-muted)]">
                             Cancel
                         </button>
                         <button
@@ -1180,3 +1186,7 @@ function EditScheduledPostModal({
         </div>
     );
 }
+
+
+
+

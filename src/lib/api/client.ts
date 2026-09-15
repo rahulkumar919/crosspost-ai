@@ -81,26 +81,40 @@ apiClient.interceptors.response.use(
 
                 if (!refreshRes.ok) {
                     if (refreshRes.status === 503 && refreshData.retryable) {
-                        // Render free-tier cold start — retry after 8s automatically
+                        // Backend cold-starting (Render free tier) — retry up to 3 times with short delays
                         processQueue(null, null);
                         return new Promise((resolve, reject) => {
-                            setTimeout(async () => {
+                            let attempt = 0;
+                            const maxAttempts = 3;
+                            const delays = [2_000, 4_000, 6_000]; // 2s, 4s, 6s
+
+                            const tryRefresh = async () => {
+                                attempt++;
                                 try {
                                     const retryRefresh = await fetch("/api/refresh-backend-token", { method: "POST" });
-                                    const retryData = (await retryRefresh.json()) as { token?: string };
+                                    const retryData = (await retryRefresh.json()) as { token?: string; retryable?: boolean };
                                     if (retryRefresh.ok && retryData.token) {
                                         if (typeof window !== "undefined") {
                                             sessionStorage.setItem("crosspost_jwt", retryData.token);
                                         }
                                         originalRequest.headers.Authorization = `Bearer ${retryData.token}`;
                                         resolve(apiClient(originalRequest));
+                                    } else if (attempt < maxAttempts && retryData.retryable) {
+                                        // Still starting — try again
+                                        setTimeout(tryRefresh, delays[attempt] ?? 4_000);
                                     } else {
-                                        reject(new Error("Server is still starting up. Please refresh the page."));
+                                        reject(new Error("AI service is initialising — please wait a moment and try again."));
                                     }
                                 } catch (retryErr) {
-                                    reject(retryErr);
+                                    if (attempt < maxAttempts) {
+                                        setTimeout(tryRefresh, delays[attempt] ?? 4_000);
+                                    } else {
+                                        reject(retryErr);
+                                    }
                                 }
-                            }, 8_000);
+                            };
+
+                            setTimeout(tryRefresh, delays[0]);
                         });
                     }
                     throw new Error("Token refresh failed");
@@ -120,7 +134,7 @@ apiClient.interceptors.response.use(
                 if (typeof window !== "undefined") {
                     sessionStorage.removeItem("crosspost_jwt");
                 }
-                return Promise.reject(new Error("Session expired. Please sign in again."));
+                return Promise.reject(new Error("Session expired — please sign in again."));
             } finally {
                 isRefreshing = false;
             }

@@ -49,55 +49,68 @@
 
 /* ─── CSS Custom Properties ─────────────────────────────────────────────────── */
 :root {
-  --background: #fafafa;
-  --surface: #ffffff;
-  --surface-elevated: #f4f3ff;
-  --border-color: #e8e6f8;
-  --muted: #a09ab8;
-  --foreground-color: #0f0d1a;
-  --foreground-muted: #6b6585;
+  /* ── Light mode (default :root) — activated when .dark is removed ── */
+  --background: #F5F3FF;
+  --surface: #FFFFFF;
+  --surface-elevated: #EDE9FF;
+  --border-color: #DDD6FE;
+  --muted: #7C6FD4;
+  --foreground-color: #1a1535;
+  --foreground-muted: #5b5480;
 
   /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 50%, #74b9ff 100%);
-  --gradient-primary-subtle: linear-gradient(135deg, rgba(108,92,231,0.12) 0%, rgba(162,155,254,0.06) 100%);
-  --gradient-surface: linear-gradient(180deg, #ffffff 0%, #f8f7ff 100%);
+  --gradient-primary: linear-gradient(135deg, #7C6FFF 0%, #A78BFA 45%, #60A5FA 100%);
+  --gradient-primary-subtle: linear-gradient(135deg, rgba(124, 111, 255, 0.10) 0%, rgba(167, 139, 250, 0.05) 100%);
+  --gradient-surface: linear-gradient(180deg, #FFFFFF 0%, #F5F3FF 100%);
   --gradient-youtube: linear-gradient(135deg, #ff0000, #ff4757);
   --gradient-instagram: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
   --gradient-linkedin: linear-gradient(135deg, #0077b5, #00a0dc);
 
-  /* Glows */
-  --glow-primary: 0 0 40px rgba(108, 92, 231, 0.25);
-  --glow-primary-sm: 0 0 16px rgba(108, 92, 231, 0.2);
-  --glow-youtube: 0 0 24px rgba(255, 0, 0, 0.2);
-  --glow-instagram: 0 0 24px rgba(225, 48, 108, 0.2);
-  --glow-linkedin: 0 0 24px rgba(0, 119, 181, 0.2);
+  /* Atmospheric background glow */
+  --bg-glow: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(124, 111, 255, 0.07) 0%, transparent 70%);
+  --bg-glow-bottom: radial-gradient(ellipse 60% 40% at 80% 110%, rgba(96, 165, 250, 0.05) 0%, transparent 70%);
 
-  /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(15, 13, 26, 0.06), 0 1px 2px rgba(15, 13, 26, 0.04);
-  --shadow-md: 0 4px 16px rgba(15, 13, 26, 0.08), 0 2px 6px rgba(15, 13, 26, 0.05);
-  --shadow-lg: 0 8px 32px rgba(15, 13, 26, 0.10), 0 4px 12px rgba(15, 13, 26, 0.06);
-  --shadow-primary: 0 8px 32px rgba(108, 92, 231, 0.28), 0 2px 8px rgba(108, 92, 231, 0.18);
+  /* Glows */
+  --glow-primary: 0 0 40px rgba(124, 111, 255, 0.2);
+  --glow-primary-sm: 0 0 16px rgba(124, 111, 255, 0.15);
+  --glow-youtube: 0 0 28px rgba(255, 0, 0, 0.15);
+  --glow-instagram: 0 0 28px rgba(225, 48, 108, 0.15);
+  --glow-linkedin: 0 0 28px rgba(0, 119, 181, 0.15);
+
+  /* Shadows — subtle in light */
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.10), 0 2px 8px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.14), 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-primary: 0 8px 32px rgba(124, 111, 255, 0.25), 0 2px 12px rgba(124, 111, 255, 0.15);
 }
 
+/* ─── Dark mode — activated by .dark class on <html> ── */
 .dark {
-  --background: #09080f;
-  --surface: #110f1e;
-  --surface-elevated: #19162a;
-  --border-color: #2a2540;
-  --muted: #6b6585;
-  --foreground-color: #f0eeff;
-  --foreground-muted: #9490b0;
+  /* Deep midnight navy */
+  --background: #07070F;
+  --surface: #0E0C1A;
+  --surface-elevated: #151224;
+  --border-color: #1E1A32;
+  --muted: #5A5580;
+  --foreground-color: #EAE8FF;
+  --foreground-muted: #8884A8;
 
-  --gradient-primary-subtle: linear-gradient(135deg, rgba(108,92,231,0.18) 0%, rgba(162,155,254,0.08) 100%);
-  --gradient-surface: linear-gradient(180deg, #110f1e 0%, #09080f 100%);
+  --gradient-primary-subtle: linear-gradient(135deg, rgba(124, 111, 255, 0.16) 0%, rgba(167, 139, 250, 0.07) 100%);
+  --gradient-surface: linear-gradient(180deg, #0E0C1A 0%, #07070F 100%);
 
-  --glow-primary: 0 0 60px rgba(108, 92, 231, 0.35);
-  --glow-primary-sm: 0 0 20px rgba(108, 92, 231, 0.28);
+  --bg-glow: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(124, 111, 255, 0.12) 0%, transparent 70%);
+  --bg-glow-bottom: radial-gradient(ellipse 60% 40% at 80% 110%, rgba(96, 165, 250, 0.07) 0%, transparent 70%);
 
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.35), 0 2px 6px rgba(0,0,0,0.2);
-  --shadow-lg: 0 8px 32px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.25);
-  --shadow-primary: 0 8px 32px rgba(108, 92, 231, 0.4), 0 2px 8px rgba(108, 92, 231, 0.25);
+  --glow-primary: 0 0 50px rgba(124, 111, 255, 0.45);
+  --glow-primary-sm: 0 0 20px rgba(124, 111, 255, 0.35);
+  --glow-youtube: 0 0 28px rgba(255, 0, 0, 0.3);
+  --glow-instagram: 0 0 28px rgba(225, 48, 108, 0.3);
+  --glow-linkedin: 0 0 28px rgba(0, 119, 181, 0.3);
+
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.6), 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-primary: 0 8px 40px rgba(124, 111, 255, 0.45), 0 2px 12px rgba(124, 111, 255, 0.3);
 }
 
 /* ─── Base ────────────────────────────────────────────────────────────────── */
@@ -114,6 +127,9 @@ html {
 
 body {
   background-color: var(--background);
+  /* Atmospheric top glow layered on the base background */
+  background-image: var(--bg-glow), var(--bg-glow-bottom);
+  background-attachment: fixed;
   color: var(--foreground-color);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -158,80 +174,181 @@ body {
 
 /* ─── Keyframes ─────────────────────────────────────────────────────────────── */
 @keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
+  0% {
+    background-position: -200% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
 }
 
 @keyframes fade-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes scale-in {
-  from { opacity: 0; transform: scale(0.93); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.93);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes slide-in-right {
-  from { opacity: 0; transform: translateX(20px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes pulse-soft {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.55; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.55;
+  }
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 @keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(108, 92, 231, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(108, 92, 231, 0.6); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(108, 92, 231, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(108, 92, 231, 0.6);
+  }
 }
 
 @keyframes check-in {
-  0% { opacity: 0; transform: scale(0) rotate(-30deg); }
-  60% { transform: scale(1.2) rotate(5deg); }
-  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(-30deg);
+  }
+
+  60% {
+    transform: scale(1.2) rotate(5deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
 }
 
 @keyframes line-fill {
-  from { width: 0%; }
-  to { width: 100%; }
+  from {
+    width: 0%;
+  }
+
+  to {
+    width: 100%;
+  }
 }
 
 @keyframes border-dance {
-  0% { background-position: 0% 0%; }
-  100% { background-position: 200% 200%; }
+  0% {
+    background-position: 0% 0%;
+  }
+
+  100% {
+    background-position: 200% 200%;
+  }
 }
 
 @keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes slide-up {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes confetti-drop {
-  0% { opacity: 1; transform: translateY(0) rotate(0deg); }
-  100% { opacity: 0; transform: translateY(40px) rotate(360deg); }
+  0% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(40px) rotate(360deg);
+  }
 }
 
 /* ─── Animation utilities ───────────────────────────────────────────────────── */
@@ -277,12 +394,10 @@ body {
 }
 
 .animate-shimmer {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.25) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.25) 50%,
+      transparent 100%);
   background-size: 200% 100%;
   animation: shimmer 1.8s linear infinite;
 }
@@ -293,25 +408,27 @@ body {
 
 /* ─── Glass utilities ───────────────────────────────────────────────────────── */
 .glass {
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid rgba(109, 40, 217, 0.12);
 }
 
 .dark .glass {
-  background: rgba(17, 15, 30, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(9, 8, 26, 0.80);
+  border: 1px solid rgba(124, 111, 255, 0.10);
 }
 
 .glass-subtle {
-  background: rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(109, 40, 217, 0.09);
 }
 
 .dark .glass-subtle {
-  background: rgba(17, 15, 30, 0.5);
+  background: rgba(9, 8, 26, 0.52);
+  border: 1px solid rgba(124, 111, 255, 0.07);
 }
 
 /* ─── Gradient text ─────────────────────────────────────────────────────────── */
@@ -343,25 +460,45 @@ body {
 }
 
 /* ─── Platform card glows ───────────────────────────────────────────────────── */
-.platform-card-youtube:hover, .platform-card-youtube.selected {
+.platform-card-youtube:hover,
+.platform-card-youtube.selected {
   box-shadow: var(--glow-youtube);
 }
 
-.platform-card-instagram:hover, .platform-card-instagram.selected {
+.platform-card-instagram:hover,
+.platform-card-instagram.selected {
   box-shadow: var(--glow-instagram);
 }
 
-.platform-card-linkedin:hover, .platform-card-linkedin.selected {
+.platform-card-linkedin:hover,
+.platform-card-linkedin.selected {
   box-shadow: var(--glow-linkedin);
 }
 
 /* ─── Stagger helpers ───────────────────────────────────────────────────────── */
-.stagger-1 { animation-delay: 0.05s; }
-.stagger-2 { animation-delay: 0.10s; }
-.stagger-3 { animation-delay: 0.15s; }
-.stagger-4 { animation-delay: 0.20s; }
-.stagger-5 { animation-delay: 0.25s; }
-.stagger-6 { animation-delay: 0.30s; }
+.stagger-1 {
+  animation-delay: 0.05s;
+}
+
+.stagger-2 {
+  animation-delay: 0.10s;
+}
+
+.stagger-3 {
+  animation-delay: 0.15s;
+}
+
+.stagger-4 {
+  animation-delay: 0.20s;
+}
+
+.stagger-5 {
+  animation-delay: 0.25s;
+}
+
+.stagger-6 {
+  animation-delay: 0.30s;
+}
 
 /* ─── Sidebar custom scrollbar ──────────────────────────────────────────────── */
 .sidebar-scroll {
@@ -406,4 +543,230 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(108, 92, 231, 0.4);
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   LIGHT MODE — Premium overrides applied when .dark is absent
+   Targets the dashboard: cards, inputs, badges, tables, modals
+════════════════════════════════════════════════════════════════════ */
+
+/* ── Base body in light mode ───────────────────────────────────────── */
+html:not(.dark) body {
+  background-color: #F5F3FF;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(109, 40, 217, 0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 80% 110%, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+}
+
+/* ── Every white/surface card in light mode ────────────────────────── */
+html:not(.dark) .fc,
+html:not(.dark) [class*="rounded-2xl"],
+html:not(.dark) [class*="rounded-3xl"] {
+  box-shadow: 0 2px 12px rgba(109, 40, 217, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+/* ── Input fields in light mode ────────────────────────────────────── */
+html:not(.dark) input,
+html:not(.dark) textarea,
+html:not(.dark) select {
+  background-color: #FFFFFF;
+  border-color: #C4B5FD;
+  color: #1a1535;
+}
+
+html:not(.dark) input::placeholder,
+html:not(.dark) textarea::placeholder {
+  color: #7C6FD4;
+}
+
+html:not(.dark) input:focus,
+html:not(.dark) textarea:focus,
+html:not(.dark) select:focus {
+  border-color: #7C3AED;
+  box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.12);
+  outline: none;
+}
+
+/* ── Dashboard page-level wrappers ─────────────────────────────────── */
+html:not(.dark) .dashboard-page {
+  background: #F5F3FF;
+}
+
+/* ── MobileHeader in light mode — keep dark (always dark) ─────────── */
+html:not(.dark) header.mobile-header {
+  background: #0e0c1a !important;
+}
+
+/* ── KPI stat cards ─────────────────────────────────────────────────── */
+html:not(.dark) .kpi-card {
+  background: #FFFFFF;
+  border: 1px solid #DDD6FE;
+  box-shadow: 0 2px 8px rgba(109, 40, 217, 0.08);
+}
+
+/* ── Table rows in light mode ───────────────────────────────────────── */
+html:not(.dark) table tbody tr:hover {
+  background-color: rgba(109, 40, 217, 0.04);
+}
+
+html:not(.dark) table thead tr {
+  background-color: rgba(109, 40, 217, 0.05);
+}
+
+/* ── Badges / pills in light mode ───────────────────────────────────── */
+html:not(.dark) .badge-primary {
+  background: rgba(109, 40, 217, 0.1);
+  color: #5b21b6;
+  border: 1px solid rgba(109, 40, 217, 0.2);
+}
+
+html:not(.dark) .badge-success {
+  background: rgba(16, 185, 129, 0.1);
+  color: #065f46;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+html:not(.dark) .badge-error {
+  background: rgba(239, 68, 68, 0.1);
+  color: #991b1b;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* ── Scrollbar in light mode ─────────────────────────────────────────── */
+html:not(.dark) ::-webkit-scrollbar-thumb {
+  background: rgba(109, 40, 217, 0.2);
+}
+
+html:not(.dark) ::-webkit-scrollbar-thumb:hover {
+  background: rgba(109, 40, 217, 0.35);
+}
+
+/* ── Skeleton loaders in light mode ─────────────────────────────────── */
+html:not(.dark) .skeleton,
+html:not(.dark) [class*="animate-pulse"] {
+  background: linear-gradient(90deg, #EDE9FF 25%, #DDD6FE 50%, #EDE9FF 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+/* ── Sidebar in light — always keep dark ──────────────────────────── */
+html:not(.dark) aside {
+  background: linear-gradient(180deg, #0D0A2E 0%, #0f0c35 100%) !important;
+}
+
+/* ── BottomNav in light — keep dark ────────────────────────────────── */
+html:not(.dark) nav[aria-label="Mobile navigation"] {
+  background: rgba(12, 10, 30, 0.97) !important;
+  border-top-color: rgba(255, 255, 255, 0.07) !important;
+}
+
+/* ── Hover states on interactive rows ─────────────────────────────── */
+html:not(.dark) a:hover,
+html:not(.dark) button:hover {
+  transition: all 0.2s;
+}
+
+/* ── Primary gradient buttons — same in both modes ─────────────────── */
+html:not(.dark) .btn-primary {
+  background: linear-gradient(135deg, #ec4899, #a78bfa);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(109, 40, 217, 0.35);
+}
+
+html:not(.dark) .btn-primary:hover {
+  box-shadow: 0 6px 20px rgba(109, 40, 217, 0.5);
+  transform: translateY(-1px);
+}
+
+/* ── Outline/secondary buttons ──────────────────────────────────────── */
+html:not(.dark) .btn-secondary {
+  background: rgba(109, 40, 217, 0.07);
+  border: 1px solid rgba(109, 40, 217, 0.2);
+  color: #5b21b6;
+}
+
+html:not(.dark) .btn-secondary:hover {
+  background: rgba(109, 40, 217, 0.12);
+  border-color: rgba(109, 40, 217, 0.35);
+}
+
+/* ── Focus rings in light mode ──────────────────────────────────────── */
+html:not(.dark) :focus-visible {
+  outline: 2px solid #7C3AED;
+  outline-offset: 2px;
+}
+
+/* ── Selection highlight ────────────────────────────────────────────── */
+html:not(.dark) ::selection {
+  background-color: rgba(109, 40, 217, 0.15);
+  color: #1a1535;
+}
+
+/* ── Create / generate page in light mode ───────────────────────────── */
+html:not(.dark) .generate-card {
+  background: #FFFFFF;
+  border: 1.5px solid #C4B5FD;
+  box-shadow: 0 4px 20px rgba(109, 40, 217, 0.1);
+}
+
+/* ── AILoadingCard shimmer in light mode ────────────────────────────── */
+html:not(.dark) .ai-loading-card {
+  background: #FFFFFF;
+  border-color: rgba(109, 40, 217, 0.25);
+  box-shadow: 0 0 30px rgba(109, 40, 217, 0.12);
+}
+
+/* ── Platform status badges ─────────────────────────────────────────── */
+html:not(.dark) .status-published {
+  background: rgba(16, 185, 129, 0.1);
+  color: #065f46;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+html:not(.dark) .status-failed {
+  background: rgba(239, 68, 68, 0.08);
+  color: #991b1b;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+html:not(.dark) .status-queued {
+  background: rgba(245, 158, 11, 0.1);
+  color: #78350f;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+/* ── Calendar cells ─────────────────────────────────────────────────── */
+html:not(.dark) .calendar-cell {
+  background: #FFFFFF;
+  border: 1px solid #DDD6FE;
+}
+
+html:not(.dark) .calendar-cell:hover {
+  background: rgba(109, 40, 217, 0.04);
+  border-color: #A78BFA;
+}
+
+html:not(.dark) .calendar-cell.today {
+  background: rgba(109, 40, 217, 0.08);
+  border-color: #7C3AED;
+  box-shadow: 0 0 0 2px rgba(109, 40, 217, 0.15);
+}
+
+/* ── Preset / chip buttons in GenerateStep ──────────────────────────── */
+html:not(.dark) .preset-chip {
+  background: #FFFFFF;
+  color: #1a1535;
+  border: 1px solid #C4B5FD;
+}
+
+html:not(.dark) .preset-chip:hover {
+  background: rgba(109, 40, 217, 0.06);
+  border-color: #7C3AED;
+  color: #5b21b6;
+}
+
+/* ── Error cards in light mode ──────────────────────────────────────── */
+html:not(.dark) .error-card {
+  background: rgba(239, 68, 68, 0.05);
+  border-color: rgba(239, 68, 68, 0.2);
 }

@@ -5,7 +5,7 @@ import { MobileHeader } from "@/components/layout/MobileHeader";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
     return (
-        <div className="flex min-h-dvh" style={{ background: "#F5F3FF" }}>
+        <div className="flex min-h-dvh">
             {/* Desktop Sidebar */}
             <Sidebar />
 
@@ -15,7 +15,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 <MobileHeader />
 
                 {/* Page content */}
-                <main className="flex flex-col flex-1 pb-20 lg:pb-0">
+                <main className="flex flex-col flex-1 pb-20 lg:pb-0 min-w-0">
                     {children}
                 </main>
             </div>

@@ -18,8 +18,14 @@ export default auth((req: NextRequest & { auth: { user?: unknown } | null }) => 
         pathname === "/" ||
         pathname.startsWith("/login") ||
         pathname.startsWith("/api/auth") ||
+        pathname.startsWith("/api/refresh-backend-token") ||
+        pathname.startsWith("/api/token") ||
+        pathname.startsWith("/api/set-token") ||
         pathname.startsWith("/privacy-policy") ||
-        pathname.startsWith("/terms");
+        pathname.startsWith("/terms") ||
+        // PWA files — must be publicly accessible
+        pathname === "/sw.js" ||
+        pathname === "/manifest.webmanifest";
 
     if (isPublic) return;
 
