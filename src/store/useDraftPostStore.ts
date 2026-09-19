@@ -9,6 +9,8 @@ import type {
     PublishJob,
 } from "@/types/post.types";
 
+import type { AIContentAnalysis, PlatformContent } from "@/types/ai.types";
+
 const defaultPlatformDraft = (platform: Platform): PlatformDraft => ({
     platform,
     title: "",
@@ -40,7 +42,17 @@ interface DraftPostState {
     setRawCaption: (caption: string) => void;
 
     // AI content
-    setGeneratedContent: (title: string, description: string, hashtags: string[]) => void;
+    setGeneratedContent: (
+        title: string,
+        description: string,
+        hashtags: string[],
+        platforms?: {
+            youtube?: PlatformContent;
+            instagram?: PlatformContent;
+            linkedin?: PlatformContent;
+        },
+        analysis?: AIContentAnalysis
+    ) => void;
 
     // Per-platform draft editing
     setPlatformDraft: (platform: Platform, updates: Partial<PlatformDraft>) => void;
@@ -70,21 +82,42 @@ export const useDraftPostStore = create<DraftPostState>()(
             setRawCaption: (rawCaption) =>
                 set((state) => ({ draft: { ...state.draft, rawCaption } })),
 
-            setGeneratedContent: (title, description, hashtags) =>
-                set((state) => ({
-                    draft: {
-                        ...state.draft,
-                        generatedTitle: title,
-                        generatedDescription: description,
-                        generatedHashtags: hashtags,
-                        // Sync all platform drafts with generated content
-                        platformDrafts: {
-                            youtube: { ...state.draft.platformDrafts.youtube, title, description, hashtags },
-                            instagram: { ...state.draft.platformDrafts.instagram, title, description, hashtags },
-                            linkedin: { ...state.draft.platformDrafts.linkedin, title, description, hashtags },
+            setGeneratedContent: (title, description, hashtags, platforms, analysis) =>
+                set((state) => {
+                    const yt = platforms?.youtube;
+                    const ig = platforms?.instagram;
+                    const li = platforms?.linkedin;
+
+                    return {
+                        draft: {
+                            ...state.draft,
+                            generatedTitle: title,
+                            generatedDescription: description,
+                            generatedHashtags: hashtags,
+                            analysis: analysis || state.draft.analysis,
+                            platformDrafts: {
+                                youtube: {
+                                    ...state.draft.platformDrafts.youtube,
+                                    title: yt?.title || title,
+                                    description: yt?.description || description,
+                                    hashtags: yt?.hashtags || hashtags,
+                                },
+                                instagram: {
+                                    ...state.draft.platformDrafts.instagram,
+                                    title: ig?.title || title,
+                                    description: ig?.description || description,
+                                    hashtags: ig?.hashtags || hashtags,
+                                },
+                                linkedin: {
+                                    ...state.draft.platformDrafts.linkedin,
+                                    title: li?.title || title,
+                                    description: li?.description || description,
+                                    hashtags: li?.hashtags || hashtags,
+                                },
+                            },
                         },
-                    },
-                })),
+                    };
+                }),
 
             setPlatformDraft: (platform, updates) =>
                 set((state) => ({

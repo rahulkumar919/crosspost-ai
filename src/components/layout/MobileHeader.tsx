@@ -65,52 +65,48 @@ function UserSheet({ onClose }: { onClose: () => void }) {
 
     return (
         <>
-            <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+            <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" onClick={onClose} />
             <div className="fixed bottom-0 left-0 right-0 z-50">
                 <div
-                    className="rounded-t-[28px] pb-10 overflow-hidden"
+                    className="rounded-t-[28px] pb-10 overflow-hidden bg-[var(--surface)] border-t border-[var(--border-color)]"
                     style={{
-                        background: "rgba(12,10,30,0.98)",
-                        border: "1px solid rgba(255,255,255,0.08)",
                         backdropFilter: "blur(24px)",
-                        boxShadow: "0 -24px 80px rgba(0,0,0,0.8)",
+                        boxShadow: "0 -20px 60px rgba(0,0,0,0.3)",
                     }}
                 >
                     {/* Handle */}
                     <div className="flex justify-center pt-3 pb-1">
-                        <div className="h-1 w-10 rounded-full" style={{ background: "rgba(255,255,255,0.18)" }} />
+                        <div className="h-1 w-10 rounded-full bg-[var(--border-color)]" />
                     </div>
 
                     {/* Header */}
                     <div className="flex items-center justify-between px-5 pt-2 pb-4">
-                        <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "rgba(236,72,153,0.7)" }}>
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-[#ec4899]">
                             My Account
                         </p>
                         <button
                             type="button"
                             onClick={onClose}
-                            className="flex h-7 w-7 items-center justify-center rounded-full"
-                            style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.1)" }}
+                            className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--surface-elevated)] border border-[var(--border-color)] transition-colors hover:bg-[var(--border-color)]"
                             aria-label="Close"
                         >
-                            <X className="h-3.5 w-3.5 text-white/60" />
+                            <X className="h-3.5 w-3.5 text-[var(--foreground-muted)]" />
                         </button>
                     </div>
 
                     {/* User info card */}
                     <div
-                        className="mx-4 mb-4 flex items-center gap-3 p-4 rounded-2xl"
-                        style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}
+                        className="mx-4 mb-4 flex items-center gap-3 p-4 rounded-2xl bg-[var(--surface-elevated)] border border-[var(--border-color)]"
                     >
                         <UserAvatar size={52} />
                         <div className="min-w-0 flex-1">
-                            <p className="text-[15px] font-black text-white truncate">{name}</p>
-                            <p className="text-[11px] truncate mt-0.5" style={{ color: "rgba(255,255,255,0.45)" }}>{email}</p>
+                            <p className="text-[15px] font-black text-[var(--foreground-color)] truncate">{name}</p>
+                            <p className="text-[11px] truncate mt-0.5 text-[var(--foreground-muted)]">{email}</p>
                             <div
                                 className="mt-2 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-bold"
-                                style={{ background: "rgba(52,211,153,0.15)", color: "#34d399" }}
+                                style={{ background: "rgba(52,211,153,0.15)", color: "#10B981" }}
                             >
-                                <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
+                                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                                 Active
                             </div>
                         </div>
@@ -118,10 +114,9 @@ function UserSheet({ onClose }: { onClose: () => void }) {
 
                     {/* Appearance row */}
                     <div
-                        className="mx-4 mb-3 flex items-center justify-between rounded-2xl px-4 py-3.5"
-                        style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
+                        className="mx-4 mb-3 flex items-center justify-between rounded-2xl px-4 py-3.5 bg-[var(--surface-elevated)] border border-[var(--border-color)]"
                     >
-                        <span className="text-[13px] font-semibold text-white/70">Appearance</span>
+                        <span className="text-[13px] font-semibold text-[var(--foreground-color)]">Appearance</span>
                         <ThemeToggle />
                     </div>
 
@@ -129,12 +124,11 @@ function UserSheet({ onClose }: { onClose: () => void }) {
                     <Link
                         href="/accounts"
                         onClick={onClose}
-                        className="mx-4 mb-3 flex items-center gap-3 rounded-2xl px-4 py-3.5 transition-all hover:bg-white/5"
-                        style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
+                        className="mx-4 mb-3 flex items-center gap-3 rounded-2xl px-4 py-3.5 transition-all bg-[var(--surface-elevated)] border border-[var(--border-color)] hover:border-[var(--muted)]"
                     >
-                        <Settings className="h-4 w-4 shrink-0" style={{ color: "rgba(236,72,153,0.8)" }} />
-                        <span className="text-[13px] font-semibold text-white/80">Connected Platforms</span>
-                        <ChevronDown className="h-3.5 w-3.5 ml-auto -rotate-90 text-white/30" />
+                        <Settings className="h-4 w-4 shrink-0 text-[#ec4899]" />
+                        <span className="text-[13px] font-semibold text-[var(--foreground-color)]">Connected Platforms</span>
+                        <ChevronDown className="h-3.5 w-3.5 ml-auto -rotate-90 text-[var(--foreground-muted)]" />
                     </Link>
 
                     {/* Sign out → redirects to home page */}
@@ -142,10 +136,10 @@ function UserSheet({ onClose }: { onClose: () => void }) {
                         type="button"
                         onClick={() => { onClose(); signOut({ callbackUrl: "/" }); }}
                         className="mx-4 flex w-[calc(100%-32px)] items-center gap-3 rounded-2xl px-4 py-4 transition-all active:scale-[0.98]"
-                        style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.18)" }}
+                        style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)" }}
                     >
-                        <LogOut className="h-4 w-4 text-red-400 shrink-0" />
-                        <span className="text-[13px] font-bold text-red-400">Sign out</span>
+                        <LogOut className="h-4 w-4 text-red-500 shrink-0" />
+                        <span className="text-[13px] font-bold text-red-500">Sign out</span>
                     </button>
                 </div>
             </div>
@@ -168,13 +162,15 @@ export function MobileHeader() {
     return (
         <>
             <header
-                className="lg:hidden sticky top-0 z-40 w-full"
+                className={cn(
+                    "lg:hidden sticky top-0 z-40 w-full mobile-header transition-all duration-200",
+                    scrolled ? "shadow-md" : ""
+                )}
                 style={{
-                    background: scrolled ? "rgba(12,10,30,0.95)" : "#0e0c1a",
-                    backdropFilter: scrolled ? "blur(20px)" : "none",
-                    borderBottom: "1px solid rgba(255,255,255,0.07)",
-                    boxShadow: scrolled ? "0 1px 0 rgba(236,72,153,0.06), 0 4px 24px rgba(0,0,0,0.4)" : "none",
-                    transition: "background 0.3s, box-shadow 0.3s",
+                    background: scrolled ? "var(--surface)" : "var(--surface)",
+                    backdropFilter: "blur(20px)",
+                    WebkitBackdropFilter: "blur(20px)",
+                    borderBottom: "1px solid var(--border-color)",
                 }}
             >
                 {/* Top gradient accent line */}
@@ -192,16 +188,16 @@ export function MobileHeader() {
                         <div
                             className="relative rounded-[12px] overflow-hidden shrink-0"
                             style={{
-                                width: 44,
-                                height: 44,
-                                boxShadow: "0 0 0 2px rgba(236,72,153,0.3), 0 4px 18px rgba(236,72,153,0.2)",
+                                width: 42,
+                                height: 42,
+                                boxShadow: "0 0 0 2px rgba(236,72,153,0.3), 0 4px 14px rgba(236,72,153,0.2)",
                             }}
                         >
                             <Image
                                 src="/logo.png"
                                 alt="CrossPost AI"
                                 fill
-                                sizes="44px"
+                                sizes="42px"
                                 className="object-cover"
                                 priority
                                 onError={(e) => {
@@ -216,7 +212,7 @@ export function MobileHeader() {
                             />
                         </div>
                         <div className="leading-none">
-                            <p className="font-black text-[16px] text-white tracking-tight leading-none">
+                            <p className="font-black text-[16px] text-[var(--foreground-color)] tracking-tight leading-none">
                                 CrossPost{" "}
                                 <span
                                     style={{
@@ -229,8 +225,7 @@ export function MobileHeader() {
                                 </span>
                             </p>
                             <p
-                                className="text-[9.5px] font-medium mt-0.5 tracking-wide"
-                                style={{ color: "rgba(255,255,255,0.35)" }}
+                                className="text-[9.5px] font-medium mt-0.5 tracking-wide text-[var(--foreground-muted)]"
                             >
                                 Create Once. Post Everywhere.
                             </p>
@@ -258,7 +253,7 @@ export function MobileHeader() {
                                 <UserAvatar size={38} />
                                 <ChevronDown
                                     className={cn(
-                                        "h-3.5 w-3.5 text-white/40 transition-transform duration-200",
+                                        "h-3.5 w-3.5 text-[var(--foreground-muted)] transition-transform duration-200",
                                         sheetOpen && "rotate-180"
                                     )}
                                 />
@@ -278,6 +273,7 @@ export function MobileHeader() {
                     </div>
                 </div>
             </header>
+
 
             {sheetOpen && <UserSheet onClose={() => setSheetOpen(false)} />}
         </>

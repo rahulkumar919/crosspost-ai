@@ -1,14 +1,16 @@
 "use client";
 
 import * as React from "react";
-import { Sparkles, Wand2, ArrowLeft, RotateCcw, Copy, Check, Hash, Zap, HelpCircle } from "lucide-react";
+import { Sparkles, Wand2, ArrowLeft, RotateCcw, Copy, Check, Zap, Target, Layers, Hash } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Chip, AddChip } from "@/components/ui/chip";
 import { Skeleton, TextSkeleton } from "@/components/ui/skeleton";
+import { YoutubeIcon, InstagramIcon, LinkedinIcon } from "@/components/ui/platform-icons";
 import { useDraftPostStore } from "@/store/useDraftPostStore";
 import { useGenerateContent } from "@/hooks/useGenerateContent";
 import { useEnhanceContent } from "@/hooks/useEnhanceContent";
+import type { Platform } from "@/types/account.types";
 
 function AILoadingCard({ label }: { label: string }) {
     return (
@@ -44,7 +46,9 @@ function AILoadingCard({ label }: { label: string }) {
                     </div>
                     <div>
                         <p className="text-sm font-black text-foreground">{label}</p>
-                        <p className="text-xs text-[var(--foreground-muted)] mt-0.5">Crafting viral hooks & YouTube SEO ranking…</p>
+                        <p className="text-xs text-[var(--foreground-muted)] mt-0.5">
+                            Synthesizing developer insights across YouTube, Instagram & LinkedIn…
+                        </p>
                     </div>
                 </div>
 
@@ -66,13 +70,10 @@ function AILoadingCard({ label }: { label: string }) {
 export function GenerateStep() {
     const draft = useDraftPostStore((s) => s.draft);
     const setGeneratedContent = useDraftPostStore((s) => s.setGeneratedContent);
+    const setPlatformDraft = useDraftPostStore((s) => s.setPlatformDraft);
     const setStep = useDraftPostStore((s) => s.setStep);
 
-    const [localTitle, setLocalTitle] = React.useState(draft.generatedTitle || draft.platformDrafts.youtube.title);
-    const [localDesc, setLocalDesc] = React.useState(draft.generatedDescription || draft.platformDrafts.youtube.description);
-    const [localHashtags, setLocalHashtags] = React.useState<string[]>(
-        draft.generatedHashtags.length ? draft.generatedHashtags : draft.platformDrafts.youtube.hashtags
-    );
+    const [activePlatform, setActivePlatform] = React.useState<Platform>("youtube");
 
     const [copiedTitle, setCopiedTitle] = React.useState(false);
     const [copiedDesc, setCopiedDesc] = React.useState(false);
@@ -82,22 +83,28 @@ export function GenerateStep() {
     const enhanceMutation = useEnhanceContent();
 
     const isWorking = generateMutation.isPending || enhanceMutation.isPending;
-    const hasGenerated = !!(localTitle || localDesc || localHashtags.length);
 
-    // Sync local state after mutation success
-    React.useEffect(() => {
-        if (generateMutation.isSuccess || enhanceMutation.isSuccess) {
-            const d = useDraftPostStore.getState().draft;
-            setLocalTitle(d.generatedTitle);
-            setLocalDesc(d.generatedDescription);
-            setLocalHashtags(d.generatedHashtags);
-        }
-    }, [generateMutation.isSuccess, enhanceMutation.isSuccess]);
+    const currentDraft = draft.platformDrafts[activePlatform] || {
+        platform: activePlatform,
+        title: draft.generatedTitle,
+        description: draft.generatedDescription,
+        hashtags: draft.generatedHashtags,
+        isIncluded: true,
+    };
+
+    const hasGenerated = !!(
+        draft.generatedTitle ||
+        draft.platformDrafts.youtube.title ||
+        draft.platformDrafts.instagram.title ||
+        draft.platformDrafts.linkedin.title ||
+        draft.generatedDescription ||
+        draft.generatedHashtags.length
+    );
 
     const handleGenerate = (extraStyleHint?: string) => {
         const rawCaptionWithHint = extraStyleHint
-            ? `${draft.rawCaption || "Viral video"}\n[Viral Style Formula: ${extraStyleHint}]`
-            : draft.rawCaption;
+            ? `${draft.rawCaption ? draft.rawCaption + "\n" : ""}[Focus: ${extraStyleHint}]`
+            : (draft.rawCaption || "Building an AI Full Stack Application with Next.js, LangChain, and Node.js");
 
         generateMutation.mutate({
             rawCaption: rawCaptionWithHint,
@@ -108,35 +115,45 @@ export function GenerateStep() {
 
     const handleEnhance = () => {
         enhanceMutation.mutate({
-            title: localTitle,
-            description: localDesc,
-            hashtags: localHashtags,
+            title: currentDraft.title || draft.generatedTitle,
+            description: currentDraft.description || draft.generatedDescription,
+            hashtags: currentDraft.hashtags.length ? currentDraft.hashtags : draft.generatedHashtags,
             platforms: ["youtube", "instagram", "linkedin"],
         });
     };
 
     const handleContinue = () => {
-        const fallbackTitle = draft.rawCaption || draft.mediaFile?.file.name.replace(/\.[^/.]+$/, "") || "Trending Video 🔥";
-        const fallbackDesc = draft.rawCaption || "Check out this video! Published via CrossPost AI.";
-        const fallbackTags = ["viral", "trending", "crosspost", "shorts", "reels"];
+        const fallbackTitle = draft.rawCaption || draft.mediaFile?.file.name.replace(/\.[^/.]+$/, "") || "AI Full Stack Dev";
+        const fallbackDesc = draft.rawCaption || "Check out this project built with modern AI and web frameworks.";
+        const fallbackTags = ["webdev", "fullstack", "developer", "ai", "coding"];
 
-        const resolvedTitle = (localTitle && localTitle.trim()) || fallbackTitle;
-        const resolvedDesc = (localDesc && localDesc.trim()) || fallbackDesc;
-        const resolvedTags = localHashtags.length ? localHashtags : fallbackTags;
+        const resolvedTitle = draft.platformDrafts.youtube.title || draft.generatedTitle || fallbackTitle;
+        const resolvedDesc = draft.platformDrafts.youtube.description || draft.generatedDescription || fallbackDesc;
+        const resolvedTags = draft.platformDrafts.youtube.hashtags.length ? draft.platformDrafts.youtube.hashtags : (draft.generatedHashtags.length ? draft.generatedHashtags : fallbackTags);
 
-        setGeneratedContent(resolvedTitle, resolvedDesc, resolvedTags);
+        setGeneratedContent(resolvedTitle, resolvedDesc, resolvedTags, draft.platformDrafts, draft.analysis);
         setStep("preview");
+    };
+
+    const handleTitleChange = (val: string) => {
+        setPlatformDraft(activePlatform, { title: val });
+    };
+
+    const handleDescChange = (val: string) => {
+        setPlatformDraft(activePlatform, { description: val });
     };
 
     const addHashtag = (tag: string) => {
         const clean = tag.replace(/^#/, "").trim();
-        if (clean && !localHashtags.includes(clean)) {
-            setLocalHashtags((prev) => [...prev, clean]);
+        if (clean && !currentDraft.hashtags.includes(clean)) {
+            setPlatformDraft(activePlatform, { hashtags: [...currentDraft.hashtags, clean] });
         }
     };
 
     const removeHashtag = (tag: string) => {
-        setLocalHashtags((prev) => prev.filter((t) => t !== tag));
+        setPlatformDraft(activePlatform, {
+            hashtags: currentDraft.hashtags.filter((t) => t !== tag),
+        });
     };
 
     const copyToClipboard = (text: string, type: "title" | "desc" | "tags") => {
@@ -153,40 +170,51 @@ export function GenerateStep() {
         }
     };
 
-    const titleLength = localTitle.length;
+    // Platform character rules
+    const titleLength = currentDraft.title.length;
     const titleStatusColor =
-        titleLength > 100
-            ? "text-red-400"
-            : titleLength > 80
-                ? "text-amber-400"
-                : "text-emerald-400";
+        activePlatform === "youtube"
+            ? titleLength > 100
+                ? "text-red-500 font-bold"
+                : titleLength > 80
+                    ? "text-amber-500 font-semibold"
+                    : "text-emerald-500 font-semibold"
+            : "text-[var(--foreground-muted)]";
+
+    const platformTabs: { id: Platform; label: string; icon: React.ComponentType<{ className?: string }>; colorClass: string; badge: string }[] = [
+        { id: "youtube", label: "YouTube", icon: YoutubeIcon, colorClass: "text-[#FF0000]", badge: "SEO & High CTR" },
+        { id: "instagram", label: "Instagram", icon: InstagramIcon, colorClass: "text-[#E1306C]", badge: "Visual & Reels" },
+        { id: "linkedin", label: "LinkedIn", icon: LinkedinIcon, colorClass: "text-[#0077B5]", badge: "Engineering & Career" },
+    ];
 
     return (
         <div className="flex flex-col gap-6 animate-fade-in-up">
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div>
-                    <h2 className="text-2xl sm:text-3xl font-black tracking-tight" style={{ color: "var(--foreground-color)" }}>
-                        Generate Content
+                    <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
+                        AI Content Engine
                     </h2>
                     <p className="text-sm text-[var(--foreground-muted)] mt-1 leading-relaxed">
-                        AI crafts high-CTR viral titles, SEO descriptions, and trending hashtags.
+                        Generate tailored, platform-optimized developer copy for YouTube, Instagram, and LinkedIn.
                     </p>
                 </div>
-                <div className="flex items-center gap-2 self-start sm:self-auto px-3 py-1.5 rounded-full bg-[var(--surface-elevated)] border border-primary/30 text-xs font-bold text-primary">
-                    <Zap className="h-3.5 w-3.5 text-amber-400" />
-                    <span>Gemini & Mistral AI</span>
+                <div className="flex items-center gap-2 self-start sm:self-auto px-3 py-1.5 rounded-full bg-[var(--surface-elevated)] border border-primary/30 text-xs font-bold text-primary shadow-sm">
+                    <Zap className="h-3.5 w-3.5 text-amber-500" />
+                    <span>Multi-Platform Intelligence</span>
                 </div>
             </div>
 
-            {/* Quick Viral Style Presets */}
+            {/* Quick Developer Presets */}
             <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs font-semibold text-[var(--foreground-muted)] mr-1">Viral Preset:</span>
+                <span className="text-xs font-bold text-[var(--foreground-muted)] mr-1">Developer Pillars:</span>
                 {[
-                    { label: "🔥 Curiosity Gap", hint: "Curiosity gap that forces viewers to click" },
-                    { label: "📈 YouTube SEO", hint: "High-volume search keyword rankings and long-tail SEO" },
-                    { label: "⚡ Shorts & Reels Hook", hint: "Instant 3-second hook for short-form video retention" },
-                    { label: "💡 How-To Guide", hint: "Actionable step-by-step masterclass framework" },
+                    { label: "🤖 AI Full Stack", hint: "Full stack AI app with Next.js, Node.js, Express, MongoDB, and LLM APIs" },
+                    { label: "🧠 RAG & LangGraph", hint: "Retrieval-Augmented Generation, vector embeddings, and LangGraph multi-agent systems" },
+                    { label: "⚡ AI Agents", hint: "Autonomous tool-calling agents, execution flows, and real-world automation" },
+                    { label: "🚀 Project Showcase", hint: "End-to-end production architecture breakdown and design decisions" },
+                    { label: "🎓 BCA to Placement", hint: "BCA student tech roadmap, practical project building, and interview preparation" },
+                    { label: "💼 Freelance Guide", hint: "Real client projects, tech consulting, and delivering production software" },
                 ].map((preset) => (
                     <button
                         key={preset.label}
@@ -194,9 +222,9 @@ export function GenerateStep() {
                         onClick={() => handleGenerate(preset.hint)}
                         disabled={isWorking}
                         className={cn(
-                            "px-3 py-1.5 rounded-lg text-xs font-semibold transition-all",
-                            "bg-[var(--surface)] text-foreground border border-[var(--border-color)]",
-                            "hover:border-[#A78BFA]/50 hover:bg-[var(--surface-elevated)] active:scale-95",
+                            "px-3 py-1.5 rounded-lg text-xs font-semibold transition-all shadow-sm",
+                            "bg-[var(--surface-elevated)] text-foreground border border-[var(--border-color)]",
+                            "hover:border-primary/50 hover:bg-[var(--surface)] active:scale-95",
                             "disabled:opacity-40 disabled:pointer-events-none"
                         )}
                     >
@@ -213,7 +241,7 @@ export function GenerateStep() {
                     disabled={isWorking}
                     className={cn(
                         "flex items-center gap-2 px-6 h-11 rounded-[var(--radius-md)]",
-                        "text-sm font-bold text-foreground tracking-wide shadow-lg",
+                        "text-sm font-bold text-white tracking-wide shadow-lg",
                         "transition-all duration-200 active:scale-[0.97]",
                         "disabled:opacity-50 disabled:pointer-events-none",
                         generateMutation.isPending && "opacity-80"
@@ -226,12 +254,12 @@ export function GenerateStep() {
                     {generateMutation.isPending ? (
                         <>
                             <div className="h-4 w-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
-                            Crafting Viral Content…
+                            Analyzing & Generating…
                         </>
                     ) : (
                         <>
                             <Sparkles className="h-4 w-4" aria-hidden="true" />
-                            {hasGenerated ? "Regenerate Viral Content" : "Generate with AI"}
+                            {hasGenerated ? "Regenerate Content" : "Generate with AI"}
                         </>
                     )}
                 </button>
@@ -244,10 +272,10 @@ export function GenerateStep() {
                         isLoading={enhanceMutation.isPending}
                         loadingText="Enhancing…"
                         disabled={isWorking}
-                        className="gap-2 h-11 font-bold border-primary/40 text-primary hover:bg-[#A78BFA]/10 bg-[var(--surface)]"
+                        className="gap-2 h-11 font-bold border-primary/40 text-primary hover:bg-primary/10 bg-[var(--surface)]"
                     >
                         <Wand2 className="h-4 w-4" aria-hidden="true" />
-                        Enhance Virality
+                        Enhance Active Copy
                     </Button>
                 )}
 
@@ -255,14 +283,12 @@ export function GenerateStep() {
                     <button
                         type="button"
                         onClick={() => {
-                            setLocalTitle("");
-                            setLocalDesc("");
-                            setLocalHashtags([]);
+                            setPlatformDraft(activePlatform, { title: "", description: "", hashtags: [] });
                         }}
                         className="ml-auto flex items-center gap-1.5 text-xs font-semibold text-[var(--foreground-muted)] hover:text-foreground transition-colors"
                     >
                         <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
-                        Clear
+                        Clear {platformTabs.find((t) => t.id === activePlatform)?.label}
                     </button>
                 )}
             </div>
@@ -270,31 +296,30 @@ export function GenerateStep() {
             {/* Error / Fallback Banner */}
             {(generateMutation.isError || enhanceMutation.error) && !isWorking && (
                 <div
-                    className="flex items-start gap-4 rounded-[var(--radius-xl)] border border-red-500/30 p-5 animate-fade-in"
-                    style={{ background: "rgba(220, 38, 38, 0.08)" }}
+                    className="flex items-start gap-4 rounded-[var(--radius-xl)] border border-red-500/30 p-5 animate-fade-in bg-red-500/10"
                 >
                     <div className="flex h-10 w-10 items-center justify-center rounded-[var(--radius-md)] bg-red-500/20 shrink-0">
-                        <div className="h-3 w-3 rounded-full bg-red-400 animate-ping" />
+                        <div className="h-3 w-3 rounded-full bg-red-500 animate-ping" />
                     </div>
                     <div className="flex-1 min-w-0">
-                        <p className="text-sm font-bold text-red-300">AI Service Notice</p>
-                        <p className="text-xs text-red-200/80 mt-1 leading-relaxed">
-                            {generateMutation.error?.message || enhanceMutation.error?.message || "Using instant viral engine. You can retry or write manually."}
+                        <p className="text-sm font-bold text-red-500">AI Service Notice</p>
+                        <p className="text-xs text-[var(--foreground-muted)] mt-1 leading-relaxed">
+                            {generateMutation.error?.message || enhanceMutation.error?.message || "Using grounded fallback intelligence. You can retry or edit manually."}
                         </p>
                         <div className="flex items-center gap-3 mt-3">
                             <Button
                                 variant="outline"
                                 size="sm"
                                 onClick={() => handleGenerate()}
-                                className="text-xs font-bold border-red-500/40 text-red-200 hover:bg-red-500/10"
+                                className="text-xs font-bold border-red-500/40 text-red-500 hover:bg-red-500/10"
                             >
                                 Try Again
                             </Button>
                             <button
                                 onClick={() => {
-                                    setLocalTitle((draft.rawCaption.slice(0, 80) || "Viral Breakthrough 🔥"));
-                                    setLocalDesc(draft.rawCaption || "Check out this video! Packed with immense value.");
-                                    setLocalHashtags(["viral", "trending", "shorts", "reels", "crosspost"]);
+                                    handleTitleChange(draft.rawCaption.slice(0, 80) || "Building AI Full Stack Applications");
+                                    handleDescChange(draft.rawCaption || "Step-by-step breakdown of building real-world AI applications with modern web technologies.");
+                                    setPlatformDraft(activePlatform, { hashtags: ["webdev", "fullstack", "javascript", "ai", "coding"] });
                                 }}
                                 className="text-xs font-semibold text-[var(--foreground-muted)] hover:text-foreground transition-colors"
                             >
@@ -308,7 +333,7 @@ export function GenerateStep() {
             {/* Content Area */}
             {isWorking ? (
                 <AILoadingCard
-                    label={generateMutation.isPending ? "Generating high-CTR viral content…" : "Supercharging post for maximum virality…"}
+                    label={generateMutation.isPending ? "Generating platform-tailored developer content…" : "Refining post for maximum engagement…"}
                 />
             ) : !hasGenerated ? (
                 /* Empty state */
@@ -316,22 +341,18 @@ export function GenerateStep() {
                     className={cn(
                         "flex flex-col items-center gap-5 rounded-[var(--radius-xl)]",
                         "border border-dashed border-[var(--border-color)] py-14 px-6 text-center",
-                        "bg-[var(--surface)] hover:border-primary/40 transition-colors"
+                        "bg-[var(--surface)] hover:border-primary/40 transition-colors shadow-sm"
                     )}
                 >
                     <div
-                        className="flex h-16 w-16 items-center justify-center rounded-2xl animate-float"
-                        style={{
-                            background: "radial-gradient(circle, rgba(167, 139, 250, 0.25) 0%, rgba(108, 92, 231, 0.05) 100%)",
-                            border: "1px solid rgba(167, 139, 250, 0.3)",
-                        }}
+                        className="flex h-16 w-16 items-center justify-center rounded-2xl animate-float bg-primary/10 border border-primary/20 text-primary"
                     >
-                        <Sparkles className="h-8 w-8 text-primary" aria-hidden="true" />
+                        <Sparkles className="h-8 w-8" aria-hidden="true" />
                     </div>
                     <div className="max-w-md">
-                        <p className="text-lg font-black text-foreground">Ready to make your content go viral?</p>
+                        <p className="text-lg font-black text-foreground">Ready to generate multi-platform content?</p>
                         <p className="text-sm text-[var(--foreground-muted)] mt-1.5 leading-relaxed">
-                            Click <strong className="text-foreground">Generate with AI</strong> to produce YouTube SEO titles, hook descriptions, and 20 viral hashtags.
+                            Click <strong className="text-foreground">Generate with AI</strong> or select a developer pillar to craft SEO titles, descriptions, and hashtags for YouTube, Instagram, and LinkedIn simultaneously.
                         </p>
                     </div>
                     <div className="flex flex-wrap items-center justify-center gap-3 mt-2">
@@ -339,12 +360,11 @@ export function GenerateStep() {
                             onClick={() => handleGenerate()}
                             className={cn(
                                 "flex items-center gap-2 px-6 h-11 rounded-[var(--radius-md)]",
-                                "text-sm font-bold text-foreground",
+                                "text-sm font-bold text-white shadow-md",
                                 "transition-all duration-200 active:scale-[0.97]"
                             )}
                             style={{
                                 background: "linear-gradient(135deg, #6C5CE7 0%, #8B5CF6 100%)",
-                                boxShadow: "0 0 20px rgba(108, 92, 231, 0.4)",
                             }}
                         >
                             <Sparkles className="h-4 w-4" />
@@ -352,11 +372,11 @@ export function GenerateStep() {
                         </button>
                         <button
                             type="button"
-                            className="h-11 px-5 rounded-[var(--radius-md)] font-bold text-sm text-foreground border border-[var(--border-color)] bg-[var(--surface-elevated)] hover:bg-[var(--border-color)] transition-colors"
+                            className="h-11 px-5 rounded-[var(--radius-md)] font-bold text-sm text-foreground border border-[var(--border-color)] bg-[var(--surface-elevated)] hover:bg-[var(--surface)] transition-colors"
                             onClick={() => {
-                                setLocalTitle(draft.rawCaption.slice(0, 80) || "High-Impact Video 🔥");
-                                setLocalDesc(draft.rawCaption || "Check out this video! Packed with insights.");
-                                setLocalHashtags(["viral", "trending", "shorts", "reels", "crosspost"]);
+                                handleTitleChange(draft.rawCaption.slice(0, 80) || "AI Full Stack Project Architecture");
+                                handleDescChange(draft.rawCaption || "Sharing architecture lessons from building production AI web applications.");
+                                setPlatformDraft(activePlatform, { hashtags: ["webdev", "fullstack", "coding", "softwareengineer"] });
                             }}
                         >
                             Write Manually
@@ -368,7 +388,7 @@ export function GenerateStep() {
                 <div
                     className={cn(
                         "flex flex-col gap-6 rounded-[var(--radius-xl)] border border-[var(--border-color)] bg-[var(--surface)] overflow-hidden",
-                        "shadow-xl animate-scale-in"
+                        "shadow-lg animate-scale-in"
                     )}
                 >
                     {/* Gradient top highlight */}
@@ -378,66 +398,120 @@ export function GenerateStep() {
                     />
 
                     <div className="px-6 pb-6 flex flex-col gap-6">
-                        {/* Success / virality badge */}
-                        <div className="flex items-center justify-between flex-wrap gap-2">
-                            <div
-                                className="flex items-center gap-2 rounded-lg px-3 py-1.5"
-                                style={{
-                                    background: "rgba(167, 139, 250, 0.12)",
-                                    border: "1px solid rgba(167, 139, 250, 0.25)",
-                                }}
-                            >
-                                <Sparkles className="h-4 w-4 text-primary shrink-0" aria-hidden="true" />
-                                <p className="text-xs font-bold text-primary">
-                                    Viral SEO Generated — Edit Freely
-                                </p>
+                        {/* Strategy & Content Pillar Banner */}
+                        {draft.analysis && (
+                            <div className="p-4 rounded-[var(--radius-lg)] bg-[var(--surface-elevated)] border border-primary/20 flex flex-col gap-3">
+                                <div className="flex flex-wrap items-center justify-between gap-2">
+                                    <div className="flex items-center gap-2">
+                                        <Layers className="h-4 w-4 text-primary" />
+                                        <span className="text-xs font-bold uppercase tracking-wider text-[var(--foreground-muted)]">Content Pillar:</span>
+                                        <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/30">
+                                            {draft.analysis.pillar}
+                                        </span>
+                                    </div>
+                                    {draft.analysis.targetAudience && (
+                                        <div className="flex items-center gap-1.5 text-xs text-[var(--foreground-muted)]">
+                                            <Target className="h-3.5 w-3.5 text-primary" />
+                                            <span><strong className="text-foreground">Audience:</strong> {draft.analysis.targetAudience}</span>
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="flex flex-wrap items-center gap-1.5 text-xs">
+                                    <span className="font-semibold text-[var(--foreground-muted)]">Keywords:</span>
+                                    {draft.analysis.primaryKeyword && (
+                                        <span className="px-2 py-0.5 rounded bg-[var(--surface)] text-foreground border border-primary/30 font-semibold">
+                                            #{draft.analysis.primaryKeyword}
+                                        </span>
+                                    )}
+                                    {draft.analysis.secondaryKeywords?.slice(0, 5).map((kw) => (
+                                        <span key={kw} className="px-2 py-0.5 rounded bg-[var(--surface)] text-[var(--foreground-muted)] border border-[var(--border-color)] font-normal">
+                                            #{kw}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Platform Selector Tabs */}
+                        <div className="flex flex-col gap-2">
+                            <div className="flex items-center justify-between">
+                                <span className="text-xs font-bold text-[var(--foreground-muted)] uppercase tracking-wider">
+                                    Platform Drafts (Tailored Copy)
+                                </span>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        const fullPost = `${currentDraft.title}\n\n${currentDraft.description}\n\n${currentDraft.hashtags.map((h) => `#${h}`).join(" ")}`;
+                                        copyToClipboard(fullPost, "tags");
+                                    }}
+                                    className="flex items-center gap-1.5 text-xs font-semibold text-[var(--foreground-muted)] hover:text-foreground transition-colors"
+                                >
+                                    <Copy className="h-3.5 w-3.5" />
+                                    <span>Copy Active Post</span>
+                                </button>
                             </div>
 
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    const fullPost = `${localTitle}\n\n${localDesc}\n\n${localHashtags.map((h) => `#${h}`).join(" ")}`;
-                                    copyToClipboard(fullPost, "tags");
-                                }}
-                                className="flex items-center gap-1.5 text-xs font-semibold text-[var(--foreground-muted)] hover:text-foreground transition-colors"
-                            >
-                                <Copy className="h-3.5 w-3.5" />
-                                <span>Copy Full Post</span>
-                            </button>
+                            <div className="grid grid-cols-3 gap-2 p-1 rounded-[var(--radius-lg)] bg-[var(--surface-elevated)] border border-[var(--border-color)]">
+                                {platformTabs.map((tab) => {
+                                    const Icon = tab.icon;
+                                    const isSelected = activePlatform === tab.id;
+                                    return (
+                                        <button
+                                            key={tab.id}
+                                            type="button"
+                                            onClick={() => setActivePlatform(tab.id)}
+                                            className={cn(
+                                                "flex items-center justify-center gap-2 py-2.5 px-3 rounded-[var(--radius-md)] text-xs font-bold transition-all",
+                                                isSelected
+                                                    ? "bg-[var(--surface)] text-foreground shadow-sm border border-[var(--border-color)]"
+                                                    : "text-[var(--foreground-muted)] hover:text-foreground hover:bg-[var(--surface)]/50"
+                                            )}
+                                        >
+                                            <Icon className={cn("h-4 w-4 shrink-0", tab.colorClass)} />
+                                            <span className="hidden sm:inline">{tab.label}</span>
+                                            <span className="text-[10px] hidden md:inline font-normal text-[var(--foreground-muted)]">
+                                                ({tab.badge})
+                                            </span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
                         </div>
 
                         {/* Title field */}
                         <div className="flex flex-col gap-1.5">
                             <div className="flex items-center justify-between">
                                 <label className="text-sm font-bold text-foreground flex items-center gap-1.5">
-                                    <span>Viral Video Title</span>
-                                    <span className="text-[10px] font-normal px-2 py-0.5 rounded bg-[var(--surface-elevated)] text-[var(--foreground-muted)] border border-[var(--border-color)]">
-                                        YouTube & Cross-Platform
+                                    <span>{activePlatform === "youtube" ? "YouTube SEO Video Title" : `${platformTabs.find(p => p.id === activePlatform)?.label} Headline / Title`}</span>
+                                    <span className="text-[10px] font-medium px-2 py-0.5 rounded bg-[var(--surface-elevated)] text-[var(--foreground-muted)] border border-[var(--border-color)]">
+                                        {activePlatform === "youtube" ? "Target ≤80 chars (Hard max 100)" : "Platform Specific"}
                                     </span>
                                 </label>
                                 <div className="flex items-center gap-3">
-                                    <span className={cn("text-xs font-bold tabular-nums", titleStatusColor)}>
-                                        {titleLength} / 100 chars (target ≤80)
-                                    </span>
+                                    {activePlatform === "youtube" && (
+                                        <span className={cn("text-xs tabular-nums", titleStatusColor)}>
+                                            {titleLength} / 100 chars
+                                        </span>
+                                    )}
                                     <button
                                         type="button"
-                                        onClick={() => copyToClipboard(localTitle, "title")}
+                                        onClick={() => copyToClipboard(currentDraft.title, "title")}
                                         className="text-xs text-[var(--foreground-muted)] hover:text-foreground flex items-center gap-1"
                                     >
-                                        {copiedTitle ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
+                                        {copiedTitle ? <Check className="h-3 w-3 text-emerald-500" /> : <Copy className="h-3 w-3" />}
                                         <span>{copiedTitle ? "Copied" : "Copy"}</span>
                                     </button>
                                 </div>
                             </div>
                             <input
                                 type="text"
-                                value={localTitle}
-                                onChange={(e) => setLocalTitle(e.target.value)}
-                                placeholder="Your high-CTR viral title…"
+                                value={currentDraft.title}
+                                onChange={(e) => handleTitleChange(e.target.value)}
+                                placeholder={`Enter ${platformTabs.find(p => p.id === activePlatform)?.label} title or hook…`}
                                 className={cn(
                                     "h-11 w-full rounded-[var(--radius-md)] px-3.5 text-sm font-medium",
-                                    "bg-[#07070F] text-foreground border border-[var(--border-color)] placeholder:text-[#5A5580]",
-                                    "focus:outline-none focus:border-[#A78BFA] focus:ring-2 focus:ring-[#A78BFA]/30",
+                                    "bg-[var(--surface-elevated)] text-foreground border border-[var(--border-color)] placeholder:text-[var(--foreground-muted)]",
+                                    "focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20",
                                     "transition-all"
                                 )}
                             />
@@ -447,31 +521,37 @@ export function GenerateStep() {
                         <div className="flex flex-col gap-1.5">
                             <div className="flex items-center justify-between">
                                 <label className="text-sm font-bold text-foreground flex items-center gap-1.5">
-                                    <span>SEO Description & Retention Hook</span>
+                                    <span>
+                                        {activePlatform === "youtube"
+                                            ? "YouTube Description & Timestamps"
+                                            : activePlatform === "instagram"
+                                                ? "Instagram Caption (Hook + Value + CTA)"
+                                                : "LinkedIn Article Post (Insights & Technical Lessons)"}
+                                    </span>
                                 </label>
                                 <div className="flex items-center gap-3">
                                     <span className="text-xs font-semibold text-[var(--foreground-muted)] tabular-nums">
-                                        {localDesc.length} chars
+                                        {currentDraft.description.length} chars
                                     </span>
                                     <button
                                         type="button"
-                                        onClick={() => copyToClipboard(localDesc, "desc")}
+                                        onClick={() => copyToClipboard(currentDraft.description, "desc")}
                                         className="text-xs text-[var(--foreground-muted)] hover:text-foreground flex items-center gap-1"
                                     >
-                                        {copiedDesc ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
+                                        {copiedDesc ? <Check className="h-3 w-3 text-emerald-500" /> : <Copy className="h-3 w-3" />}
                                         <span>{copiedDesc ? "Copied" : "Copy"}</span>
                                     </button>
                                 </div>
                             </div>
                             <textarea
                                 rows={7}
-                                value={localDesc}
-                                onChange={(e) => setLocalDesc(e.target.value)}
-                                placeholder="Punchy hook, key insights, and call-to-action…"
+                                value={currentDraft.description}
+                                onChange={(e) => handleDescChange(e.target.value)}
+                                placeholder="Write clear, engaging developer insights, actionable steps, and call-to-action…"
                                 className={cn(
                                     "w-full rounded-[var(--radius-md)] p-3.5 text-sm leading-relaxed",
-                                    "bg-[#07070F] text-foreground border border-[var(--border-color)] placeholder:text-[#5A5580]",
-                                    "focus:outline-none focus:border-[#A78BFA] focus:ring-2 focus:ring-[#A78BFA]/30",
+                                    "bg-[var(--surface-elevated)] text-foreground border border-[var(--border-color)] placeholder:text-[var(--foreground-muted)]",
+                                    "focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20",
                                     "transition-all resize-y"
                                 )}
                             />
@@ -481,31 +561,31 @@ export function GenerateStep() {
                         <div className="flex flex-col gap-2.5">
                             <div className="flex items-center justify-between">
                                 <span className="text-sm font-bold text-foreground flex items-center gap-2">
-                                    <span>20 Tiered Viral Hashtags</span>
-                                    <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-[var(--surface-elevated)] text-primary border border-[#A78BFA]/20">
-                                        {localHashtags.length} tags
+                                    <span>Platform Hashtags</span>
+                                    <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-[var(--surface-elevated)] text-primary border border-primary/20">
+                                        {currentDraft.hashtags.length} tags
                                     </span>
                                 </span>
                                 <button
                                     type="button"
                                     onClick={() => {
-                                        const tagsString = localHashtags.map((h) => `#${h}`).join(" ");
+                                        const tagsString = currentDraft.hashtags.map((h) => `#${h}`).join(" ");
                                         copyToClipboard(tagsString, "tags");
                                     }}
                                     className="text-xs text-[var(--foreground-muted)] hover:text-foreground flex items-center gap-1 font-semibold"
                                 >
-                                    {copiedTags ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
+                                    {copiedTags ? <Check className="h-3 w-3 text-emerald-500" /> : <Copy className="h-3 w-3" />}
                                     <span>{copiedTags ? "Copied All" : "Copy All (#tags)"}</span>
                                 </button>
                             </div>
 
-                            <div className="flex flex-wrap gap-2 p-3 rounded-[var(--radius-md)] bg-[#07070F] border border-[var(--border-color)] min-h-[48px]">
-                                {localHashtags.map((tag) => (
+                            <div className="flex flex-wrap gap-2 p-3 rounded-[var(--radius-md)] bg-[var(--surface-elevated)] border border-[var(--border-color)] min-h-[48px]">
+                                {currentDraft.hashtags.map((tag) => (
                                     <Chip
                                         key={tag}
                                         label={tag}
                                         onRemove={() => removeHashtag(tag)}
-                                        className="bg-[var(--surface-elevated)] border-[var(--border-color)] text-foreground hover:border-[#A78BFA]/50"
+                                        className="bg-[var(--surface)] border-[var(--border-color)] text-foreground hover:border-primary/50"
                                     />
                                 ))}
                                 <AddChip onAdd={addHashtag} />
@@ -532,7 +612,7 @@ export function GenerateStep() {
                     onClick={handleContinue}
                     className={cn(
                         "flex items-center gap-2 px-7 h-11 rounded-[var(--radius-md)]",
-                        "text-sm font-bold text-foreground tracking-wide shadow-lg",
+                        "text-sm font-bold text-white tracking-wide shadow-lg",
                         "transition-all duration-200 active:scale-[0.97]",
                         "disabled:opacity-40 disabled:pointer-events-none"
                     )}
@@ -548,5 +628,3 @@ export function GenerateStep() {
         </div>
     );
 }
-
-

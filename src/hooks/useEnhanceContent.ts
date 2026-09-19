@@ -11,7 +11,13 @@ export function useEnhanceContent() {
     return useMutation({
         mutationFn: (request: AIEnhanceRequest) => enhanceContent(request),
         onSuccess: (data) => {
-            setGeneratedContent(data.title, data.description, data.hashtags);
+            setGeneratedContent(
+                data.title,
+                data.description,
+                data.hashtags,
+                data.platforms,
+                data.analysis
+            );
         },
     });
 }

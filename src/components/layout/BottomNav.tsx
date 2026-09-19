@@ -75,12 +75,11 @@ export function BottomNav() {
 
     return (
         <nav
-            className="lg:hidden fixed bottom-0 left-0 right-0 z-50 flex flex-col items-center"
+            className="lg:hidden fixed bottom-0 left-0 right-0 z-50 flex flex-col items-center bg-[var(--surface)]/95 border-t border-[var(--border-color)] transition-colors duration-200"
             style={{
-                background: "rgba(12,10,30,0.97)",
                 backdropFilter: "blur(24px)",
-                borderTop: "1px solid rgba(255,255,255,0.07)",
-                boxShadow: "0 -4px 30px rgba(0,0,0,0.5)",
+                WebkitBackdropFilter: "blur(24px)",
+                boxShadow: "0 -4px 24px rgba(0,0,0,0.12)",
             }}
             aria-label="Mobile navigation"
         >
@@ -124,7 +123,7 @@ export function BottomNav() {
                                 "flex flex-1 flex-col items-center justify-center py-2 gap-1 transition-all duration-150",
                                 active ? "font-bold" : "font-medium"
                             )}
-                            style={{ color: active ? "#ec4899" : "rgba(255,255,255,0.4)" }}
+                            style={{ color: active ? "#ec4899" : "var(--foreground-muted)" }}
                             aria-label={label}
                             aria-current={active ? "page" : undefined}
                         >
@@ -133,7 +132,7 @@ export function BottomNav() {
                             </div>
                             <span
                                 className="text-[10px] leading-none transition-colors"
-                                style={{ color: active ? "#ec4899" : "rgba(255,255,255,0.35)", fontWeight: active ? 700 : 500 }}
+                                style={{ color: active ? "#ec4899" : "var(--foreground-muted)", fontWeight: active ? 700 : 500 }}
                             >
                                 {label}
                             </span>
@@ -143,7 +142,7 @@ export function BottomNav() {
             </div>
 
             {/* iOS Home Indicator Bar */}
-            <div className="w-32 h-1 rounded-full mb-1 mt-0.5" style={{ background: "rgba(255,255,255,0.15)" }} />
+            <div className="w-32 h-1 rounded-full mb-1 mt-0.5 bg-[var(--border-color)]" />
         </nav>
     );
 }

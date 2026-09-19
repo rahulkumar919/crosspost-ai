@@ -30,15 +30,14 @@ export default function CreatePage() {
     return (
         <div className="flex flex-col flex-1 min-h-0" style={{ background: "var(--background)", color: "var(--foreground-color)" }}>
 
-            {/* ── Premium Dark Header ──────────────────────────────────────── */}
+            {/* ── Sticky Header ──────────────────────────────────────── */}
             <div
-                className="sticky top-0 z-30 w-full"
+                className="sticky top-0 z-30 w-full bg-[var(--surface)]/90"
                 style={{
-                    background: "linear-gradient(180deg, var(--surface) 0%, var(--background) 100%)",
-                    backdropFilter: "blur(24px)",
-                    WebkitBackdropFilter: "blur(24px)",
-                    borderBottom: "1px solid rgba(167,139,250,0.12)",
-                    boxShadow: "0 1px 0 rgba(167,139,250,0.06), 0 8px 32px rgba(0,0,0,0.5)",
+                    backdropFilter: "blur(20px)",
+                    WebkitBackdropFilter: "blur(20px)",
+                    borderBottom: "1px solid var(--border-color)",
+                    boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
                 }}
             >
                 {/* Top accent line */}
@@ -51,11 +50,11 @@ export default function CreatePage() {
                     {/* Title row */}
                     <div className="flex items-center justify-between mb-3">
                         <div className="flex flex-col gap-0.5">
-                            <h1 className="text-base sm:text-lg font-black leading-none tracking-tight text-white">
+                            <h1 className="text-base sm:text-lg font-black leading-none tracking-tight text-[var(--foreground-color)]">
                                 Create{" "}
                                 <span
                                     style={{
-                                        background: "linear-gradient(135deg, #A78BFA 0%, #60A5FA 100%)",
+                                        background: "linear-gradient(135deg, #6C5CE7 0%, #8B5CF6 100%)",
                                         WebkitBackgroundClip: "text",
                                         WebkitTextFillColor: "transparent",
                                     }}
@@ -63,7 +62,7 @@ export default function CreatePage() {
                                     Post
                                 </span>
                             </h1>
-                            <p className="text-[11px] font-medium leading-none" style={{ color: "rgba(167,139,250,0.6)" }}>
+                            <p className="text-[11px] font-medium leading-none text-[var(--foreground-muted)]">
                                 {STEP_SUBTITLES[currentStep]}
                             </p>
                         </div>
@@ -72,10 +71,9 @@ export default function CreatePage() {
                         <div
                             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black"
                             style={{
-                                background: "linear-gradient(135deg, rgba(108,92,231,0.2) 0%, rgba(96,165,250,0.12) 100%)",
-                                border: "1px solid rgba(167,139,250,0.25)",
-                                color: "#A78BFA",
-                                boxShadow: "0 0 12px rgba(108,92,231,0.15)",
+                                background: "rgba(108,92,231,0.12)",
+                                border: "1px solid rgba(108,92,231,0.25)",
+                                color: "#6C5CE7",
                             }}
                         >
                             <span

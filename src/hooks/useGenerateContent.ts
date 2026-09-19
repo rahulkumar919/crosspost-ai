@@ -11,7 +11,13 @@ export function useGenerateContent() {
     return useMutation({
         mutationFn: (request: AIGenerateRequest) => generateContent(request),
         onSuccess: (data) => {
-            setGeneratedContent(data.title, data.description, data.hashtags);
+            setGeneratedContent(
+                data.title,
+                data.description,
+                data.hashtags,
+                data.platforms,
+                data.analysis
+            );
         },
     });
 }

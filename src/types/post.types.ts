@@ -50,6 +50,7 @@ export interface DraftPost {
     generatedDescription: string;
     generatedHashtags: string[];
     platformDrafts: Record<Platform, PlatformDraft>;
+    analysis?: import("./ai.types").AIContentAnalysis;
 }
 
 export interface PublishPlatformResult {

@@ -152,34 +152,34 @@ function AccountsPageInner() {
                     {/* Heading row */}
                     <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                         <div>
-                            <p className="text-xs font-bold tracking-widest uppercase mb-2" style={{ color: "rgba(162,155,254,0.7)" }}>
+                            <p className="text-xs font-bold tracking-widest uppercase mb-1.5 text-[#6C5CE7]">
                                 Welcome back, {firstName} 👋
                             </p>
-                            <h1 className="text-2xl sm:text-3xl font-black text-white leading-tight">
+                            <h1 className="text-2xl sm:text-3xl font-black text-[var(--foreground-color)] leading-tight">
                                 Connected{" "}
-                                <span style={{ background: "linear-gradient(135deg, #a29bfe, #6C5CE7)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                                <span style={{ background: "linear-gradient(135deg, #6C5CE7, #8B5CF6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                                     Platforms
                                 </span>
                             </h1>
-                            <p className="text-sm mt-2 leading-relaxed max-w-sm" style={{ color: "rgba(255,255,255,0.45)" }}>
+                            <p className="text-sm mt-1.5 leading-relaxed max-w-sm text-[var(--foreground-muted)]">
                                 Manage your social accounts and publish content everywhere at once.
                             </p>
                         </div>
 
                         {/* Stats pills */}
                         <div className="flex gap-3 shrink-0">
-                            <div className="flex items-center gap-2 px-4 py-2.5 rounded-2xl" style={{ background: "var(--border-color)", border: "1px solid rgba(255,255,255,0.1)" }}>
-                                <div className="h-2 w-2 rounded-full" style={{ background: "#a29bfe", boxShadow: "0 0 6px #a29bfe" }} />
+                            <div className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-[var(--surface-elevated)] border border-[var(--border-color)] shadow-sm">
+                                <div className="h-2.5 w-2.5 rounded-full bg-[#6C5CE7]" style={{ boxShadow: "0 0 8px rgba(108,92,231,0.6)" }} />
                                 <div>
-                                    <p className="text-lg font-black text-white leading-none">{isLoading ? "–" : connectedCount}</p>
-                                    <p className="text-[10px] mt-0.5 font-medium" style={{ color: "rgba(255,255,255,0.4)" }}>Connected</p>
+                                    <p className="text-lg font-black text-[var(--foreground-color)] leading-none">{isLoading ? "–" : connectedCount}</p>
+                                    <p className="text-[10px] mt-0.5 font-medium text-[var(--foreground-muted)]">Connected</p>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-2 px-4 py-2.5 rounded-2xl" style={{ background: "var(--border-color)", border: "1px solid rgba(255,255,255,0.1)" }}>
-                                <div className="h-2 w-2 rounded-full" style={{ background: "#34d399", boxShadow: "0 0 6px #34d399" }} />
+                            <div className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-[var(--surface-elevated)] border border-[var(--border-color)] shadow-sm">
+                                <div className="h-2.5 w-2.5 rounded-full bg-emerald-500" style={{ boxShadow: "0 0 8px rgba(16,185,129,0.6)" }} />
                                 <div>
-                                    <p className="text-lg font-black leading-none" style={{ color: "#34d399" }}>{isLoading ? "–" : totalCount - connectedCount}</p>
-                                    <p className="text-[10px] mt-0.5 font-medium" style={{ color: "rgba(255,255,255,0.4)" }}>Available</p>
+                                    <p className="text-lg font-black leading-none text-emerald-600 dark:text-emerald-400">{isLoading ? "–" : totalCount - connectedCount}</p>
+                                    <p className="text-[10px] mt-0.5 font-medium text-[var(--foreground-muted)]">Available</p>
                                 </div>
                             </div>
                         </div>
@@ -189,20 +189,20 @@ function AccountsPageInner() {
                     {!isLoading && (
                         <div className="mt-5">
                             <div className="flex items-center justify-between mb-1.5">
-                                <span className="text-xs font-medium" style={{ color: "rgba(255,255,255,0.4)" }}>
+                                <span className="text-xs font-medium text-[var(--foreground-muted)]">
                                     {connectedCount} of {totalCount} platforms connected
                                 </span>
-                                <span className="text-xs font-bold" style={{ color: "#a29bfe" }}>
+                                <span className="text-xs font-bold text-[#6C5CE7]">
                                     {Math.round((connectedCount / totalCount) * 100)}%
                                 </span>
                             </div>
-                            <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "var(--border-color)" }}>
+                            <div className="h-2 rounded-full overflow-hidden bg-[var(--border-color)]">
                                 <div
                                     className="h-full rounded-full transition-all duration-700"
                                     style={{
                                         width: `${(connectedCount / totalCount) * 100}%`,
-                                        background: "linear-gradient(90deg, #6C5CE7, #a29bfe)",
-                                        boxShadow: "0 0 10px rgba(108,92,231,0.6)",
+                                        background: "linear-gradient(90deg, #6C5CE7, #8B5CF6)",
+                                        boxShadow: "0 0 10px rgba(108,92,231,0.5)",
                                     }}
                                 />
                             </div>
@@ -305,29 +305,28 @@ function PlatformCard({
 
     return (
         <div
-            className="flex items-center gap-3 sm:gap-4 p-4 sm:p-5 rounded-2xl bg-[var(--surface)] transition-all duration-200 hover:shadow-none group"
+            className="flex items-center gap-3 sm:gap-4 p-4 sm:p-5 rounded-2xl bg-[var(--surface)] transition-all duration-200 hover:shadow-md group"
             style={{
                 boxShadow: isConnected
                     ? `0 2px 16px ${glow}`
-                    : "0 2px 10px rgba(0,0,0,0.06)",
+                    : "0 2px 10px rgba(0,0,0,0.04)",
                 border: isConnected
-                    ? `1.5px solid ${glow.replace("0.2)", "0.35)")}`
-                    : "1px solid rgba(0,0,0,0.07)",
+                    ? `1.5px solid ${color}40`
+                    : "1px solid var(--border-color)",
             }}
         >
             {/* Platform icon */}
             <div
-                className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-2xl relative"
+                className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-2xl relative shadow-md"
                 style={{ background: gradient }}
             >
                 <Icon className="h-6 w-6 sm:h-7 sm:w-7 text-white" />
                 {/* Connected indicator dot */}
                 {isConnected && (
                     <div
-                        className="absolute -top-1 -right-1 h-4 w-4 rounded-full border-2 border-white flex items-center justify-center"
-                        style={{ background: "#10B981" }}
+                        className="absolute -top-1 -right-1 h-4 w-4 rounded-full border-2 border-white dark:border-[var(--surface)] flex items-center justify-center bg-emerald-500 shadow-sm"
                     >
-                        <div className="h-1.5 w-1.5 rounded-full bg-[var(--surface)]" />
+                        <div className="h-1.5 w-1.5 rounded-full bg-white" />
                     </div>
                 )}
             </div>
@@ -338,8 +337,7 @@ function PlatformCard({
                     <span className="text-sm font-bold text-[var(--foreground-color)]">{label}</span>
                     {isConnected && (
                         <span
-                            className="hidden sm:inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full"
-                            style={{ background: "#D1FAE5", color: "#065F46" }}
+                            className="hidden sm:inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
                         >
                             <CheckCircle2 className="h-2.5 w-2.5" />
                             Connected
@@ -354,7 +352,7 @@ function PlatformCard({
 
                 {/* Connected date — desktop only */}
                 {formattedDate && (
-                    <p className="hidden sm:block text-[10px] text-gray-300 mt-0.5">
+                    <p className="hidden sm:block text-[10px] text-[var(--foreground-muted)] mt-0.5 opacity-80">
                         Since {formattedDate}
                     </p>
                 )}
@@ -366,12 +364,7 @@ function PlatformCard({
                     <button
                         onClick={onDisconnect}
                         disabled={isLoading}
-                        className="px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-50 hover:scale-[1.02] active:scale-95"
-                        style={{
-                            background: "rgba(239,68,68,0.07)",
-                            border: "1px solid rgba(239,68,68,0.2)",
-                            color: "#ef4444",
-                        }}
+                        className="px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-50 hover:scale-[1.02] active:scale-95 bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500/20"
                         aria-label={`Disconnect ${label}`}
                     >
                         {isLoading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Disconnect"}
@@ -382,8 +375,8 @@ function PlatformCard({
                         disabled={isLoading}
                         className="px-3 sm:px-5 py-2 rounded-xl text-xs font-bold text-white transition-all disabled:opacity-50 hover:shadow-lg hover:scale-[1.02] active:scale-95"
                         style={{
-                            background: "linear-gradient(135deg, #6C5CE7, #a29bfe)",
-                            boxShadow: "0 4px 12px rgba(108,92,231,0.4)",
+                            background: "linear-gradient(135deg, #6C5CE7, #8B5CF6)",
+                            boxShadow: "0 4px 12px rgba(108,92,231,0.35)",
                         }}
                         aria-label={`Connect ${label}`}
                     >
@@ -393,7 +386,7 @@ function PlatformCard({
 
                 {/* More options */}
                 <button
-                    className="flex items-center justify-center h-8 w-8 rounded-xl text-gray-300 hover:bg-[var(--surface-elevated)] hover:text-[var(--foreground-muted)] transition-all"
+                    className="flex items-center justify-center h-8 w-8 rounded-xl text-[var(--foreground-muted)] hover:bg-[var(--surface-elevated)] hover:text-[var(--foreground-color)] transition-all"
                     aria-label={`More options for ${label}`}
                 >
                     <MoreVertical className="h-4 w-4" />
@@ -409,32 +402,33 @@ function UploadBanner({ className }: { className?: string }) {
     return (
         <Link
             href="/create"
-            className={cn("relative block rounded-2xl overflow-hidden group", className)}
+            className={cn(
+                "relative block rounded-2xl overflow-hidden group transition-all duration-300 hover:scale-[1.01] hover:shadow-xl active:scale-[0.99]",
+                className
+            )}
             style={{
-                background: "linear-gradient(135deg, var(--surface) 0%, var(--surface-elevated) 100%)",
-                border: "1px solid rgba(108,92,231,0.3)",
+                background: "linear-gradient(135deg, #6C5CE7 0%, #4F46E5 50%, #7C3AED 100%)",
+                boxShadow: "0 8px 24px rgba(108,92,231,0.35)",
             }}
         >
-            {/* Glow */}
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full" style={{ background: "radial-gradient(circle, rgba(108,92,231,0.4) 0%, transparent 70%)" }} />
-            </div>
+            {/* Ambient subtle light glow */}
+            <div className="absolute -top-12 -right-12 w-44 h-44 rounded-full bg-white/15 blur-2xl pointer-events-none" />
+            <div className="absolute -bottom-10 -left-10 w-36 h-36 rounded-full bg-purple-300/10 blur-xl pointer-events-none" />
 
             <div className="relative p-5">
                 {/* Top row */}
                 <div className="flex items-start justify-between gap-3 mb-4">
                     <div
-                        className="flex h-12 w-12 items-center justify-center rounded-2xl shrink-0"
+                        className="flex h-12 w-12 items-center justify-center rounded-2xl shrink-0 bg-white/20 backdrop-blur-md border border-white/30"
                         style={{
-                            background: "linear-gradient(135deg, #6C5CE7, #a29bfe)",
-                            boxShadow: "0 6px 20px rgba(108,92,231,0.5)",
+                            boxShadow: "0 4px 16px rgba(0,0,0,0.15)",
                         }}
                     >
                         <CloudUpload className="h-5 w-5 text-white" />
                     </div>
 
                     {/* Platform icons */}
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1.5">
                         {[
                             { color: "#FF0000", label: "YT" },
                             { color: "#E1306C", label: "IG" },
@@ -442,8 +436,8 @@ function UploadBanner({ className }: { className?: string }) {
                         ].map((p) => (
                             <div
                                 key={p.label}
-                                className="h-7 w-7 rounded-full flex items-center justify-center text-white text-[9px] font-black"
-                                style={{ background: p.color, boxShadow: `0 2px 8px ${p.color}60` }}
+                                className="h-7 w-7 rounded-full flex items-center justify-center text-white text-[9px] font-black border border-white/20 shadow-sm"
+                                style={{ background: p.color, boxShadow: `0 2px 8px ${p.color}80` }}
                             >
                                 {p.label}
                             </div>
@@ -452,25 +446,23 @@ function UploadBanner({ className }: { className?: string }) {
                 </div>
 
                 {/* Text */}
-                <p className="font-black text-white text-[15px] leading-snug mb-1">
-                    Upload Your{" "}
-                    <span style={{ color: "#a29bfe" }}>Video</span>
+                <p className="font-black text-white text-[17px] leading-snug mb-1">
+                    Upload Your <span className="text-violet-200">Video</span>
                 </p>
-                <p className="text-xs leading-relaxed mb-4" style={{ color: "rgba(255,255,255,0.45)" }}>
+                <p className="text-xs text-white/80 leading-relaxed mb-4">
                     AI optimizes and publishes to all your connected platforms instantly.
                 </p>
 
                 {/* CTA */}
                 <div
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white transition-all group-hover:shadow-lg group-hover:scale-[1.02]"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-[#6C5CE7] bg-white transition-all group-hover:shadow-lg group-hover:scale-[1.02]"
                     style={{
-                        background: "linear-gradient(135deg, #6C5CE7, #a29bfe)",
-                        boxShadow: "0 4px 14px rgba(108,92,231,0.4)",
+                        boxShadow: "0 4px 14px rgba(0,0,0,0.15)",
                     }}
                 >
-                    <CloudUpload className="h-3.5 w-3.5" />
-                    Start Uploading
-                    <ChevronRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
+                    <CloudUpload className="h-3.5 w-3.5 text-[#6C5CE7]" />
+                    <span>Start Uploading</span>
+                    <ChevronRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform text-[#6C5CE7]" />
                 </div>
             </div>
         </Link>
@@ -482,17 +474,12 @@ function UploadBanner({ className }: { className?: string }) {
 function AIToolsPanel() {
     return (
         <div
-            className="rounded-2xl bg-[var(--surface)] p-5"
-            style={{
-                boxShadow: "0 2px 16px rgba(0,0,0,0.06)",
-                border: "1px solid rgba(0,0,0,0.05)",
-            }}
+            className="rounded-2xl bg-[var(--surface)] p-5 border border-[var(--border-color)] shadow-sm"
         >
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                     <div
-                        className="h-8 w-8 flex items-center justify-center rounded-xl"
-                        style={{ background: "rgba(108,92,231,0.1)" }}
+                        className="h-8 w-8 flex items-center justify-center rounded-xl bg-[#6C5CE7]/10"
                     >
                         <span style={{ fontSize: "15px" }}>✨</span>
                     </div>
@@ -507,14 +494,10 @@ function AIToolsPanel() {
                 {aiTools.map(({ icon: Icon, label, desc, color, bg }) => (
                     <button
                         key={label}
-                        className="flex flex-col gap-2 p-3 rounded-xl text-left transition-all hover:shadow-none active:scale-95 group"
-                        style={{
-                            background: "#FAFAFA",
-                            border: "1px solid rgba(0,0,0,0.06)",
-                        }}
+                        className="flex flex-col gap-2 p-3 rounded-xl text-left transition-all bg-[var(--surface-elevated)] border border-[var(--border-color)] hover:border-[#6C5CE7]/40 hover:scale-[1.02] active:scale-95 group"
                     >
                         <div
-                            className="flex h-9 w-9 items-center justify-center rounded-xl"
+                            className="flex h-9 w-9 items-center justify-center rounded-xl shadow-sm"
                             style={{ background: bg }}
                         >
                             <Icon className="h-4 w-4" style={{ color }} />

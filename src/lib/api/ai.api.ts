@@ -6,20 +6,12 @@ import type {
     AIEnhanceResponse,
 } from "@/types/ai.types";
 
-// ─── Backend response shape ────────────────────────────────────────────────
-
-interface AIBackendResponse {
-    title: string;
-    description: string;
-    hashtags: string[];
-}
-
 // ─── API Functions ─────────────────────────────────────────────────────────
 
 export async function generateContent(
     request: AIGenerateRequest
 ): Promise<AIGenerateResponse> {
-    const res = await apiClient.post<AIBackendResponse>("/ai/generate", {
+    const res = await apiClient.post<AIGenerateResponse>("/ai/generate", {
         rawCaption: request.rawCaption,
         mediaType: request.mediaType,
         platforms: request.platforms,
@@ -30,7 +22,7 @@ export async function generateContent(
 export async function enhanceContent(
     request: AIEnhanceRequest
 ): Promise<AIEnhanceResponse> {
-    const res = await apiClient.post<AIBackendResponse>("/ai/enhance", {
+    const res = await apiClient.post<AIEnhanceResponse>("/ai/enhance", {
         title: request.title,
         description: request.description,
         hashtags: request.hashtags,

@@ -40,58 +40,53 @@ export function Sidebar() {
 
     return (
         <aside
-            className="hidden lg:flex flex-col w-[220px] shrink-0 min-h-screen sticky top-0 self-start overflow-y-auto sidebar-scroll"
-            style={{ background: "linear-gradient(180deg, #0D0A2E 0%, #0f0c35 100%)" }}
+            className="hidden lg:flex flex-col w-[220px] shrink-0 min-h-screen sticky top-0 self-start overflow-y-auto sidebar-scroll bg-[var(--surface)] border-r border-[var(--border-color)]"
+            style={{ transition: "background-color 0.2s, border-color 0.2s" }}
         >
             {/* ── Logo ── */}
             <div className="px-5 pt-6 pb-4">
                 <Link href="/accounts" className="flex flex-col items-center gap-2">
                     <div
-                        className="relative h-[72px] w-[72px] rounded-2xl overflow-hidden"
-                        style={{ boxShadow: "0 0 30px rgba(108,92,231,0.6), 0 0 60px rgba(108,92,231,0.2)" }}
+                        className="relative h-[68px] w-[68px] rounded-2xl overflow-hidden shadow-lg"
+                        style={{ boxShadow: "0 0 24px rgba(108,92,231,0.4)" }}
                     >
                         <Image
                             src="/logo.png"
                             alt="CrossPost AI"
                             fill
-                            sizes="72px"
+                            sizes="68px"
                             className="object-cover"
                             priority
                         />
                     </div>
                     <div className="text-center leading-none">
-                        <p className="text-white font-black text-[15px] tracking-tight">
-                            CrossPost <span style={{ color: "#a29bfe" }}>AI</span>
+                        <p className="text-[var(--foreground-color)] font-black text-[15px] tracking-tight">
+                            CrossPost <span className="text-[#6C5CE7]">AI</span>
                         </p>
-                        <p className="text-[9px] font-semibold mt-1 tracking-[0.12em] uppercase" style={{ color: "rgba(255,255,255,0.35)" }}>
+                        <p className="text-[9px] font-semibold mt-1 tracking-[0.12em] uppercase text-[var(--foreground-muted)]">
                             One Post, Every Platform
                         </p>
                     </div>
                 </Link>
             </div>
 
-            <div className="mx-5 my-2" style={{ height: "1px", background: "rgba(255,255,255,0.07)" }} />
+            <div className="mx-5 my-1 h-[1px] bg-[var(--border-color)]" />
 
             {/* ── Upload Video CTA ── */}
             <div className="px-3 pt-3 pb-1">
                 <Link
                     href="/create"
-                    className="group flex items-center gap-3 w-full px-3 py-3 rounded-xl transition-all duration-200 hover:scale-[1.02]"
+                    className="group flex items-center gap-3 w-full px-3 py-3 rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-95"
                     style={{
-                        background: "linear-gradient(135deg, rgba(108,92,231,0.35) 0%, rgba(162,155,254,0.2) 100%)",
-                        border: "1px solid rgba(162,155,254,0.3)",
-                        boxShadow: "0 4px 16px rgba(108,92,231,0.2)",
+                        background: "linear-gradient(135deg, #6C5CE7 0%, #7C3AED 100%)",
+                        boxShadow: "0 4px 16px rgba(108,92,231,0.35)",
                     }}
                 >
                     {/* Icon */}
                     <div
-                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-all duration-200 group-hover:scale-110"
-                        style={{
-                            background: "linear-gradient(135deg, #6C5CE7, #a29bfe)",
-                            boxShadow: "0 4px 12px rgba(108,92,231,0.5)",
-                        }}
+                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/20 transition-all duration-200 group-hover:scale-110 text-white"
                     >
-                        <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4 text-white" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" aria-hidden="true">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                             <polyline points="17 8 12 3 7 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                             <line x1="12" y1="3" x2="12" y2="15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -103,20 +98,20 @@ export function Sidebar() {
                         <p className="text-[12px] font-black text-white leading-none">
                             Upload Video
                         </p>
-                        <p className="text-[10px] mt-0.5 truncate" style={{ color: "rgba(162,155,254,0.7)" }}>
+                        <p className="text-[10px] mt-0.5 truncate text-white/75">
                             AI optimizes for all platforms
                         </p>
                     </div>
 
                     {/* Arrow */}
-                    <svg viewBox="0 0 16 16" fill="currentColor" className="h-3 w-3 shrink-0 text-white/40 group-hover:text-white/80 transition-colors" aria-hidden="true">
+                    <svg viewBox="0 0 16 16" fill="currentColor" className="h-3 w-3 shrink-0 text-white/60 group-hover:text-white transition-colors" aria-hidden="true">
                         <path fillRule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
                     </svg>
                 </Link>
             </div>
 
             {/* ── Main nav ── */}
-            <nav className="flex-1 px-3 py-2 space-y-0.5">
+            <nav className="flex-1 px-3 py-2 space-y-1">
                 {mainNav.map(({ href, label, icon: Icon }, idx) => {
                     const active = isActive(href);
                     return (
@@ -125,11 +120,13 @@ export function Sidebar() {
                             href={href}
                             className={cn(
                                 "flex items-center gap-3 px-3 py-[9px] rounded-xl text-[13px] font-medium transition-all duration-150",
-                                active ? "text-white" : "text-white/45 hover:text-white/75 hover:bg-white/5"
+                                active
+                                    ? "text-white shadow-md font-bold"
+                                    : "text-[var(--foreground-muted)] hover:text-[var(--foreground-color)] hover:bg-[var(--surface-elevated)]"
                             )}
                             style={active ? {
-                                background: "linear-gradient(135deg, #5b21b6 0%, #6C5CE7 100%)",
-                                boxShadow: "0 4px 14px rgba(108,92,231,0.4)",
+                                background: "linear-gradient(135deg, #6C5CE7 0%, #7C3AED 100%)",
+                                boxShadow: "0 4px 14px rgba(108,92,231,0.35)",
                             } : {}}
                         >
                             <Icon className="h-[17px] w-[17px] shrink-0" aria-hidden="true" />
@@ -139,17 +136,16 @@ export function Sidebar() {
                 })}
             </nav>
 
-            <div className="mx-5 my-2" style={{ height: "1px", background: "rgba(255,255,255,0.07)" }} />
+            <div className="mx-5 my-1 h-[1px] bg-[var(--border-color)]" />
 
             {/* ── Install App button (only visible when installable) ── */}
             <InstallButton variant="sidebar" />
 
             {/* ── Theme Toggle ── */}
             <div
-                className="mx-3 mb-2 flex items-center justify-between px-3 py-2.5 rounded-xl"
-                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
+                className="mx-3 mb-2 flex items-center justify-between px-3 py-2.5 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border-color)]"
             >
-                <span className="text-[11px] font-semibold" style={{ color: "rgba(255,255,255,0.45)" }}>Appearance</span>
+                <span className="text-[11px] font-semibold text-[var(--foreground-muted)]">Appearance</span>
                 <ThemeToggle />
             </div>
 
@@ -158,12 +154,11 @@ export function Sidebar() {
                 {/* Sign out popup */}
                 {profileOpen && (
                     <div
-                        className="mb-2 rounded-xl overflow-hidden"
-                        style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)" }}
+                        className="mb-2 rounded-xl overflow-hidden bg-[var(--surface-elevated)] border border-[var(--border-color)] shadow-lg"
                     >
                         <button
                             onClick={() => signOut({ callbackUrl: "/login" })}
-                            className="flex items-center gap-3 w-full px-3 py-2.5 text-xs font-semibold text-red-400 hover:bg-red-500/10 transition-colors"
+                            className="flex items-center gap-3 w-full px-3 py-2.5 text-xs font-semibold text-red-500 hover:bg-red-500/10 transition-colors"
                         >
                             <LogOut className="h-4 w-4 shrink-0" aria-hidden="true" />
                             Sign out
@@ -174,7 +169,7 @@ export function Sidebar() {
                 {/* Profile card */}
                 <button
                     onClick={() => setProfileOpen(!profileOpen)}
-                    className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl transition-all duration-150 hover:bg-white/5 group"
+                    className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl transition-all duration-150 hover:bg-[var(--surface-elevated)] group"
                     aria-expanded={profileOpen}
                     aria-label="User profile menu"
                 >
@@ -184,8 +179,7 @@ export function Sidebar() {
                         <img
                             src={userImage}
                             alt={userName}
-                            className="h-8 w-8 shrink-0 rounded-xl object-cover"
-                            style={{ boxShadow: "0 0 0 2px rgba(162,155,254,0.5)" }}
+                            className="h-8 w-8 shrink-0 rounded-xl object-cover ring-2 ring-primary/40"
                         />
                     ) : (
                         <div
@@ -201,11 +195,11 @@ export function Sidebar() {
 
                     {/* Name & email */}
                     <div className="flex-1 min-w-0 text-left">
-                        <p className="text-[12px] font-bold text-white/90 truncate leading-none">
+                        <p className="text-[12px] font-bold text-[var(--foreground-color)] truncate leading-none">
                             {userName}
                         </p>
                         {userEmail && (
-                            <p className="text-[10px] text-white/35 truncate mt-0.5">
+                            <p className="text-[10px] text-[var(--foreground-muted)] truncate mt-0.5">
                                 {userEmail}
                             </p>
                         )}
@@ -214,7 +208,7 @@ export function Sidebar() {
                     {/* Chevron */}
                     <ChevronUp
                         className={cn(
-                            "h-3.5 w-3.5 shrink-0 text-white/30 transition-transform duration-200 group-hover:text-white/60",
+                            "h-3.5 w-3.5 shrink-0 text-[var(--foreground-muted)] transition-transform duration-200 group-hover:text-[var(--foreground-color)]",
                             profileOpen ? "rotate-0" : "rotate-180"
                         )}
                         aria-hidden="true"
