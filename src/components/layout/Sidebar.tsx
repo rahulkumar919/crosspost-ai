@@ -3,16 +3,18 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import {
     Link2, BookOpen, Clock,
     CalendarDays, BarChart3,
     LogOut, ChevronUp,
+    MessageCircle, Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { InstallButton } from "@/components/pwa/InstallButton";
 import { ThemeToggle } from "./ThemeToggle";
+import { useDraftPostStore } from "@/store/useDraftPostStore";
 
 const mainNav = [
     { href: "/accounts", label: "Connected Accounts", icon: Link2 },
@@ -21,10 +23,18 @@ const mainNav = [
     { href: "/analytics", label: "Analytics", icon: BarChart3 },
 ];
 
+const communityNav = [
+    { href: "/inbox", label: "Inbox & DMs", icon: MessageCircle },
+    { href: "/automations", label: "Automations", icon: Zap },
+    { href: "/knowledge", label: "Knowledge Base", icon: BookOpen },
+];
+
 export function Sidebar() {
     const pathname = usePathname();
+    const router = useRouter();
     const { data: session } = useSession();
     const [profileOpen, setProfileOpen] = React.useState(false);
+    const resetDraft = useDraftPostStore((s) => s.resetDraft);
 
     const isOnAccounts = pathname === "/accounts" || pathname === "/";
 
@@ -74,8 +84,14 @@ export function Sidebar() {
 
             {/* ── Upload Video CTA ── */}
             <div className="px-3 pt-3 pb-1">
-                <Link
-                    href="/create"
+                <button
+                    type="button"
+                    onClick={() => {
+                        // Always reset the draft so stale video/publish state
+                        // from the previous post is completely cleared
+                        resetDraft();
+                        router.push("/create");
+                    }}
                     className="group flex items-center gap-3 w-full px-3 py-3 rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-95"
                     style={{
                         background: "linear-gradient(135deg, #6C5CE7 0%, #7C3AED 100%)",
@@ -107,7 +123,7 @@ export function Sidebar() {
                     <svg viewBox="0 0 16 16" fill="currentColor" className="h-3 w-3 shrink-0 text-white/60 group-hover:text-white transition-colors" aria-hidden="true">
                         <path fillRule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
                     </svg>
-                </Link>
+                </button>
             </div>
 
             {/* ── Main nav ── */}
@@ -127,6 +143,36 @@ export function Sidebar() {
                             style={active ? {
                                 background: "linear-gradient(135deg, #6C5CE7 0%, #7C3AED 100%)",
                                 boxShadow: "0 4px 14px rgba(108,92,231,0.35)",
+                            } : {}}
+                        >
+                            <Icon className="h-[17px] w-[17px] shrink-0" aria-hidden="true" />
+                            <span>{label}</span>
+                        </Link>
+                    );
+                })}
+
+                {/* ── Community divider ── */}
+                <div className="pt-2 pb-1 px-3">
+                    <p className="text-[9px] font-black uppercase tracking-[0.14em]" style={{ color: "var(--foreground-muted)" }}>
+                        Community &amp; AI
+                    </p>
+                </div>
+
+                {communityNav.map(({ href, label, icon: Icon }, idx) => {
+                    const active = isActive(href);
+                    return (
+                        <Link
+                            key={`community-${href}-${idx}`}
+                            href={href}
+                            className={cn(
+                                "flex items-center gap-3 px-3 py-[9px] rounded-xl text-[13px] font-medium transition-all duration-150",
+                                active
+                                    ? "text-white shadow-md font-bold"
+                                    : "text-[var(--foreground-muted)] hover:text-[var(--foreground-color)] hover:bg-[var(--surface-elevated)]"
+                            )}
+                            style={active ? {
+                                background: "linear-gradient(135deg, #ec4899 0%, #a78bfa 100%)",
+                                boxShadow: "0 4px 14px rgba(236,72,153,0.35)",
                             } : {}}
                         >
                             <Icon className="h-[17px] w-[17px] shrink-0" aria-hidden="true" />

@@ -156,26 +156,20 @@ export const useDraftPostStore = create<DraftPostState>()(
         {
             name: "crosspost_draft_store",
             storage: createJSONStorage(() => sessionStorage),
+            // ⚠️  mediaFile is intentionally NOT persisted.
+            // File objects cannot be serialized to JSON — they lose their binary
+            // data on reload. Persisting a zero-byte stub causes Cloudinary to
+            // reject the upload with "No file uploaded". Users must re-select
+            // the file if they refresh or navigate away mid-flow.
             partialize: (state) => ({
                 currentStep: state.currentStep,
                 draft: {
                     ...state.draft,
-                    mediaFile: state.draft.mediaFile
-                        ? {
-                            file: new File([], state.draft.mediaFile.file?.name || "media", {
-                                type: state.draft.mediaFile.type === "video" ? "video/mp4" : "image/jpeg",
-                            }),
-                            previewUrl: state.draft.mediaFile.previewUrl,
-                            type: state.draft.mediaFile.type,
-                            durationSeconds: state.draft.mediaFile.durationSeconds,
-                            originalSize: state.draft.mediaFile.originalSize,
-                            optimizedSize: state.draft.mediaFile.optimizedSize,
-                            width: state.draft.mediaFile.width,
-                            height: state.draft.mediaFile.height,
-                            aspectRatio: state.draft.mediaFile.aspectRatio,
-                        }
-                        : null,
+                    mediaFile: null,   // never persist — always require fresh upload
                 },
+                // publishJob is kept so the Publish step can continue polling
+                // after a soft navigation (same tab, no full refresh)
+                publishJob: state.publishJob,
             }),
         }
     )

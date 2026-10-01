@@ -291,13 +291,23 @@ export function PublishStep() {
         }
     };
 
-    // Auto-start publish on mount exactly once
+    // Guard: if no media file and no publish job already in progress,
+    // redirect back to upload — this happens when navigating directly to
+    // the publish step without going through the full flow (e.g. stale sessionStorage)
     React.useEffect(() => {
-        if (!hasStartedRef.current && !publishJob) {
+        if (!publishJob && !draft.mediaFile) {
+            setStep("upload");
+        }
+    }, []); // run once on mount only
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // Auto-start publish on mount exactly once (only when we have a media file)
+    React.useEffect(() => {
+        if (!hasStartedRef.current && !publishJob && draft.mediaFile) {
             hasStartedRef.current = true;
             handlePublish();
         }
-    }, [handlePublish, publishJob]);
+    }, [handlePublish, publishJob, draft.mediaFile]);
 
     const allDone = publishJob?.results.every(
         (r) => r.status === "published" || r.status === "failed"
