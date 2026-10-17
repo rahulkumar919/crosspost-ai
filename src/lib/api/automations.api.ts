@@ -13,6 +13,7 @@ export type AutomationTriggerType =
     | "WHATSAPP_MESSAGE"
     | "WHATSAPP_KEYWORD";
 
+
 // Must match Prisma AutomationConditionOperator enum: CONTAINS | EXACT | STARTS_WITH | ANY
 export type AutomationConditionOperator = "CONTAINS" | "EXACT" | "STARTS_WITH" | "ANY";
 

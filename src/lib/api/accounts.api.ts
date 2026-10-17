@@ -57,3 +57,39 @@ export async function connectAccount(platform: Platform): Promise<void> {
 export async function disconnectAccount(platform: Platform): Promise<void> {
     await apiClient.delete(`/accounts/${platform.toUpperCase()}`);
 }
+
+// ─── Instagram media listing ──────────────────────────────────────────────────
+
+export interface InstagramMediaItem {
+    id: string;
+    media_type: "IMAGE" | "VIDEO" | "CAROUSEL_ALBUM";
+    media_url?: string;
+    thumbnail_url?: string;
+    permalink: string;
+    caption?: string;
+    timestamp: string;
+    like_count?: number;
+    comments_count?: number;
+}
+
+export interface InstagramMediaPage {
+    items: InstagramMediaItem[];
+    next_cursor: string | null;
+}
+
+/** Fetch paginated Instagram media. Pass cursor from previous response for next page. */
+export async function fetchInstagramMedia(
+    limit = 20,
+    cursor?: string
+): Promise<InstagramMediaPage> {
+    const params: Record<string, string | number> = { limit };
+    if (cursor) params.cursor = cursor;
+    const res = await apiClient.get<InstagramMediaPage>(`/accounts/instagram/media`, { params });
+    return res.data;
+}
+
+/** Fetch a single Instagram media item by ID (for card thumbnails). */
+export async function fetchInstagramMediaById(mediaId: string): Promise<InstagramMediaItem> {
+    const res = await apiClient.get<InstagramMediaItem>(`/accounts/instagram/media/${mediaId}`);
+    return res.data;
+}
