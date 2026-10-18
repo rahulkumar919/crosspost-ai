@@ -19,13 +19,12 @@ import { useDraftPostStore } from "@/store/useDraftPostStore";
 const mainNav = [
     { href: "/accounts", label: "Connected Accounts", icon: Link2 },
     { href: "/history", label: "Post History", icon: Clock },
+    { href: "/automations", label: "Automations", icon: Zap },
     { href: "/calendar", label: "Content Calendar", icon: CalendarDays },
-    { href: "/analytics", label: "Analytics", icon: BarChart3 },
 ];
 
 const communityNav = [
     { href: "/inbox", label: "Inbox & DMs", icon: MessageCircle },
-    { href: "/automations", label: "Automations", icon: Zap },
     { href: "/knowledge", label: "Knowledge Base", icon: BookOpen },
 ];
 

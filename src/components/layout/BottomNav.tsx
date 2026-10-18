@@ -58,13 +58,11 @@ const navItems: NavItem[] = [
         ),
     },
     {
-        href: "/analytics",
-        label: "Analytics",
+        href: "/automations",
+        label: "Automate",
         renderIcon: (active) => (
             <svg viewBox="0 0 24 24" fill="none" className="h-[22px] w-[22px]" stroke="currentColor" strokeWidth={active ? "2.4" : "2"} strokeLinecap="round" strokeLinejoin="round">
-                <path d="M18 20V10" />
-                <path d="M12 20V4" />
-                <path d="M6 20v-6" />
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
             </svg>
         ),
     },
@@ -85,7 +83,10 @@ export function BottomNav() {
         >
             <div className="flex items-end justify-around w-full px-2 pt-2 pb-1">
                 {navItems.map(({ href, label, renderIcon, isCenter }) => {
-                    const active = pathname === href || (href !== "/accounts" && pathname.startsWith(href + "/")) || (href === "/accounts" && (pathname === "/accounts" || pathname === "/"));
+                    const active = pathname === href
+                        || (href !== "/accounts" && pathname.startsWith(href + "/"))
+                        || (href === "/accounts" && (pathname === "/accounts" || pathname === "/"))
+                        || (href === "/automations" && pathname.startsWith("/automations"));
 
                     if (isCenter) {
                         return (
