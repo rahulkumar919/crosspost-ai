@@ -15,7 +15,7 @@ import {
     createAutomation,
     updateAutomation,
     deleteAutomation,
-    activateAutomation,
+    activateAutomation,  
     pauseAutomation,
     type Automation,
     type AutomationExecution,
@@ -610,7 +610,7 @@ function AutomationWizard({ onClose, onSave, saving, savingError, prefill, mode 
 
     // ── Step progress bar ─────────────────────────────────────────────────────
     const StepBar = () => (
-        <div className="flex items-center gap-1.5 px-6 pt-5 pb-4 shrink-0">
+        <div className="flex items-center gap-1 px-5 pt-3 pb-3 shrink-0">
             {([1, 2, 3, 4] as WizardStep[]).map((s) => {
                 const done = step > s;
                 const active = step === s;
@@ -619,21 +619,21 @@ function AutomationWizard({ onClose, onSave, saving, savingError, prefill, mode 
                         <button
                             type="button"
                             onClick={() => done ? setStep(s) : undefined}
-                            className="flex items-center gap-1.5 shrink-0"
+                            className="flex items-center gap-1 shrink-0"
                             style={{ cursor: done ? "pointer" : "default" }}
                         >
                             <div
                                 className="h-6 w-6 rounded-full flex items-center justify-center text-[10px] font-black transition-all"
                                 style={
                                     done ? { background: "#10B981", color: "#fff" }
-                                        : active ? { background: "linear-gradient(135deg,#e1306c,#a78bfa)", color: "#fff" }
+                                        : active ? { background: "linear-gradient(135deg,#e1306c,#a78bfa)", color: "#fff", boxShadow: "0 2px 8px rgba(225,48,108,0.4)" }
                                             : { background: "var(--surface-elevated)", color: "var(--foreground-muted)" }
                                 }
                             >
                                 {done ? "✓" : s}
                             </div>
                             <span
-                                className="text-[10px] font-bold hidden sm:block"
+                                className="text-[10px] font-bold"
                                 style={{ color: active ? "var(--foreground-color)" : "var(--foreground-muted)" }}
                             >
                                 {STEP_LABELS[s]}
@@ -641,7 +641,7 @@ function AutomationWizard({ onClose, onSave, saving, savingError, prefill, mode 
                         </button>
                         {s < 4 && (
                             <div
-                                className="flex-1 h-[2px] rounded-full transition-all"
+                                className="flex-1 h-[2px] rounded-full transition-all mx-0.5"
                                 style={{ background: done ? "#10B981" : "var(--border-color)" }}
                             />
                         )}
@@ -767,7 +767,7 @@ function AutomationWizard({ onClose, onSave, saving, savingError, prefill, mode 
                 </p>
             ) : (
                 <>
-                    <div className="grid grid-cols-3 gap-2 max-h-56 overflow-y-auto pr-0.5">
+                    <div className="grid grid-cols-3 gap-2 overflow-y-auto pr-0.5" style={{ maxHeight: "36dvh" }}>
                         {visibleMedia.map((item) => {
                             const thumb = item.thumbnail_url || item.media_url || "";
                             const isSelected = selectedPostId === item.id;
@@ -1138,21 +1138,31 @@ function AutomationWizard({ onClose, onSave, saving, savingError, prefill, mode 
 
     return (
         <div
-            className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
-            style={{ background: "rgba(0,0,0,0.65)", backdropFilter: "blur(8px)" }}
+            className="fixed inset-0 z-50 flex items-end justify-center p-0"
+            style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(10px)" }}
             onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
         >
             <div
-                className="w-full sm:max-w-lg rounded-t-[28px] sm:rounded-3xl shadow-2xl flex flex-col"
-                style={{ background: "var(--surface)", border: "1px solid var(--border-color)", maxHeight: "92dvh" }}
+                className="w-full rounded-t-[32px] shadow-2xl flex flex-col"
+                style={{
+                    background: "var(--surface)",
+                    border: "1px solid var(--border-color)",
+                    maxHeight: "94dvh",
+                    // Safe area bottom padding for iOS notch
+                    paddingBottom: "env(safe-area-inset-bottom, 0px)",
+                }}
             >
+                {/* Handle bar */}
+                <div className="flex justify-center pt-3 pb-1 shrink-0">
+                    <div className="w-10 h-1 rounded-full" style={{ background: "var(--border-color)" }} />
+                </div>
                 {/* Header */}
-                <div className="flex items-center justify-between px-6 pt-5 pb-0 shrink-0">
+                <div className="flex items-center justify-between px-5 pt-3 pb-0 shrink-0">
                     <div>
-                        <h2 className="text-lg font-black" style={{ color: "var(--foreground-color)" }}>
+                        <h2 className="text-base font-black leading-tight" style={{ color: "var(--foreground-color)" }}>
                             {isEdit ? "Edit Automation" : "Comment → DM Automation"}
                         </h2>
-                        <p className="text-xs mt-0.5" style={{ color: "var(--foreground-muted)" }}>
+                        <p className="text-[11px] mt-0.5" style={{ color: "var(--foreground-muted)" }}>
                             {step === 1 ? "Select the post to watch"
                                 : step === 2 ? "Set the keyword condition"
                                     : step === 3 ? "Write the private DM"
@@ -1160,8 +1170,8 @@ function AutomationWizard({ onClose, onSave, saving, savingError, prefill, mode 
                         </p>
                     </div>
                     <button onClick={onClose}
-                        className="h-8 w-8 rounded-xl flex items-center justify-center shrink-0 transition-all hover:bg-red-500/10"
-                        style={{ color: "var(--foreground-muted)" }}>
+                        className="h-8 w-8 rounded-full flex items-center justify-center shrink-0 transition-all active:scale-90"
+                        style={{ background: "var(--surface-elevated)", color: "var(--foreground-muted)" }}>
                         <X className="h-4 w-4" />
                     </button>
                 </div>
@@ -1169,7 +1179,7 @@ function AutomationWizard({ onClose, onSave, saving, savingError, prefill, mode 
                 <StepBar />
 
                 {/* Scrollable content */}
-                <div className="flex-1 overflow-y-auto px-6 pb-4">
+                <div className="flex-1 overflow-y-auto px-5 pb-2">
                     {step === 1 && <Step1 />}
                     {step === 2 && <Step2 />}
                     {step === 3 && <Step3 />}
@@ -1177,7 +1187,7 @@ function AutomationWizard({ onClose, onSave, saving, savingError, prefill, mode 
                 </div>
 
                 {/* Footer nav */}
-                <div className="shrink-0 flex items-center justify-between gap-3 px-6 py-4"
+                <div className="shrink-0 flex items-center justify-between gap-3 px-5 py-4"
                     style={{ borderTop: "1px solid var(--border-color)" }}>
                     {step > 1 ? (
                         <button type="button" onClick={() => setStep((s) => (s - 1) as WizardStep)}
@@ -1306,38 +1316,28 @@ export default function AutomationsPage() {
     };
 
     return (
-        <div className="flex flex-col flex-1 min-h-0 p-4 sm:p-6 lg:p-8" style={{ background: "var(--background)" }}>
+        <div className="flex flex-col flex-1 min-h-0 p-3 sm:p-5" style={{ background: "var(--background)" }}>
 
             {/* ── Header ── */}
-            <div className="mb-5">
-                <div
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold mb-2"
-                    style={{ background: "rgba(108,92,231,0.12)", border: "1px solid rgba(108,92,231,0.25)", color: "#a29bfe" }}
-                >
-                    <Zap className="h-3.5 w-3.5" />
-                    <span>AI AUTOMATION</span>
-                </div>
-                <div className="flex items-start justify-between gap-4">
-                    <div>
-                        <h1 className="text-2xl sm:text-3xl font-black tracking-tight" style={{ color: "var(--foreground-color)" }}>
-                            Automations{" "}
-                            <span style={{ background: "linear-gradient(135deg,#6C5CE7,#a29bfe)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                                &amp; Bots
-                            </span>
-                        </h1>
-                        <p className="text-xs sm:text-sm mt-1" style={{ color: "var(--foreground-muted)" }}>
-                            Auto-reply to Instagram DMs, comments, and WhatsApp messages with AI or fixed responses.
-                        </p>
+            <div className="mb-4">
+                <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2">
+                        <div
+                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold"
+                            style={{ background: "rgba(108,92,231,0.12)", border: "1px solid rgba(108,92,231,0.25)", color: "#a29bfe" }}
+                        >
+                            <Zap className="h-3 w-3" />
+                            <span>AUTOMATION</span>
+                        </div>
                     </div>
                     <button
                         id="create-automation-btn"
                         onClick={() => setShowModal(true)}
-                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:scale-[1.02] active:scale-95 shrink-0"
-                        style={{ background: "linear-gradient(135deg,#6C5CE7,#a29bfe)", boxShadow: "0 4px 14px rgba(108,92,231,0.35)" }}
+                        className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-white transition-all active:scale-95"
+                        style={{ background: "linear-gradient(135deg,#e1306c,#a78bfa)", boxShadow: "0 4px 12px rgba(225,48,108,0.35)" }}
                     >
-                        <Plus className="h-4 w-4" />
-                        <span className="hidden sm:inline">New Automation</span>
-                        <span className="sm:hidden">New</span>
+                        <Plus className="h-3.5 w-3.5" />
+                        New
                     </button>
                 </div>
             </div>
@@ -1362,24 +1362,14 @@ export default function AutomationsPage() {
             )}
             {/* ── Stats ── */}
             {stats && (
-                <>
-                    {/* Row 1 */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3">
-                        <StatCard label="Total" value={stats.total} icon={Zap} color="#a29bfe" />
-                        <StatCard label="Active" value={stats.active} icon={Activity} color="#10B981" />
-                        <StatCard label="Total Runs" value={stats.totalExecs} icon={BarChart2} color="#F59E0B" />
-                        <StatCard label="AI Replies" value={stats.aiReplies} icon={Bot} color="#ec4899" />
-                    </div>
-                    {/* Row 2 */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-                        <StatCard label="Succeeded" value={stats.successExecs} icon={CheckCircle2} color="#10B981" />
-                        <StatCard label="Failed" value={stats.failedExecs} icon={AlertCircle} color="#EF4444" />
-                        <StatCard label="IG Conversations" value={stats.igConversations} icon={Camera} color="#e1306c" />
-                        <StatCard label="WA Conversations" value={stats.waConversations} icon={Users} color="#25D366" />
-                    </div>
-                </>
+                <div className="flex gap-2 mb-3 overflow-x-auto pb-1 no-scrollbar">
+                    <StatCard label="Total" value={stats.total} icon={Zap} color="#a29bfe" />
+                    <StatCard label="Active" value={stats.active} icon={Activity} color="#10B981" />
+                    <StatCard label="Runs" value={stats.totalExecs} icon={BarChart2} color="#F59E0B" />
+                    <StatCard label="Succeeded" value={stats.successExecs} icon={CheckCircle2} color="#10B981" />
+                    <StatCard label="Failed" value={stats.failedExecs} icon={AlertCircle} color="#EF4444" />
+                </div>
             )}
-
             {/* ── Automations grid ── */}
             {loading ? (
                 <div className="flex items-center justify-center py-20">
@@ -1413,7 +1403,7 @@ export default function AutomationsPage() {
                     </button>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div className="flex flex-col gap-3">
                     {automations.map((automation) => (
                         <AutomationCard
                             key={automation.id}
@@ -1427,89 +1417,98 @@ export default function AutomationsPage() {
                         />
                     ))}
                 </div>
-            )}
+            )
+            }
 
             {/* ── How it works callout ── */}
-            {!loading && (
-                <div
-                    className="mt-6 rounded-2xl p-5"
-                    style={{ background: "rgba(108,92,231,0.08)", border: "1px solid rgba(108,92,231,0.2)" }}
-                >
-                    <div className="flex items-center gap-2 mb-3">
-                        <Sparkles className="h-4 w-4" style={{ color: "#a29bfe" }} />
-                        <span className="text-xs font-black" style={{ color: "#a29bfe" }}>HOW AUTOMATIONS WORK</span>
-                    </div>
-                    <div className="flex flex-col sm:flex-row gap-4">
-                        {[
-                            { icon: MessageCircle, title: "1. Trigger", desc: "A DM, comment, or WhatsApp message arrives on your connected account." },
-                            { icon: CheckCircle2, title: "2. Condition", desc: "Optional: only fire if the message matches a keyword or phrase." },
-                            { icon: Bot, title: "3. Action", desc: "Send a fixed reply, link, tag the convo, or let AI craft a personalized response." },
-                        ].map(({ icon: Icon, title, desc }) => (
-                            <div key={title} className="flex gap-3 flex-1">
-                                <div className="h-8 w-8 rounded-xl flex items-center justify-center shrink-0" style={{ background: "rgba(108,92,231,0.15)" }}>
-                                    <Icon className="h-4 w-4" style={{ color: "#a29bfe" }} />
+            {
+                !loading && (
+                    <div
+                        className="mt-6 rounded-2xl p-5"
+                        style={{ background: "rgba(108,92,231,0.08)", border: "1px solid rgba(108,92,231,0.2)" }}
+                    >
+                        <div className="flex items-center gap-2 mb-3">
+                            <Sparkles className="h-4 w-4" style={{ color: "#a29bfe" }} />
+                            <span className="text-xs font-black" style={{ color: "#a29bfe" }}>HOW AUTOMATIONS WORK</span>
+                        </div>
+                        <div className="flex flex-col sm:flex-row gap-4">
+                            {[
+                                { icon: MessageCircle, title: "1. Trigger", desc: "A DM, comment, or WhatsApp message arrives on your connected account." },
+                                { icon: CheckCircle2, title: "2. Condition", desc: "Optional: only fire if the message matches a keyword or phrase." },
+                                { icon: Bot, title: "3. Action", desc: "Send a fixed reply, link, tag the convo, or let AI craft a personalized response." },
+                            ].map(({ icon: Icon, title, desc }) => (
+                                <div key={title} className="flex gap-3 flex-1">
+                                    <div className="h-8 w-8 rounded-xl flex items-center justify-center shrink-0" style={{ background: "rgba(108,92,231,0.15)" }}>
+                                        <Icon className="h-4 w-4" style={{ color: "#a29bfe" }} />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-black" style={{ color: "var(--foreground-color)" }}>{title}</p>
+                                        <p className="text-[11px] leading-relaxed mt-0.5" style={{ color: "var(--foreground-muted)" }}>{desc}</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className="text-xs font-black" style={{ color: "var(--foreground-color)" }}>{title}</p>
-                                    <p className="text-[11px] leading-relaxed mt-0.5" style={{ color: "var(--foreground-muted)" }}>{desc}</p>
-                                </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
-                </div>
-            )}
+                )
+            }
 
             {/* ── Modals ── */}
-            {showModal && (
-                <AutomationWizard
-                    onClose={() => { setShowModal(false); setSavingError(null); }}
-                    onSave={handleCreate}
-                    saving={saving}
-                    savingError={savingError}
-                    mode="create"
-                />
-            )}
-
-            {/* Edit modal — pre-fills wizard from existing automation */}
-            {editingId && (() => {
-                const auto = automations.find((a) => a.id === editingId);
-                if (!auto) return null;
-                const trigger = auto.triggers[0];
-                const condition = auto.conditions[0];
-                const dmAction = auto.actions.find((a) => a.type === "SEND_PRIVATE_REPLY");
-                const publicAction = auto.actions.find((a) => a.type === "SEND_PUBLIC_REPLY");
-                const cfg = dmAction?.config as Record<string, unknown> | undefined;
-                const pubCfg = publicAction?.config as Record<string, unknown> | undefined;
-                return (
+            {
+                showModal && (
                     <AutomationWizard
-                        onClose={() => { setEditingId(null); setSavingError(null); }}
-                        onSave={handleEdit}
+                        onClose={() => { setShowModal(false); setSavingError(null); }}
+                        onSave={handleCreate}
                         saving={saving}
                         savingError={savingError}
-                        mode="edit"
-                        prefill={{
-                            name: auto.name,
-                            ig_post_id: trigger?.ig_post_id ?? null,
-                            selectedPost: null, // thumbnail will reload in Step 1
-                            keywords: condition?.value ?? "",
-                            matchType: (condition?.operator === "EXACT" ? "EXACT" : "CONTAINS") as "CONTAINS" | "EXACT",
-                            anyKeyword: !condition || condition.operator === "ANY" || auto.conditions.length === 0,
-                            dmMessage: (cfg?.message as string) ?? "",
-                            resourceUrl: (cfg?.resource_url as string) ?? "",
-                            publicReplyEnabled: !!publicAction,
-                            publicReplyMessage: (pubCfg?.message as string) ?? "",
-                            cooldown: auto.cooldown_seconds,
-                        }}
+                        mode="create"
                     />
-                );
-            })()}
+                )
+            }
 
-            {logsFor && (
-                <LogsPanel
-                    automationId={logsFor}
-                    onClose={() => setLogsFor(null)}
-                />
-            )}
-        </div>
+            {/* Edit modal — pre-fills wizard from existing automation */}
+            {
+                editingId && (() => {
+                    const auto = automations.find((a) => a.id === editingId);
+                    if (!auto) return null;
+                    const trigger = auto.triggers[0];
+                    const condition = auto.conditions[0];
+                    const dmAction = auto.actions.find((a) => a.type === "SEND_PRIVATE_REPLY");
+                    const publicAction = auto.actions.find((a) => a.type === "SEND_PUBLIC_REPLY");
+                    const cfg = dmAction?.config as Record<string, unknown> | undefined;
+                    const pubCfg = publicAction?.config as Record<string, unknown> | undefined;
+                    return (
+                        <AutomationWizard
+                            onClose={() => { setEditingId(null); setSavingError(null); }}
+                            onSave={handleEdit}
+                            saving={saving}
+                            savingError={savingError}
+                            mode="edit"
+                            prefill={{
+                                name: auto.name,
+                                ig_post_id: trigger?.ig_post_id ?? null,
+                                selectedPost: null, // thumbnail will reload in Step 1
+                                keywords: condition?.value ?? "",
+                                matchType: (condition?.operator === "EXACT" ? "EXACT" : "CONTAINS") as "CONTAINS" | "EXACT",
+                                anyKeyword: !condition || condition.operator === "ANY" || auto.conditions.length === 0,
+                                dmMessage: (cfg?.message as string) ?? "",
+                                resourceUrl: (cfg?.resource_url as string) ?? "",
+                                publicReplyEnabled: !!publicAction,
+                                publicReplyMessage: (pubCfg?.message as string) ?? "",
+                                cooldown: auto.cooldown_seconds,
+                            }}
+                        />
+                    );
+                })()
+            }
+
+            {
+                logsFor && (
+                    <LogsPanel
+                        automationId={logsFor}
+                        onClose={() => setLogsFor(null)}
+                    />
+                )
+            }
+        </div >
     );
 }
