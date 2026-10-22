@@ -34,29 +34,51 @@ function Section({
 
     return (
         <div
-            className="rounded-2xl overflow-hidden transition-all"
-            style={{ background: "var(--surface)", border: "1px solid var(--border-color)" }}
+            className="rounded-3xl overflow-hidden transition-all duration-300"
+            style={{
+                background: "var(--surface)",
+                border: "1px solid rgba(108, 92, 231, 0.12)",
+                borderTop: "1.5px solid rgba(255, 255, 255, 1)",
+                boxShadow: open
+                    ? "0 18px 40px -10px rgba(108, 92, 231, 0.1), 0 4px 16px -2px rgba(15, 23, 42, 0.04), inset 0 1px 1px rgba(255, 255, 255, 1)"
+                    : "0 8px 24px -6px rgba(108, 92, 231, 0.06), 0 2px 8px -2px rgba(15, 23, 42, 0.03), inset 0 1px 1px rgba(255, 255, 255, 1)",
+            }}
         >
             <button
                 type="button"
                 onClick={() => setOpen(!open)}
-                className="flex items-center justify-between w-full px-5 py-4 transition-all hover:opacity-80"
+                className="flex items-center justify-between w-full px-6 py-4.5 transition-all hover:bg-slate-50/50"
             >
-                <div className="flex items-center gap-3">
-                    <div className="h-9 w-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: `${color}18` }}>
+                <div className="flex items-center gap-3.5">
+                    <div
+                        className="h-10 w-10 rounded-2xl flex items-center justify-center shrink-0 shadow-sm transition-transform duration-200"
+                        style={{
+                            background: `linear-gradient(135deg, ${color}18, ${color}08)`,
+                            border: `1px solid ${color}25`,
+                            boxShadow: `0 4px 12px ${color}15, inset 0 1px 0 rgba(255,255,255,0.9)`,
+                        }}
+                    >
                         <Icon className="h-5 w-5" style={{ color }} />
                     </div>
                     <div className="text-left">
-                        <p className="text-sm font-black" style={{ color: "var(--foreground-color)" }}>{title}</p>
-                        <p className="text-[11px] mt-0.5" style={{ color: "var(--foreground-muted)" }}>{subtitle}</p>
+                        <p className="text-sm font-black tracking-tight" style={{ color: "var(--foreground-color)" }}>{title}</p>
+                        <p className="text-[11.5px] mt-0.5 font-medium" style={{ color: "var(--foreground-muted)" }}>{subtitle}</p>
                     </div>
                 </div>
-                {open
-                    ? <ChevronUp className="h-4 w-4 shrink-0" style={{ color: "var(--foreground-muted)" }} />
-                    : <ChevronDown className="h-4 w-4 shrink-0" style={{ color: "var(--foreground-muted)" }} />}
+                <div
+                    className="h-8 w-8 rounded-full flex items-center justify-center transition-all duration-200"
+                    style={{
+                        background: open ? "rgba(108, 92, 231, 0.12)" : "rgba(108, 92, 231, 0.05)",
+                        boxShadow: "inset 0 1px 1px rgba(255,255,255,0.8)",
+                    }}
+                >
+                    {open
+                        ? <ChevronUp className="h-4 w-4 shrink-0" style={{ color: "#6C5CE7" }} />
+                        : <ChevronDown className="h-4 w-4 shrink-0" style={{ color: "var(--foreground-muted)" }} />}
+                </div>
             </button>
             {open && (
-                <div className="px-5 pb-5 border-t" style={{ borderColor: "var(--border-color)" }}>
+                <div className="px-6 pb-6 pt-1 border-t" style={{ borderColor: "rgba(108, 92, 231, 0.08)" }}>
                     <div className="pt-4">{children}</div>
                 </div>
             )}
@@ -97,22 +119,24 @@ function DynamicList({
     };
 
     const inputStyle: React.CSSProperties = {
-        background: "var(--background)",
-        border: "1px solid var(--border-color)",
+        background: "#F8FAFD",
+        border: "1px solid rgba(108, 92, 231, 0.12)",
+        boxShadow: "inset 2px 2px 5px rgba(15, 23, 42, 0.035), inset -2px -2px 5px rgba(255, 255, 255, 0.95)",
         color: "var(--foreground-color)",
-        borderRadius: "10px",
-        padding: "8px 12px",
+        borderRadius: "12px",
+        padding: "10px 14px",
         fontSize: "13px",
         outline: "none",
         width: "100%",
         fontFamily: "inherit",
+        transition: "all 0.2s ease",
     };
 
     return (
         <div className="space-y-3">
             {items.map((item, i) => (
-                <div key={i} className="flex gap-2 items-start">
-                    <div className={`flex-1 ${fields.length > 1 ? "grid gap-2" : ""}`} style={fields.length > 1 ? { gridTemplateColumns: `repeat(${fields.length}, 1fr)` } : {}}>
+                <div key={i} className="flex gap-2.5 items-start">
+                    <div className={`flex-1 ${fields.length > 1 ? "grid gap-2.5" : ""}`} style={fields.length > 1 ? { gridTemplateColumns: `repeat(${fields.length}, 1fr)` } : {}}>
                         {fields.map((f) =>
                             f.multiline ? (
                                 <textarea
@@ -137,8 +161,13 @@ function DynamicList({
                     <button
                         type="button"
                         onClick={() => removeItem(i)}
-                        className="h-9 w-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 transition-all hover:scale-105"
-                        style={{ background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)", color: "#EF4444" }}
+                        className="h-9 w-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 transition-all hover:scale-105 active:scale-95"
+                        style={{
+                            background: "rgba(239,68,68,0.08)",
+                            border: "1px solid rgba(239,68,68,0.2)",
+                            color: "#EF4444",
+                            boxShadow: "0 2px 6px rgba(239,68,68,0.1)",
+                        }}
                     >
                         <X className="h-3.5 w-3.5" />
                     </button>
@@ -147,8 +176,13 @@ function DynamicList({
             <button
                 type="button"
                 onClick={addItem}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold transition-all hover:scale-[1.02] active:scale-95"
-                style={{ background: "rgba(108,92,231,0.1)", border: "1px solid rgba(108,92,231,0.2)", color: "#a29bfe" }}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all hover:scale-[1.02] active:scale-95"
+                style={{
+                    background: "linear-gradient(135deg, rgba(108,92,231,0.1) 0%, rgba(236,72,153,0.06) 100%)",
+                    border: "1px solid rgba(108,92,231,0.2)",
+                    boxShadow: "0 2px 8px rgba(108,92,231,0.08), inset 0 1px 0 rgba(255,255,255,0.9)",
+                    color: "#6C5CE7",
+                }}
             >
                 <Plus className="h-3.5 w-3.5" />
                 {addLabel}
@@ -180,34 +214,49 @@ function TagsEditor({
 
     return (
         <div>
-            <div className="flex flex-wrap gap-2 mb-2">
+            <div className="flex flex-wrap gap-2 mb-3">
                 {tags.map((tag) => (
                     <span
                         key={tag}
-                        className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold"
-                        style={{ background: "rgba(108,92,231,0.12)", border: "1px solid rgba(108,92,231,0.2)", color: "#a29bfe" }}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold"
+                        style={{
+                            background: "linear-gradient(135deg, rgba(108,92,231,0.12), rgba(236,72,153,0.06))",
+                            border: "1px solid rgba(108,92,231,0.22)",
+                            boxShadow: "0 2px 6px rgba(108,92,231,0.08), inset 0 1px 0 rgba(255,255,255,0.95)",
+                            color: "#6C5CE7",
+                        }}
                     >
                         {tag}
-                        <button type="button" onClick={() => onChange(tags.filter((t) => t !== tag))}>
-                            <X className="h-2.5 w-2.5" />
+                        <button type="button" onClick={() => onChange(tags.filter((t) => t !== tag))} className="hover:text-red-500 transition-colors">
+                            <X className="h-3 w-3" />
                         </button>
                     </span>
                 ))}
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2.5">
                 <input
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); add(); } }}
                     placeholder={placeholder}
-                    className="flex-1 px-4 py-2 rounded-xl text-sm outline-none"
-                    style={{ background: "var(--background)", border: "1px solid var(--border-color)", color: "var(--foreground-color)" }}
+                    className="flex-1 px-4 py-2.5 rounded-xl text-sm outline-none"
+                    style={{
+                        background: "#F8FAFD",
+                        border: "1px solid rgba(108, 92, 231, 0.12)",
+                        boxShadow: "inset 2px 2px 5px rgba(15, 23, 42, 0.035), inset -2px -2px 5px rgba(255, 255, 255, 0.95)",
+                        color: "var(--foreground-color)",
+                    }}
                 />
                 <button
                     type="button"
                     onClick={add}
-                    className="px-3 py-2 rounded-xl text-sm font-bold transition-all hover:scale-[1.02] active:scale-95"
-                    style={{ background: "rgba(108,92,231,0.12)", border: "1px solid rgba(108,92,231,0.2)", color: "#a29bfe" }}
+                    className="px-4 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-[1.02] active:scale-95"
+                    style={{
+                        background: "linear-gradient(135deg, rgba(108,92,231,0.12), rgba(236,72,153,0.08))",
+                        border: "1px solid rgba(108,92,231,0.22)",
+                        boxShadow: "0 2px 8px rgba(108,92,231,0.1), inset 0 1px 0 rgba(255,255,255,0.9)",
+                        color: "#6C5CE7",
+                    }}
                 >
                     <Plus className="h-4 w-4" />
                 </button>
@@ -284,30 +333,25 @@ export default function KnowledgePage() {
         }
     };
 
-    const textareaStyle: React.CSSProperties = {
-        background: "var(--background)",
-        border: "1px solid var(--border-color)",
+    const inputStyle: React.CSSProperties = {
+        background: "#F8FAFD",
+        border: "1px solid rgba(108, 92, 231, 0.12)",
+        boxShadow: "inset 2px 2px 5px rgba(15, 23, 42, 0.035), inset -2px -2px 5px rgba(255, 255, 255, 0.95)",
         color: "var(--foreground-color)",
-        borderRadius: "12px",
-        padding: "12px 16px",
-        fontSize: "13px",
+        borderRadius: "14px",
+        padding: "11px 16px",
+        fontSize: "13.5px",
         outline: "none",
         width: "100%",
-        resize: "vertical",
         fontFamily: "inherit",
-        lineHeight: "1.6",
+        transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
     };
 
-    const inputStyle: React.CSSProperties = {
-        background: "var(--background)",
-        border: "1px solid var(--border-color)",
-        color: "var(--foreground-color)",
-        borderRadius: "12px",
-        padding: "10px 16px",
-        fontSize: "13px",
-        outline: "none",
-        width: "100%",
-        fontFamily: "inherit",
+    const textareaStyle: React.CSSProperties = {
+        ...inputStyle,
+        padding: "13px 16px",
+        resize: "vertical",
+        lineHeight: "1.65",
     };
 
     if (loading) {
@@ -319,37 +363,49 @@ export default function KnowledgePage() {
     }
 
     return (
-        <div className="flex flex-col flex-1 min-h-0 p-4 sm:p-6 lg:p-8" style={{ background: "var(--background)" }}>
+        <div className="flex flex-col flex-1 min-h-0 p-4 sm:p-6 lg:p-8" style={{ background: "transparent" }}>
 
             {/* ── Header ── */}
-            <div className="mb-6">
+            <div className="mb-8">
                 <div
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold mb-2"
-                    style={{ background: "rgba(108,92,231,0.12)", border: "1px solid rgba(108,92,231,0.25)", color: "#a29bfe" }}
+                    className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-black mb-3"
+                    style={{
+                        background: "linear-gradient(135deg, rgba(108,92,231,0.12), rgba(236,72,153,0.08))",
+                        border: "1px solid rgba(108,92,231,0.22)",
+                        boxShadow: "0 2px 8px rgba(108,92,231,0.08), inset 0 1px 0 rgba(255,255,255,0.9)",
+                        color: "#6C5CE7",
+                    }}
                 >
-                    <Bot className="h-3.5 w-3.5" />
-                    <span>AI BRAIN</span>
+                    <Bot className="h-3.5 w-3.5" style={{ color: "#EC4899" }} />
+                    <span style={{ background: "linear-gradient(135deg, #6C5CE7, #EC4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                        AI BRAIN COGNITION
+                    </span>
                 </div>
                 <div className="flex items-start justify-between gap-4">
                     <div>
                         <h1 className="text-2xl sm:text-3xl font-black tracking-tight" style={{ color: "var(--foreground-color)" }}>
                             Knowledge{" "}
-                            <span style={{ background: "linear-gradient(135deg,#6C5CE7,#a29bfe)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                            <span style={{ background: "linear-gradient(135deg, #6C5CE7 0%, #8B5CF6 50%, #EC4899 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                                 Base
                             </span>
                         </h1>
-                        <p className="text-xs sm:text-sm mt-1" style={{ color: "var(--foreground-muted)" }}>
-                            Train your AI bot with your brand info, FAQs, services and more.
+                        <p className="text-xs sm:text-sm mt-1 font-medium" style={{ color: "var(--foreground-muted)" }}>
+                            Train your AI bot with your brand info, FAQs, services and real-time response knowledge.
                         </p>
                     </div>
                     <button
                         id="knowledge-save-btn"
                         onClick={handleSave}
                         disabled={saving}
-                        className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:scale-[1.02] active:scale-95 shrink-0"
+                        className="flex items-center gap-2.5 px-6 py-3 rounded-2xl text-sm font-black text-white transition-all hover:scale-[1.02] active:scale-95 shrink-0"
                         style={{
-                            background: saved ? "linear-gradient(135deg,#10B981,#34D399)" : "linear-gradient(135deg,#6C5CE7,#a29bfe)",
-                            boxShadow: "0 4px 14px rgba(108,92,231,0.35)",
+                            background: saved
+                                ? "linear-gradient(135deg, #10B981 0%, #059669 100%)"
+                                : "linear-gradient(135deg, #6C5CE7 0%, #8B5CF6 50%, #EC4899 100%)",
+                            boxShadow: saved
+                                ? "0 8px 24px -4px rgba(16, 185, 129, 0.4), inset 0 1px 1px rgba(255,255,255,0.4)"
+                                : "0 8px 24px -4px rgba(108, 92, 231, 0.45), 0 2px 8px rgba(236, 72, 153, 0.25), inset 0 1px 1.5px rgba(255, 255, 255, 0.45)",
+                            border: "1px solid rgba(255, 255, 255, 0.25)",
                         }}
                     >
                         {saving ? (
@@ -365,19 +421,24 @@ export default function KnowledgePage() {
 
                 {/* Info banner */}
                 <div
-                    className="mt-4 flex items-start gap-3 rounded-2xl p-4"
-                    style={{ background: "rgba(108,92,231,0.08)", border: "1px solid rgba(108,92,231,0.2)" }}
+                    className="mt-5 flex items-start gap-3.5 rounded-2xl p-4.5"
+                    style={{
+                        background: "linear-gradient(135deg, rgba(108,92,231,0.07) 0%, rgba(236,72,153,0.04) 100%)",
+                        border: "1px solid rgba(108,92,231,0.18)",
+                        boxShadow: "0 4px 16px -2px rgba(108,92,231,0.05), inset 0 1px 1px rgba(255,255,255,0.8)",
+                    }}
                 >
-                    <Sparkles className="h-4 w-4 mt-0.5 shrink-0" style={{ color: "#a29bfe" }} />
-                    <p className="text-xs leading-relaxed" style={{ color: "var(--foreground-muted)" }}>
-                        Everything you fill in here is used by your AI bot to answer questions intelligently.
-                        The more detail you provide, the more accurate and helpful your AI will be.
+                    <div className="h-7 w-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5" style={{ background: "rgba(108,92,231,0.15)" }}>
+                        <Sparkles className="h-4 w-4" style={{ color: "#6C5CE7" }} />
+                    </div>
+                    <p className="text-xs sm:text-[12.5px] leading-relaxed font-medium" style={{ color: "var(--foreground-muted)" }}>
+                        Everything you curate here is embedded into your AI assistant. The richer your context, the more accurately your bot handles follower comments and DMs on autopilot.
                     </p>
                 </div>
             </div>
 
             {/* ── Sections ── */}
-            <div className="space-y-4 max-w-3xl">
+            <div className="space-y-5 max-w-3xl">
 
                 {/* Creator Identity */}
                 <Section icon={User} title="Creator Identity" subtitle="Your name, about, and niche topics" color="#6C5CE7" defaultOpen={true}>

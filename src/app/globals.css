@@ -49,39 +49,39 @@
 
 /* ─── CSS Custom Properties ─────────────────────────────────────────────────── */
 :root {
-  /* ── Light mode (default :root) — activated when .dark is removed ── */
-  --background: #F8F9FE;
+  /* ── Light mode: $100M Mixed-Color Whitespace & Neumorphic Canvas ── */
+  --background: #F8FAFD;
   --surface: #FFFFFF;
-  --surface-elevated: #F1EFFE;
-  --border-color: rgba(108, 92, 231, 0.14);
+  --surface-elevated: #F8FAFC;
+  --border-color: rgba(108, 92, 231, 0.12);
   --muted: #6C5CE7;
-  --foreground-color: #0F0D24;
-  --foreground-muted: #5D577D;
+  --foreground-color: #0F172A;
+  --foreground-muted: #64748B;
 
   /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #6C5CE7 0%, #8B5CF6 50%, #6366F1 100%);
-  --gradient-primary-subtle: linear-gradient(135deg, rgba(108, 92, 231, 0.08) 0%, rgba(139, 92, 246, 0.04) 100%);
-  --gradient-surface: linear-gradient(180deg, #FFFFFF 0%, #F8F9FE 100%);
+  --gradient-primary: linear-gradient(135deg, #6C5CE7 0%, #8B5CF6 50%, #EC4899 100%);
+  --gradient-primary-subtle: linear-gradient(135deg, rgba(108, 92, 231, 0.1) 0%, rgba(236, 72, 153, 0.05) 100%);
+  --gradient-surface: linear-gradient(180deg, #FFFFFF 0%, #F8FAFD 100%);
   --gradient-youtube: linear-gradient(135deg, #ff0000, #ff4757);
   --gradient-instagram: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
   --gradient-linkedin: linear-gradient(135deg, #0077b5, #00a0dc);
 
-  /* Atmospheric background glow */
-  --bg-glow: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(108, 92, 231, 0.06) 0%, transparent 70%);
-  --bg-glow-bottom: radial-gradient(ellipse 60% 40% at 80% 110%, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+  /* Mixed-color atmospheric background mesh glows */
+  --bg-glow: radial-gradient(ellipse 80% 50% at 20% -10%, rgba(108, 92, 231, 0.08) 0%, transparent 60%);
+  --bg-glow-bottom: radial-gradient(ellipse 70% 40% at 85% 10%, rgba(236, 72, 153, 0.05) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 50% 100%, rgba(56, 189, 248, 0.04) 0%, transparent 60%);
 
   /* Glows */
-  --glow-primary: 0 0 32px rgba(108, 92, 231, 0.2);
-  --glow-primary-sm: 0 0 16px rgba(108, 92, 231, 0.15);
+  --glow-primary: 0 0 32px rgba(108, 92, 231, 0.22);
+  --glow-primary-sm: 0 0 16px rgba(108, 92, 231, 0.16);
   --glow-youtube: 0 0 24px rgba(255, 0, 0, 0.16);
   --glow-instagram: 0 0 24px rgba(225, 48, 108, 0.16);
   --glow-linkedin: 0 0 24px rgba(0, 119, 181, 0.16);
 
-  /* Shadows — crisp & elevated in light */
-  --shadow-sm: 0 1px 3px rgba(15, 13, 36, 0.05), 0 1px 2px rgba(15, 13, 36, 0.03);
-  --shadow-md: 0 4px 16px rgba(108, 92, 231, 0.08), 0 2px 6px rgba(15, 13, 36, 0.04);
-  --shadow-lg: 0 12px 32px rgba(108, 92, 231, 0.12), 0 4px 12px rgba(15, 13, 36, 0.06);
-  --shadow-primary: 0 8px 24px rgba(108, 92, 231, 0.28), 0 2px 8px rgba(108, 92, 231, 0.16);
+  /* Neumorphic Shadows — Tactile & Sculpted in Light */
+  --shadow-sm: 0 2px 6px rgba(15, 23, 42, 0.04), 0 0 0 1px rgba(108, 92, 231, 0.06);
+  --shadow-md: 0 10px 25px -4px rgba(108, 92, 231, 0.08), 0 4px 10px -2px rgba(15, 23, 42, 0.03), inset 0 1px 1px rgba(255, 255, 255, 1);
+  --shadow-lg: 0 16px 36px -8px rgba(108, 92, 231, 0.12), 0 4px 14px -2px rgba(15, 23, 42, 0.04), inset 0 1px 1.5px rgba(255, 255, 255, 1);
+  --shadow-primary: 0 8px 24px -4px rgba(108, 92, 231, 0.4), 0 2px 8px rgba(236, 72, 153, 0.25), inset 0 1px 1.5px rgba(255, 255, 255, 0.4);
 }
 
 /* ─── Dark mode — activated by .dark class on <html> ── */

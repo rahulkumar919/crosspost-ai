@@ -93,8 +93,9 @@ export function Sidebar() {
                     }}
                     className="group flex items-center gap-3 w-full px-3 py-3 rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-95"
                     style={{
-                        background: "linear-gradient(135deg, #6C5CE7 0%, #7C3AED 100%)",
-                        boxShadow: "0 4px 16px rgba(108,92,231,0.35)",
+                        background: "linear-gradient(135deg, #6C5CE7 0%, #8B5CF6 50%, #EC4899 100%)",
+                        boxShadow: "0 6px 20px -2px rgba(108,92,231,0.4), inset 0 1px 1px rgba(255,255,255,0.45)",
+                        border: "1px solid rgba(255,255,255,0.25)",
                     }}
                 >
                     {/* Icon */}
@@ -113,13 +114,13 @@ export function Sidebar() {
                         <p className="text-[12px] font-black text-white leading-none">
                             Upload Video
                         </p>
-                        <p className="text-[10px] mt-0.5 truncate text-white/75">
+                        <p className="text-[10px] mt-0.5 truncate text-white/80">
                             AI optimizes for all platforms
                         </p>
                     </div>
 
                     {/* Arrow */}
-                    <svg viewBox="0 0 16 16" fill="currentColor" className="h-3 w-3 shrink-0 text-white/60 group-hover:text-white transition-colors" aria-hidden="true">
+                    <svg viewBox="0 0 16 16" fill="currentColor" className="h-3 w-3 shrink-0 text-white/70 group-hover:text-white transition-colors" aria-hidden="true">
                         <path fillRule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
                     </svg>
                 </button>
@@ -136,12 +137,13 @@ export function Sidebar() {
                             className={cn(
                                 "flex items-center gap-3 px-3 py-[9px] rounded-xl text-[13px] font-medium transition-all duration-150",
                                 active
-                                    ? "text-white shadow-md font-bold"
+                                    ? "text-white font-bold"
                                     : "text-[var(--foreground-muted)] hover:text-[var(--foreground-color)] hover:bg-[var(--surface-elevated)]"
                             )}
                             style={active ? {
                                 background: "linear-gradient(135deg, #6C5CE7 0%, #7C3AED 100%)",
-                                boxShadow: "0 4px 14px rgba(108,92,231,0.35)",
+                                boxShadow: "0 6px 18px -3px rgba(108,92,231,0.38), inset 0 1px 1px rgba(255,255,255,0.35)",
+                                border: "1px solid rgba(255,255,255,0.2)",
                             } : {}}
                         >
                             <Icon className="h-[17px] w-[17px] shrink-0" aria-hidden="true" />
@@ -166,12 +168,13 @@ export function Sidebar() {
                             className={cn(
                                 "flex items-center gap-3 px-3 py-[9px] rounded-xl text-[13px] font-medium transition-all duration-150",
                                 active
-                                    ? "text-white shadow-md font-bold"
+                                    ? "text-white font-bold"
                                     : "text-[var(--foreground-muted)] hover:text-[var(--foreground-color)] hover:bg-[var(--surface-elevated)]"
                             )}
                             style={active ? {
-                                background: "linear-gradient(135deg, #ec4899 0%, #a78bfa 100%)",
-                                boxShadow: "0 4px 14px rgba(236,72,153,0.35)",
+                                background: "linear-gradient(135deg, #ec4899 0%, #a855f7 60%, #8b5cf6 100%)",
+                                boxShadow: "0 6px 18px -3px rgba(236,72,153,0.38), inset 0 1px 1px rgba(255,255,255,0.35)",
+                                border: "1px solid rgba(255,255,255,0.2)",
                             } : {}}
                         >
                             <Icon className="h-[17px] w-[17px] shrink-0" aria-hidden="true" />
