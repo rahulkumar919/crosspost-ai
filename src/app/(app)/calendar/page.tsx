@@ -88,7 +88,7 @@ export default function ContentCalendarPage() {
                         <span>CONTENT SCHEDULER & PIPELINE</span>
                     </div>
                     <h1 className="text-2xl sm:text-3xl font-black text-[var(--foreground-color)] tracking-tight">
-                        Content <span style={{ color: "#6C5CE7" }}>Calendar</span>
+                        Content <span style={{ color: "#6366F1" }}>Calendar</span>
                     </h1>
                     <p className="text-xs sm:text-sm text-[var(--foreground-muted)] mt-1">
                         Plan, schedule, and automate multi-channel publishing with platform-specific timing.
@@ -107,7 +107,7 @@ export default function ContentCalendarPage() {
                                     ? "text-white shadow-sm"
                                     : "text-[var(--foreground-muted)] hover:text-[var(--foreground-color)]"
                             )}
-                            style={viewMode === "MONTH" ? { background: "linear-gradient(135deg, #6C5CE7, #a29bfe)" } : {}}
+                            style={viewMode === "MONTH" ? { background: "linear-gradient(135deg, #6366F1, #A5B4FC)" } : {}}
                         >
                             <LayoutGrid className="h-3.5 w-3.5" />
                             <span>Month</span>
@@ -120,7 +120,7 @@ export default function ContentCalendarPage() {
                                     ? "text-white shadow-sm"
                                     : "text-[var(--foreground-muted)] hover:text-[var(--foreground-color)]"
                             )}
-                            style={viewMode === "WEEK" ? { background: "linear-gradient(135deg, #6C5CE7, #a29bfe)" } : {}}
+                            style={viewMode === "WEEK" ? { background: "linear-gradient(135deg, #6366F1, #A5B4FC)" } : {}}
                         >
                             <CalendarIcon className="h-3.5 w-3.5" />
                             <span>Week</span>
@@ -132,8 +132,8 @@ export default function ContentCalendarPage() {
                         onClick={() => openScheduleForDate(new Date())}
                         className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white shadow-md hover:shadow-lg transition-all"
                         style={{
-                            background: "linear-gradient(135deg, #6C5CE7, #a29bfe)",
-                            boxShadow: "0 4px 14px rgba(108,92,231,0.35)",
+                            background: "linear-gradient(135deg, #6366F1, #A5B4FC)",
+                            boxShadow: "0 4px 14px rgba(99,102,241,0.35)",
                         }}
                     >
                         <Plus className="h-4 w-4" />
@@ -247,8 +247,8 @@ export default function ContentCalendarPage() {
                                     onClick={() => openScheduleForDate(new Date())}
                                     className="mt-3 px-3 py-1.5 rounded-xl text-white text-[10px] font-bold transition-all hover:scale-[1.02] active:scale-95"
                                     style={{
-                                        background: "linear-gradient(135deg, #6C5CE7, #a29bfe)",
-                                        boxShadow: "0 4px 10px rgba(108,92,231,0.35)",
+                                        background: "linear-gradient(135deg, #6366F1, #A5B4FC)",
+                                        boxShadow: "0 4px 10px rgba(99,102,241,0.35)",
                                     }}
                                 >
                                     Schedule Now +
@@ -957,7 +957,7 @@ function SchedulePostModal({
                             type="submit"
                             disabled={isSubmitting}
                             className="px-5 py-2.5 rounded-xl text-xs font-bold text-white shadow-md hover:shadow-lg transition-all disabled:opacity-50"
-                            style={{ background: "linear-gradient(135deg, #6C5CE7, #a29bfe)" }}
+                            style={{ background: "linear-gradient(135deg, #6366F1, #A5B4FC)" }}
                         >
                             {isSubmitting ? "Scheduling..." : "Confirm Schedule 🚀"}
                         </button>

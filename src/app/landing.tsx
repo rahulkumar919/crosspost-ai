@@ -407,30 +407,34 @@ export default function LandingPage() {
         /* ── Nav Link Transitions ── */
         .nav-item {
           color: var(--tx-muted);
-          font-size: 14px;
-          font-weight: 600;
-          padding: 8px 16px;
-          border-radius: 12px;
+          font-size: 13.5px;
+          font-weight: 500;
+          padding: 6px 14px;
+          border-radius: 10px;
           text-decoration: none;
           background: transparent;
           border: 1px solid transparent;
           cursor: pointer;
-          transition: all .25s ease;
+          transition: all .2s ease;
+          letter-spacing: -0.01em;
         }
         .nav-item:hover, .nav-item.act {
           color: var(--tx-main);
-          background: var(--neuro-surf);
-          box-shadow: var(--neuro-pill);
-          border-color: var(--bdr-subtle);
+          background: rgba(99,102,241,0.08);
+          border-color: rgba(99,102,241,0.15);
         }
 
-        /* ── Clean Scrollbars ── */
-        ::-webkit-scrollbar { width: 7px; }
-        ::-webkit-scrollbar-track { background: var(--canvas); }
-        ::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.3); border-radius: 9999px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(236,72,153,0.5); }
+        /* ── Header sign-in btn — hidden on small screens ── */
+        .header-signin { display: inline-flex; }
+        @media(max-width: 680px) { .header-signin { display: none !important; } }
 
-        /* ── Responsive adjustments ── */
+        /* ── Scrollbars ── */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--canvas); }
+        ::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.25); border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(99,102,241,0.45); }
+
+        /* ── Desktop phone mock — hidden on mobile ── */
         @media(max-width: 980px) {
           .desktop-phone { display: none !important; }
           .desktop-nav { display: none !important; }
@@ -439,70 +443,87 @@ export default function LandingPage() {
         @media(min-width: 981px) {
           .mob-btn { display: none !important; }
         }
+
+        /* ── Mobile overflow fixes ── */
+        @media(max-width: 640px) {
+          .neuro-pill-badge {
+            max-width: calc(100vw - 48px);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 10px;
+          }
+          .hero-headline {
+            font-size: clamp(28px, 9vw, 52px) !important;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            letter-spacing: -0.03em !important;
+          }
+          .hero-sub {
+            font-size: 15px !important;
+            line-height: 1.65 !important;
+          }
+          .hero-cta {
+            width: 100% !important;
+            padding: 15px 24px !important;
+            font-size: 15px !important;
+            border-radius: 14px !important;
+            justify-content: center !important;
+          }
+          .platform-badges {
+            flex-wrap: wrap !important;
+            gap: 8px !important;
+            justify-content: center !important;
+          }
+          .logo-sub { display: none !important; }
+        }
       `}</style>
 
-      {/* ── FLOATING BLURRED HEADER ───────────────────────────────── */}
+      {/* ── HEADER ───────────────────────────────────────────────── */}
       <header
         style={{
           position: "fixed",
-          top: 16,
+          top: 12,
           left: 0,
           right: 0,
           zIndex: 200,
-          padding: "0 clamp(16px, 4vw, 36px)",
+          padding: "0 16px",
           pointerEvents: "none",
         }}
       >
         <div
           style={{
-            maxWidth: 1240,
+            maxWidth: 1140,
             margin: "0 auto",
-            height: 64,
+            height: 56,
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            padding: "0 22px",
-            borderRadius: 22,
-            background: scrolled
-              ? (isDark ? "rgba(10, 8, 23, 0.82)" : "rgba(255, 255, 255, 0.82)")
-              : (isDark ? "rgba(14, 12, 28, 0.65)" : "rgba(255, 255, 255, 0.65)"),
+            padding: "0 16px",
+            borderRadius: 16,
+            background: isDark ? "rgba(16,14,30,0.85)" : "rgba(255,255,255,0.88)",
             backdropFilter: "blur(20px)",
             WebkitBackdropFilter: "blur(20px)",
-            border: "1px solid var(--bdr-subtle)",
-            borderTop: "1px solid var(--bdr-specular)",
-            boxShadow: scrolled
-              ? (isDark ? "0 20px 40px -15px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.1)" : "0 15px 35px -10px rgba(148,163,184,0.3)")
-              : "none",
+            border: `1px solid ${isDark ? "rgba(255,255,255,0.08)" : "rgba(99,102,241,0.12)"}`,
+            boxShadow: isDark
+              ? "0 2px 20px rgba(0,0,0,0.4)"
+              : "0 2px 16px rgba(99,91,207,0.1), 0 1px 0 rgba(255,255,255,0.8) inset",
             pointerEvents: "auto",
-            transition: "all .3s ease",
+            transition: "all .25s ease",
           }}
         >
-          {/* Brand Logo */}
-          <Link href="/" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none" }}>
-            <div
-              style={{
-                position: "relative",
-                width: 36,
-                height: 36,
-                borderRadius: 12,
-                overflow: "hidden",
-                boxShadow: "0 0 0 1.5px rgba(236,72,153,0.4), 0 6px 16px rgba(236,72,153,0.3)",
-              }}
-            >
-              <Image src="/logo.png" alt="CrossPost AI" fill sizes="36px" style={{ objectFit: "cover" }} priority />
+          {/* Brand */}
+          <Link href="/" style={{ display: "flex", alignItems: "center", gap: 9, textDecoration: "none", flexShrink: 0 }}>
+            <div style={{ position: "relative", width: 32, height: 32, borderRadius: 10, overflow: "hidden", flexShrink: 0, boxShadow: "0 0 0 1px rgba(236,72,153,0.3)" }}>
+              <Image src="/logo.png" alt="CrossPost AI" fill sizes="32px" style={{ objectFit: "cover" }} priority />
             </div>
-            <div>
-              <div style={{ fontSize: 16, fontWeight: 900, letterSpacing: "-0.03em", color: "var(--tx-main)", lineHeight: 1 }}>
-                CrossPost <span style={{ background: "linear-gradient(135deg, #ec4899, #a78bfa)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>AI</span>
-              </div>
-              <div style={{ fontSize: 9.5, color: "var(--tx-muted)", fontWeight: 600, letterSpacing: ".06em", marginTop: 2, textTransform: "uppercase" }}>
-                Omnichannel Creator OS
-              </div>
-            </div>
+            <span style={{ fontSize: 15, fontWeight: 800, letterSpacing: "-0.025em", color: "var(--tx-main)", whiteSpace: "nowrap" }}>
+              CrossPost <span style={{ color: "#6366F1" }}>AI</span>
+            </span>
           </Link>
 
-          {/* Desktop Nav Items */}
-          <nav className="desktop-nav" style={{ display: "flex", alignItems: "center", gap: 4 }}>
+          {/* Desktop nav */}
+          <nav className="desktop-nav" style={{ display: "flex", alignItems: "center", gap: 2 }}>
             {NAV.map((item) => (
               <button
                 key={item.id}
@@ -514,45 +535,73 @@ export default function LandingPage() {
             ))}
           </nav>
 
-          {/* Actions & Theme toggle */}
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          {/* Right: theme + signin + hamburger */}
+          <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+            {/* Theme toggle */}
             <button
               onClick={() => setDark(!dark)}
-              className="neuro-btn-press"
-              style={{ width: 40, height: 40, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--tx-main)" }}
-              title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+              style={{
+                width: 34, height: 34, borderRadius: 10, border: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "rgba(99,102,241,0.15)"}`,
+                background: isDark ? "rgba(255,255,255,0.06)" : "rgba(99,102,241,0.06)",
+                color: isDark ? "rgba(255,255,255,0.7)" : "#6366F1",
+                display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer",
+                transition: "all .2s",
+              }}
+              title={isDark ? "Light mode" : "Dark mode"}
             >
               {isDark ? <SunI /> : <MoonI />}
             </button>
 
+            {/* Sign in — hidden on small mobile */}
             <Link
               href="/login"
-              className="cta-radiant"
-              style={{ padding: "9px 24px", fontSize: 14, borderRadius: 14 }}
+              className="header-signin"
+              style={{
+                padding: "7px 18px",
+                fontSize: 13.5,
+                fontWeight: 700,
+                borderRadius: 10,
+                background: "linear-gradient(135deg, #6366F1, #8B5CF6)",
+                color: "#fff",
+                textDecoration: "none",
+                boxShadow: "0 2px 10px rgba(99,102,241,0.35)",
+                letterSpacing: "-0.01em",
+                whiteSpace: "nowrap",
+              }}
             >
-              Sign In <Arr />
+              Sign in →
             </Link>
 
+            {/* Hamburger — mobile only */}
             <button
-              className="mob-btn neuro-btn-press"
+              className="mob-btn"
               onClick={() => setMob(!mob)}
-              style={{ width: 40, height: 40, display: "none", alignItems: "center", justifyContent: "center", color: "var(--tx-main)" }}
+              style={{
+                width: 34, height: 34, borderRadius: 10, border: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "rgba(99,102,241,0.15)"}`,
+                background: isDark ? "rgba(255,255,255,0.06)" : "rgba(99,102,241,0.06)",
+                color: "var(--tx-main)",
+                display: "none", alignItems: "center", justifyContent: "center", cursor: "pointer",
+              }}
+              aria-label="Menu"
             >
               {mob ? <CloseI /> : <HamI />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Dropdown Panel */}
+        {/* Mobile dropdown */}
         {mob && (
           <div
-            className="neuro-card"
             style={{
-              maxWidth: 1240,
-              margin: "10px auto 0",
-              borderRadius: 22,
-              padding: "16px 20px",
+              maxWidth: 1140,
+              margin: "8px auto 0",
+              borderRadius: 14,
+              padding: "8px",
               pointerEvents: "auto",
+              background: isDark ? "rgba(16,14,30,0.95)" : "rgba(255,255,255,0.97)",
+              backdropFilter: "blur(20px)",
+              border: `1px solid ${isDark ? "rgba(255,255,255,0.08)" : "rgba(99,102,241,0.12)"}`,
+              boxShadow: isDark ? "0 8px 32px rgba(0,0,0,0.5)" : "0 8px 32px rgba(99,91,207,0.12)",
             }}
           >
             {NAV.map((l) => (
@@ -560,29 +609,28 @@ export default function LandingPage() {
                 key={l.label}
                 onClick={() => { go(l.id); setNav(l.label); }}
                 style={{
-                  display: "block",
-                  width: "100%",
-                  textAlign: "left",
-                  padding: "12px 14px",
-                  fontSize: 15,
-                  fontWeight: 700,
-                  color: nav === l.label ? "#f472b6" : "var(--tx-main)",
-                  background: "transparent",
-                  border: "none",
-                  borderRadius: 10,
-                  cursor: "pointer",
+                  display: "block", width: "100%", textAlign: "left",
+                  padding: "11px 14px", fontSize: 14, fontWeight: 600,
+                  color: nav === l.label ? "#6366F1" : "var(--tx-main)",
+                  background: nav === l.label ? "rgba(99,102,241,0.08)" : "transparent",
+                  border: "none", borderRadius: 9, cursor: "pointer",
+                  letterSpacing: "-0.01em",
                 }}
               >
                 {l.label}
               </button>
             ))}
-            <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--bdr-subtle)" }}>
+            <div style={{ padding: "8px 6px 4px", borderTop: `1px solid ${isDark ? "rgba(255,255,255,0.07)" : "rgba(99,102,241,0.1)"}`, marginTop: 4 }}>
               <Link
                 href="/login"
-                className="cta-radiant"
-                style={{ width: "100%", padding: "14px", borderRadius: 14, fontSize: 15 }}
+                style={{
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  width: "100%", padding: "12px", borderRadius: 10, fontSize: 14,
+                  fontWeight: 700, background: "linear-gradient(135deg, #6366F1, #8B5CF6)",
+                  color: "#fff", textDecoration: "none", boxShadow: "0 2px 10px rgba(99,102,241,0.3)",
+                }}
               >
-                Sign In to Studio →
+                Sign in & Launch Studio →
               </Link>
             </div>
           </div>
@@ -590,25 +638,21 @@ export default function LandingPage() {
       </header>
 
       {/* ── MAIN CONTENT SECTIONS ─────────────────────────────────── */}
-      <main style={{ paddingTop: 100 }}>
+      <main style={{ paddingTop: "clamp(80px, 10vw, 100px)" }}>
 
         {/* ── 1. HERO SECTION ───────────────────────────────────────── */}
         <section
           style={{
             position: "relative",
-            minHeight: "calc(100vh - 100px)",
             display: "flex",
             alignItems: "center",
-            padding: "clamp(60px, 8vw, 100px) clamp(20px, 5vw, 40px)",
+            padding: "clamp(48px, 8vw, 96px) clamp(16px, 5vw, 40px) clamp(60px, 8vw, 96px)",
             overflow: "hidden",
           }}
         >
-          {/* Ambient Neumorphic Light Orbs */}
-          <div aria-hidden style={{ position: "absolute", top: "10%", left: "50%", transform: "translateX(-50%)", width: 900, height: 600, background: "radial-gradient(circle, rgba(139,92,246,0.15) 0%, rgba(236,72,153,0.08) 40%, transparent 70%)", pointerEvents: "none", filter: "blur(40px)" }} />
-          <div aria-hidden style={{ position: "absolute", bottom: -80, left: "-10%", width: "50%", height: 450, background: "radial-gradient(circle, rgba(236,72,153,0.18) 0%, transparent 65%)", pointerEvents: "none", filter: "blur(60px)" }} />
-          <div aria-hidden style={{ position: "absolute", bottom: -80, right: "-10%", width: "50%", height: 450, background: "radial-gradient(circle, rgba(99,102,241,0.2) 0%, transparent 65%)", pointerEvents: "none", filter: "blur(60px)" }} />
-          {/* Subtle Grid dots */}
-          <div aria-hidden style={{ position: "absolute", inset: 0, backgroundImage: `radial-gradient(circle at 1px 1px, ${isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)"} 1px, transparent 0)`, backgroundSize: "32px 32px", pointerEvents: "none" }} />
+          {/* Ambient blobs — subtle */}
+          <div aria-hidden style={{ position: "absolute", top: "-20%", left: "50%", transform: "translateX(-50%)", width: 700, height: 500, background: `radial-gradient(circle, ${isDark ? "rgba(99,102,241,0.12)" : "rgba(99,102,241,0.08)"} 0%, transparent 70%)`, pointerEvents: "none", filter: "blur(50px)" }} />
+          <div aria-hidden style={{ position: "absolute", bottom: 0, right: "-5%", width: "40%", height: 350, background: `radial-gradient(circle, ${isDark ? "rgba(139,92,246,0.1)" : "rgba(139,92,246,0.06)"} 0%, transparent 70%)`, pointerEvents: "none", filter: "blur(60px)" }} />
 
           <div
             style={{
@@ -680,101 +724,125 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Center Hero Copy with Neumorphic Spacing */}
-            <div style={{ flex: "1 1 auto", textAlign: "center", maxWidth: 660, margin: "0 auto" }}>
+            {/* Center Hero Copy */}
+            <div style={{ flex: "1 1 auto", textAlign: "center", maxWidth: 620, margin: "0 auto", padding: "0 8px" }}>
               <FadeUp delay={50}>
-                <div className="neuro-pill-badge" style={{ marginBottom: 28 }}>
-                  <ZapI s={15} />
-                  <span style={{ background: "linear-gradient(135deg, #ec4899, #a78bfa)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                    Next-Gen Omnichannel Automation
+                {/* Small category label — not a giant pill */}
+                <div style={{
+                  display: "inline-flex", alignItems: "center", gap: 6,
+                  marginBottom: 24,
+                  padding: "5px 12px", borderRadius: 20,
+                  border: `1px solid ${isDark ? "rgba(99,102,241,0.3)" : "rgba(99,102,241,0.2)"}`,
+                  background: isDark ? "rgba(99,102,241,0.1)" : "rgba(99,102,241,0.07)",
+                }}>
+                  <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#6366F1", boxShadow: "0 0 6px #6366F1" }} />
+                  <span style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "#6366F1" }}>
+                    Omnichannel Automation
                   </span>
                 </div>
               </FadeUp>
 
-              <FadeUp delay={120}>
+              <FadeUp delay={100}>
                 <h1
+                  className="hero-headline"
                   style={{
-                    fontSize: "clamp(38px, 6vw, 76px)",
-                    fontWeight: 900,
-                    lineHeight: 1.02,
-                    letterSpacing: "-0.04em",
-                    marginBottom: 26,
+                    fontSize: "clamp(32px, 6.5vw, 72px)",
+                    fontWeight: 800,
+                    lineHeight: 1.06,
+                    letterSpacing: "-0.035em",
+                    marginBottom: 20,
                     color: "var(--tx-main)",
+                    wordBreak: "break-word",
                   }}
                 >
-                  Publish Everywhere.
-                  <span
-                    style={{
-                    display: "block",
-                    background: "linear-gradient(135deg, #ec4899 0%, #d946ef 40%, #8b5cf6 100%)",
+                  Publish once,{" "}
+                  <span style={{
+                    background: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
-                    textShadow: "0 10px 30px rgba(236,72,153,0.3)",
-                  }}
-                >
-                  Zero Extra Effort.
-                </span>
+                  }}>
+                    reach everywhere.
+                  </span>
                 </h1>
               </FadeUp>
 
-              <FadeUp delay={200}>
+              <FadeUp delay={180}>
                 <p
+                  className="hero-sub"
                   style={{
-                    fontSize: "clamp(15px, 2vw, 18px)",
+                    fontSize: "clamp(15px, 1.8vw, 18px)",
                     color: "var(--tx-sub)",
-                    maxWidth: 540,
-                    margin: "0 auto 36px",
-                    lineHeight: 1.8,
+                    maxWidth: 500,
+                    margin: "0 auto 32px",
+                    lineHeight: 1.7,
+                    fontWeight: 400,
                   }}
                 >
-                  Upload your video once. CrossPost AI adapts your copy and simultaneously delivers to <strong style={{ color: "var(--tx-main)" }}>YouTube Shorts</strong>, <strong style={{ color: "var(--tx-main)" }}>Instagram Reels</strong>, and <strong style={{ color: "var(--tx-main)" }}>LinkedIn</strong> with algorithmic precision.
+                  Upload your video once — CrossPost AI writes platform-native copy and publishes to{" "}
+                  <strong style={{ color: "var(--tx-main)", fontWeight: 600 }}>YouTube</strong>,{" "}
+                  <strong style={{ color: "var(--tx-main)", fontWeight: 600 }}>Instagram Reels</strong>, and{" "}
+                  <strong style={{ color: "var(--tx-main)", fontWeight: 600 }}>LinkedIn</strong> simultaneously.
                 </p>
               </FadeUp>
 
-              {/* Main Call to Action */}
-              <FadeUp delay={280}>
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
+              {/* CTA */}
+              <FadeUp delay={240}>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
                   <Link
                     href="/login"
-                    className="cta-radiant"
+                    className="hero-cta"
                     style={{
-                      padding: "clamp(16px, 2.2vw, 20px) clamp(36px, 5vw, 56px)",
-                      fontSize: "clamp(16px, 2vw, 19px)",
-                      borderRadius: 20,
+                      display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
+                      padding: "14px 36px",
+                      fontSize: 15,
+                      fontWeight: 700,
+                      borderRadius: 12,
+                      background: "linear-gradient(135deg, #6366F1, #8B5CF6)",
+                      color: "#fff",
+                      textDecoration: "none",
+                      boxShadow: "0 4px 20px rgba(99,102,241,0.4), 0 1px 0 rgba(255,255,255,0.2) inset",
+                      letterSpacing: "-0.01em",
+                      transition: "all .2s ease",
                     }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 6px 24px rgba(99,102,241,0.5), 0 1px 0 rgba(255,255,255,0.2) inset"; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = ""; (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 20px rgba(99,102,241,0.4), 0 1px 0 rgba(255,255,255,0.2) inset"; }}
                   >
-                    <span>Sign In &amp; Launch Studio</span>
-                    <Arr />
+                    Get started free
+                    <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><path fillRule="evenodd" d="M8.22 2.97a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06l2.97-2.97H3.75a.75.75 0 0 1 0-1.5h7.44L8.22 4.03a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" /></svg>
                   </Link>
-                  <p style={{ fontSize: 12.5, color: "var(--tx-muted)", fontWeight: 600 }}>
-                    Instant Setup · No Credit Card Required · Free Access
+                  <p style={{ fontSize: 12, color: "var(--tx-muted)", fontWeight: 500, letterSpacing: "0.01em" }}>
+                    Free to start · No credit card required
                   </p>
                 </div>
               </FadeUp>
 
-              {/* Platform Badges with Specular Outsets */}
-              <FadeUp delay={360}>
-                <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 42 }}>
-                  {[
-                    { label: "YouTube", icon: <YT size={20} />, col: "rgba(255,0,0,0.18)" },
-                    { label: "Instagram", icon: <IG size={20} />, col: "rgba(225,48,108,0.18)" },
-                    { label: "LinkedIn", icon: <LI size={20} />, col: "rgba(10,102,194,0.18)" },
-                  ].map((p, i) => (
-                    <div
-                      key={i}
-                      className="neuro-btn-press"
-                      style={{
-                        padding: "10px 18px",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 10,
-                        borderRadius: 16,
-                      }}
-                    >
-                      {p.icon}
-                      <span style={{ fontSize: 13, fontWeight: 800, color: "var(--tx-main)" }}>{p.label}</span>
-                    </div>
-                  ))}
+              {/* Platform logos — clean row */}
+              <FadeUp delay={320}>
+                <div style={{ marginTop: 44 }}>
+                  <p style={{ fontSize: 11, fontWeight: 600, color: "var(--tx-muted)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
+                    Publishes to
+                  </p>
+                  <div className="platform-badges" style={{ display: "flex", justifyContent: "center", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
+                    {[
+                      { label: "YouTube", icon: <YT size={18} />, border: "rgba(255,0,0,0.2)" },
+                      { label: "Instagram", icon: <IG size={18} />, border: "rgba(225,48,108,0.2)" },
+                      { label: "LinkedIn", icon: <LI size={18} />, border: "rgba(10,102,194,0.2)" },
+                    ].map((p, i) => (
+                      <div
+                        key={i}
+                        style={{
+                          display: "flex", alignItems: "center", gap: 7,
+                          padding: "8px 14px", borderRadius: 10,
+                          background: isDark ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.8)",
+                          border: `1px solid ${p.border}`,
+                          boxShadow: isDark ? "none" : "0 1px 4px rgba(0,0,0,0.06)",
+                        }}
+                      >
+                        {p.icon}
+                        <span style={{ fontSize: 12.5, fontWeight: 600, color: "var(--tx-main)" }}>{p.label}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </FadeUp>
             </div>
@@ -1278,7 +1346,7 @@ export default function LandingPage() {
         {/* ── 8. PRE-FOOTER INVITATION CTA ──────────────────────────── */}
         <section style={{ padding: "clamp(80px, 10vw, 120px) clamp(20px, 5vw, 40px)", position: "relative", overflow: "hidden" }}>
           <div aria-hidden style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 800, height: 400, background: "radial-gradient(ellipse, rgba(236,72,153,0.2) 0%, rgba(139,92,246,0.15) 50%, transparent 70%)", pointerEvents: "none", filter: "blur(60px)" }} />
-          
+
           <div className="neuro-card" style={{ maxWidth: 960, margin: "0 auto", borderRadius: 36, padding: "clamp(48px, 7vw, 76px) clamp(24px, 5vw, 56px)", textAlign: "center", position: "relative", zIndex: 10 }}>
             <h2 style={{ fontSize: "clamp(30px, 5.5vw, 56px)", fontWeight: 900, letterSpacing: "-0.04em", color: "var(--tx-main)", lineHeight: 1.08, marginBottom: 18 }}>
               Ready to Expand Your Reach <span style={{ background: "linear-gradient(135deg, #ec4899, #a78bfa)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>10x?</span>

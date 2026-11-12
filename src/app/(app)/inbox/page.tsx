@@ -70,9 +70,9 @@ function ConversationItem({ conv, active, onClick }: ConversationItemProps) {
             onClick={onClick}
             className="w-full flex items-start gap-3 px-4 py-3 transition-all duration-150 text-left border-b"
             style={{
-                background: active ? "rgba(108,92,231,0.12)" : "transparent",
+                background: active ? "rgba(99,102,241,0.12)" : "transparent",
                 borderColor: "var(--border-color)",
-                borderLeft: active ? "3px solid #6C5CE7" : "3px solid transparent",
+                borderLeft: active ? "3px solid #6366F1" : "3px solid transparent",
             }}
             onMouseEnter={e => { if (!active) e.currentTarget.style.background = "var(--surface-elevated)"; }}
             onMouseLeave={e => { if (!active) e.currentTarget.style.background = "transparent"; }}
@@ -125,7 +125,7 @@ function ConversationItem({ conv, active, onClick }: ConversationItemProps) {
                     {conv.unread_count > 0 && (
                         <span
                             className="shrink-0 min-w-[18px] h-[18px] rounded-full flex items-center justify-center text-[10px] font-black text-white px-1"
-                            style={{ background: "#6C5CE7" }}
+                            style={{ background: "#6366F1" }}
                         >
                             {conv.unread_count}
                         </span>
@@ -169,7 +169,7 @@ function MessageBubble({ msg }: MessageBubbleProps) {
                         isOutbound
                             ? {
                                 background: isBot
-                                    ? "linear-gradient(135deg,#6C5CE7,#a29bfe)"
+                                    ? "linear-gradient(135deg,#6366F1,#A5B4FC)"
                                     : "linear-gradient(135deg,#F59E0B,#F97316)",
                                 color: "#fff",
                                 borderBottomRightRadius: "4px",
@@ -313,7 +313,7 @@ export default function InboxPage() {
         <div className="flex flex-col items-center justify-center flex-1 py-20">
             <div
                 className="h-16 w-16 rounded-2xl flex items-center justify-center mb-4"
-                style={{ background: "linear-gradient(135deg,#6C5CE7,#a29bfe)", boxShadow: "0 8px 28px rgba(108,92,231,0.3)" }}
+                style={{ background: "linear-gradient(135deg,#6366F1,#A5B4FC)", boxShadow: "0 8px 28px rgba(99,102,241,0.3)" }}
             >
                 <Inbox className="h-8 w-8 text-white" />
             </div>
@@ -335,7 +335,7 @@ export default function InboxPage() {
             <div className="px-4 sm:px-6 pt-5 pb-3 shrink-0">
                 <div
                     className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold mb-2"
-                    style={{ background: "rgba(108,92,231,0.12)", border: "1px solid rgba(108,92,231,0.25)", color: "#a29bfe" }}
+                    style={{ background: "rgba(99,102,241,0.12)", border: "1px solid rgba(99,102,241,0.25)", color: "#A5B4FC" }}
                 >
                     <Sparkles className="h-3.5 w-3.5" />
                     <span>UNIFIED INBOX</span>
@@ -344,7 +344,7 @@ export default function InboxPage() {
                     <div>
                         <h1 className="text-2xl sm:text-3xl font-black tracking-tight" style={{ color: "var(--foreground-color)" }}>
                             Inbox{" "}
-                            <span style={{ background: "linear-gradient(135deg,#6C5CE7,#a29bfe)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                            <span style={{ background: "linear-gradient(135deg,#6366F1,#A5B4FC)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                                 &amp; DMs
                             </span>
                         </h1>
@@ -366,7 +366,7 @@ export default function InboxPage() {
                 {/* Stats row */}
                 {stats && (
                     <div className="flex gap-3 mt-4">
-                        <StatCard label="Total" value={stats.total} color="#a29bfe" />
+                        <StatCard label="Total" value={stats.total} color="#A5B4FC" />
                         <StatCard label="Unread" value={stats.unread} color="#F59E0B" />
                         <StatCard label="Human Mode" value={stats.humanMode} color="#ec4899" />
                         <StatCard label="Instagram" value={stats.igCount} color="#e1306c" />
@@ -432,7 +432,7 @@ export default function InboxPage() {
                                     className="px-2.5 py-1 rounded-full text-[11px] font-bold transition-all"
                                     style={
                                         channelFilter === ch
-                                            ? { background: "#6C5CE7", color: "#fff" }
+                                            ? { background: "#6366F1", color: "#fff" }
                                             : { background: "var(--surface-elevated)", color: "var(--foreground-muted)", border: "1px solid var(--border-color)" }
                                     }
                                 >
@@ -460,7 +460,7 @@ export default function InboxPage() {
                     <div className="flex-1 overflow-y-auto">
                         {loading ? (
                             <div className="flex items-center justify-center py-12">
-                                <RefreshCw className="h-5 w-5 animate-spin" style={{ color: "#6C5CE7" }} />
+                                <RefreshCw className="h-5 w-5 animate-spin" style={{ color: "#6366F1" }} />
                             </div>
                         ) : conversations.length === 0 ? (
                             renderEmptyState()
@@ -540,7 +540,7 @@ export default function InboxPage() {
                                         </span>
                                         <span className="text-[11px]" style={{ color: "var(--foreground-muted)" }}>·</span>
                                         {selectedConv.mode === "BOT"
-                                            ? <><Bot className="h-3 w-3" style={{ color: "#a29bfe" }} /><span className="text-[11px]" style={{ color: "#a29bfe" }}>Bot mode</span></>
+                                            ? <><Bot className="h-3 w-3" style={{ color: "#A5B4FC" }} /><span className="text-[11px]" style={{ color: "#A5B4FC" }}>Bot mode</span></>
                                             : <><User2 className="h-3 w-3" style={{ color: "#F59E0B" }} /><span className="text-[11px]" style={{ color: "#F59E0B" }}>Human mode</span></>
                                         }
                                     </div>
@@ -561,7 +561,7 @@ export default function InboxPage() {
                                         <button
                                             onClick={handleResumeBot}
                                             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all hover:scale-[1.02] active:scale-95"
-                                            style={{ background: "rgba(108,92,231,0.12)", border: "1px solid rgba(108,92,231,0.25)", color: "#a29bfe" }}
+                                            style={{ background: "rgba(99,102,241,0.12)", border: "1px solid rgba(99,102,241,0.25)", color: "#A5B4FC" }}
                                         >
                                             <Bot className="h-3.5 w-3.5" />
                                             <span className="hidden sm:inline">Resume Bot</span>
@@ -574,7 +574,7 @@ export default function InboxPage() {
                             <div className="flex-1 overflow-y-auto px-4 py-4" style={{ minHeight: 0 }}>
                                 {msgLoading ? (
                                     <div className="flex items-center justify-center py-12">
-                                        <RefreshCw className="h-5 w-5 animate-spin" style={{ color: "#6C5CE7" }} />
+                                        <RefreshCw className="h-5 w-5 animate-spin" style={{ color: "#6366F1" }} />
                                     </div>
                                 ) : messages.length === 0 ? (
                                     <div className="flex flex-col items-center justify-center py-16 gap-3">
@@ -597,7 +597,7 @@ export default function InboxPage() {
                                 {selectedConv.mode === "BOT" && (
                                     <div
                                         className="mb-2 flex items-center gap-2 px-3 py-2 rounded-xl text-xs"
-                                        style={{ background: "rgba(108,92,231,0.1)", border: "1px solid rgba(108,92,231,0.2)", color: "#a29bfe" }}
+                                        style={{ background: "rgba(99,102,241,0.1)", border: "1px solid rgba(99,102,241,0.2)", color: "#A5B4FC" }}
                                     >
                                         <Bot className="h-3.5 w-3.5" />
                                         <span>Bot is handling this conversation. Take over to reply manually.</span>
@@ -636,8 +636,8 @@ export default function InboxPage() {
                                         style={{
                                             background: !replyText.trim() || sending || selectedConv.mode === "BOT"
                                                 ? "var(--surface-elevated)"
-                                                : "linear-gradient(135deg,#6C5CE7,#a29bfe)",
-                                            boxShadow: !replyText.trim() ? "none" : "0 4px 14px rgba(108,92,231,0.35)",
+                                                : "linear-gradient(135deg,#6366F1,#A5B4FC)",
+                                            boxShadow: !replyText.trim() ? "none" : "0 4px 14px rgba(99,102,241,0.35)",
                                         }}
                                     >
                                         {sending

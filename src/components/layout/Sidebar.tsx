@@ -6,15 +6,17 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import {
-    Link2, BookOpen, Clock,
-    CalendarDays, BarChart3,
-    LogOut, ChevronUp,
-    MessageCircle, Zap,
+    Link2, BookOpen, Clock, CalendarDays,
+    LogOut, ChevronDown, MessageCircle, Zap,
+    Settings, HelpCircle, Sparkles,
+    Upload,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { InstallButton } from "@/components/pwa/InstallButton";
 import { ThemeToggle } from "./ThemeToggle";
 import { useDraftPostStore } from "@/store/useDraftPostStore";
+
+// ─── Nav config ──────────────────────────────────────────────────────────────
 
 const mainNav = [
     { href: "/accounts", label: "Connected Accounts", icon: Link2 },
@@ -26,7 +28,67 @@ const mainNav = [
 const communityNav = [
     { href: "/inbox", label: "Inbox & DMs", icon: MessageCircle },
     { href: "/knowledge", label: "Knowledge Base", icon: BookOpen },
+    { href: "/ai-tools", label: "AI Tools", icon: Sparkles },
 ];
+
+const bottomNav = [
+    { href: "/settings", label: "Settings", icon: Settings },
+    { href: "/help", label: "Help", icon: HelpCircle },
+];
+
+// ─── NavItem ─────────────────────────────────────────────────────────────────
+
+function NavItem({
+    href,
+    label,
+    icon: Icon,
+    active,
+}: {
+    href: string;
+    label: string;
+    icon: React.ElementType;
+    active: boolean;
+}) {
+    return (
+        <Link
+            href={href}
+            className={cn(
+                "group flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] font-medium transition-all duration-150 outline-none",
+                active
+                    ? "bg-[var(--sidebar-active-bg)] text-[var(--sidebar-active-fg)] font-semibold"
+                    : "text-[var(--foreground-muted)] hover:bg-[var(--sidebar-hover-bg)] hover:text-[var(--foreground-color)]"
+            )}
+        >
+            <Icon
+                className={cn(
+                    "h-4 w-4 shrink-0 transition-colors",
+                    active
+                        ? "text-[var(--sidebar-active-fg)]"
+                        : "text-[var(--muted)] group-hover:text-[var(--foreground-color)]"
+                )}
+            />
+            <span className="truncate">{label}</span>
+            {active && (
+                <div
+                    className="ml-auto h-1.5 w-1.5 rounded-full shrink-0"
+                    style={{ background: "var(--sidebar-active-fg)" }}
+                />
+            )}
+        </Link>
+    );
+}
+
+// ─── SectionLabel ────────────────────────────────────────────────────────────
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+    return (
+        <p className="px-3 py-1 text-[11px] font-semibold uppercase tracking-wider" style={{ color: "var(--foreground-muted)" }}>
+            {children}
+        </p>
+    );
+}
+
+// ─── Sidebar ─────────────────────────────────────────────────────────────────
 
 export function Sidebar() {
     const pathname = usePathname();
@@ -44,222 +106,132 @@ export function Sidebar() {
 
     const userName = session?.user?.name ?? "User";
     const userEmail = session?.user?.email ?? "";
-    const userInitial = userName.charAt(0).toUpperCase();
     const userImage = session?.user?.image;
+    const userInitial = userName.charAt(0).toUpperCase();
 
     return (
         <aside
-            className="hidden lg:flex flex-col w-[220px] shrink-0 min-h-screen sticky top-0 self-start overflow-y-auto sidebar-scroll bg-[var(--surface)] border-r border-[var(--border-color)]"
-            style={{ transition: "background-color 0.2s, border-color 0.2s" }}
+            className={cn(
+                "hidden lg:flex flex-col w-[232px] shrink-0 min-h-screen sticky top-0 sidebar-scroll overflow-y-auto",
+                "border-r transition-colors duration-200 neu-card"
+            )}
+            style={{
+                background: "var(--sidebar-bg)",
+                borderRightColor: "var(--sidebar-border)",
+                borderRadius: 0,
+            }}
         >
             {/* ── Logo ── */}
-            <div className="px-5 pt-6 pb-4">
-                <Link href="/accounts" className="flex flex-col items-center gap-2">
-                    <div
-                        className="relative h-[68px] w-[68px] rounded-2xl overflow-hidden shadow-lg"
-                        style={{ boxShadow: "0 0 24px rgba(108,92,231,0.4)" }}
-                    >
-                        <Image
-                            src="/logo.png"
-                            alt="CrossPost AI"
-                            fill
-                            sizes="68px"
-                            className="object-cover"
-                            priority
-                        />
-                    </div>
-                    <div className="text-center leading-none">
-                        <p className="text-[var(--foreground-color)] font-black text-[15px] tracking-tight">
-                            CrossPost <span className="text-[#6C5CE7]">AI</span>
-                        </p>
-                        <p className="text-[9px] font-semibold mt-1 tracking-[0.12em] uppercase text-[var(--foreground-muted)]">
-                            One Post, Every Platform
-                        </p>
-                    </div>
-                </Link>
+            <div className="flex items-center gap-2.5 px-4 h-14 shrink-0 border-b" style={{ borderColor: "var(--sidebar-border)" }}>
+                <div className="relative h-7 w-7 rounded-lg overflow-hidden shrink-0 shadow-sm">
+                    <Image src="/logo.png" alt="CrossPost AI" fill sizes="28px" className="object-cover" priority />
+                </div>
+                <div className="min-w-0">
+                    <p className="text-[14px] font-bold tracking-tight leading-none" style={{ color: "var(--foreground-color)" }}>
+                        CrossPost <span style={{ color: "#6366F1" }}>AI</span>
+                    </p>
+                    <p className="text-[10px] mt-0.5 leading-none" style={{ color: "var(--foreground-muted)" }}>
+                        One Post, Every Platform
+                    </p>
+                </div>
             </div>
 
-            <div className="mx-5 my-1 h-[1px] bg-[var(--border-color)]" />
-
-            {/* ── Upload Video CTA ── */}
-            <div className="px-3 pt-3 pb-1">
+            {/* ── Upload CTA ── */}
+            <div className="px-3 pt-3 pb-2">
                 <button
                     type="button"
-                    onClick={() => {
-                        // Always reset the draft so stale video/publish state
-                        // from the previous post is completely cleared
-                        resetDraft();
-                        router.push("/create");
-                    }}
-                    className="group flex items-center gap-3 w-full px-3 py-3 rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-95"
-                    style={{
-                        background: "linear-gradient(135deg, #6C5CE7 0%, #8B5CF6 50%, #EC4899 100%)",
-                        boxShadow: "0 6px 20px -2px rgba(108,92,231,0.4), inset 0 1px 1px rgba(255,255,255,0.45)",
-                        border: "1px solid rgba(255,255,255,0.25)",
-                    }}
+                    onClick={() => { resetDraft(); router.push("/create"); }}
+                    className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-[13px] font-semibold text-white transition-all duration-150 active:scale-[0.98] neu-btn-primary"
                 >
-                    {/* Icon */}
-                    <div
-                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/20 transition-all duration-200 group-hover:scale-110 text-white"
-                    >
-                        <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" aria-hidden="true">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            <polyline points="17 8 12 3 7 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            <line x1="12" y1="3" x2="12" y2="15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                        </svg>
-                    </div>
-
-                    {/* Text */}
-                    <div className="flex-1 min-w-0">
-                        <p className="text-[12px] font-black text-white leading-none">
-                            Upload Video
-                        </p>
-                        <p className="text-[10px] mt-0.5 truncate text-white/80">
-                            AI optimizes for all platforms
-                        </p>
-                    </div>
-
-                    {/* Arrow */}
-                    <svg viewBox="0 0 16 16" fill="currentColor" className="h-3 w-3 shrink-0 text-white/70 group-hover:text-white transition-colors" aria-hidden="true">
-                        <path fillRule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
-                    </svg>
+                    <Upload className="h-4 w-4 shrink-0" />
+                    <span>Upload Video</span>
                 </button>
             </div>
 
             {/* ── Main nav ── */}
-            <nav className="flex-1 px-3 py-2 space-y-1">
-                {mainNav.map(({ href, label, icon: Icon }, idx) => {
-                    const active = isActive(href);
-                    return (
-                        <Link
-                            key={`${href}-${idx}`}
-                            href={href}
-                            className={cn(
-                                "flex items-center gap-3 px-3 py-[9px] rounded-xl text-[13px] font-medium transition-all duration-150",
-                                active
-                                    ? "text-white font-bold"
-                                    : "text-[var(--foreground-muted)] hover:text-[var(--foreground-color)] hover:bg-[var(--surface-elevated)]"
-                            )}
-                            style={active ? {
-                                background: "linear-gradient(135deg, #6C5CE7 0%, #7C3AED 100%)",
-                                boxShadow: "0 6px 18px -3px rgba(108,92,231,0.38), inset 0 1px 1px rgba(255,255,255,0.35)",
-                                border: "1px solid rgba(255,255,255,0.2)",
-                            } : {}}
-                        >
-                            <Icon className="h-[17px] w-[17px] shrink-0" aria-hidden="true" />
-                            <span>{label}</span>
-                        </Link>
-                    );
-                })}
+            <nav className="flex-1 px-2 py-1 space-y-0.5">
+                {mainNav.map(({ href, label, icon }) => (
+                    <NavItem key={href} href={href} label={label} icon={icon} active={isActive(href)} />
+                ))}
 
-                {/* ── Community divider ── */}
-                <div className="pt-2 pb-1 px-3">
-                    <p className="text-[9px] font-black uppercase tracking-[0.14em]" style={{ color: "var(--foreground-muted)" }}>
-                        Community &amp; AI
-                    </p>
+                <div className="pt-3 pb-1">
+                    <SectionLabel>Community &amp; AI</SectionLabel>
                 </div>
 
-                {communityNav.map(({ href, label, icon: Icon }, idx) => {
-                    const active = isActive(href);
-                    return (
-                        <Link
-                            key={`community-${href}-${idx}`}
-                            href={href}
-                            className={cn(
-                                "flex items-center gap-3 px-3 py-[9px] rounded-xl text-[13px] font-medium transition-all duration-150",
-                                active
-                                    ? "text-white font-bold"
-                                    : "text-[var(--foreground-muted)] hover:text-[var(--foreground-color)] hover:bg-[var(--surface-elevated)]"
-                            )}
-                            style={active ? {
-                                background: "linear-gradient(135deg, #ec4899 0%, #a855f7 60%, #8b5cf6 100%)",
-                                boxShadow: "0 6px 18px -3px rgba(236,72,153,0.38), inset 0 1px 1px rgba(255,255,255,0.35)",
-                                border: "1px solid rgba(255,255,255,0.2)",
-                            } : {}}
-                        >
-                            <Icon className="h-[17px] w-[17px] shrink-0" aria-hidden="true" />
-                            <span>{label}</span>
-                        </Link>
-                    );
-                })}
+                {communityNav.map(({ href, label, icon }) => (
+                    <NavItem key={href} href={href} label={label} icon={icon} active={isActive(href)} />
+                ))}
             </nav>
 
-            <div className="mx-5 my-1 h-[1px] bg-[var(--border-color)]" />
+            {/* ── Bottom section ── */}
+            <div className="px-2 py-2 border-t space-y-0.5" style={{ borderColor: "var(--sidebar-border)" }}>
+                <InstallButton variant="sidebar" />
 
-            {/* ── Install App button (only visible when installable) ── */}
-            <InstallButton variant="sidebar" />
+                {bottomNav.map(({ href, label, icon }) => (
+                    <NavItem key={href} href={href} label={label} icon={icon} active={isActive(href)} />
+                ))}
 
-            {/* ── Theme Toggle ── */}
-            <div
-                className="mx-3 mb-2 flex items-center justify-between px-3 py-2.5 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border-color)]"
-            >
-                <span className="text-[11px] font-semibold text-[var(--foreground-muted)]">Appearance</span>
-                <ThemeToggle />
+                <div className="flex items-center justify-between px-3 py-2 rounded-lg" style={{ background: "var(--surface-elevated)" }}>
+                    <span className="text-[12px] font-medium" style={{ color: "var(--foreground-muted)" }}>Appearance</span>
+                    <ThemeToggle />
+                </div>
             </div>
 
-            {/* ── User profile section ── */}
-            <div className="px-3 py-3">
-                {/* Sign out popup */}
+            {/* ── User profile ── */}
+            <div className="px-2 pb-3 border-t" style={{ borderColor: "var(--sidebar-border)" }}>
+                {/* Sign out dropdown */}
                 {profileOpen && (
                     <div
-                        className="mb-2 rounded-xl overflow-hidden bg-[var(--surface-elevated)] border border-[var(--border-color)] shadow-lg"
+                        className="mx-1 mb-1 mt-2 rounded-lg overflow-hidden border animate-scale-in"
+                        style={{ background: "var(--surface)", borderColor: "var(--border-color)", boxShadow: "var(--shadow-md)" }}
                     >
                         <button
                             onClick={() => signOut({ callbackUrl: "/login" })}
-                            className="flex items-center gap-3 w-full px-3 py-2.5 text-xs font-semibold text-red-500 hover:bg-red-500/10 transition-colors"
+                            className="flex items-center gap-2.5 w-full px-3 py-2.5 text-[13px] font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
                         >
-                            <LogOut className="h-4 w-4 shrink-0" aria-hidden="true" />
+                            <LogOut className="h-4 w-4 shrink-0" />
                             Sign out
                         </button>
                     </div>
                 )}
 
-                {/* Profile card */}
                 <button
                     onClick={() => setProfileOpen(!profileOpen)}
-                    className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl transition-all duration-150 hover:bg-[var(--surface-elevated)] group"
+                    className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-lg transition-all duration-150 hover:bg-[var(--sidebar-hover-bg)] mt-2"
                     aria-expanded={profileOpen}
                     aria-label="User profile menu"
                 >
-                    {/* Avatar */}
                     {userImage ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
                             src={userImage}
                             alt={userName}
-                            className="h-8 w-8 shrink-0 rounded-xl object-cover ring-2 ring-primary/40"
+                            className="h-7 w-7 shrink-0 rounded-full object-cover ring-2 ring-[var(--border-color)]"
                         />
                     ) : (
                         <div
-                            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-sm font-black text-white"
-                            style={{
-                                background: "linear-gradient(135deg, #6C5CE7, #a29bfe)",
-                                boxShadow: "0 2px 8px rgba(108,92,231,0.4)",
-                            }}
+                            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-bold text-white"
+                            style={{ background: "linear-gradient(135deg, #6366F1, #8B5CF6)" }}
                         >
                             {userInitial}
                         </div>
                     )}
-
-                    {/* Name & email */}
                     <div className="flex-1 min-w-0 text-left">
-                        <p className="text-[12px] font-bold text-[var(--foreground-color)] truncate leading-none">
+                        <p className="text-[13px] font-semibold truncate leading-none" style={{ color: "var(--foreground-color)" }}>
                             {userName}
                         </p>
                         {userEmail && (
-                            <p className="text-[10px] text-[var(--foreground-muted)] truncate mt-0.5">
+                            <p className="text-[11px] truncate mt-0.5 leading-none" style={{ color: "var(--foreground-muted)" }}>
                                 {userEmail}
                             </p>
                         )}
                     </div>
-
-                    {/* Chevron */}
-                    <ChevronUp
+                    <ChevronDown
                         className={cn(
-                            "h-3.5 w-3.5 shrink-0 text-[var(--foreground-muted)] transition-transform duration-200 group-hover:text-[var(--foreground-color)]",
-                            profileOpen ? "rotate-0" : "rotate-180"
+                            "h-3.5 w-3.5 shrink-0 transition-transform duration-200",
+                            profileOpen && "rotate-180"
                         )}
-                        aria-hidden="true"
+                        style={{ color: "var(--foreground-muted)" }}
                     />
                 </button>
             </div>

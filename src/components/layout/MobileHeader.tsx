@@ -4,52 +4,40 @@ import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
-import { ChevronDown, LogOut, X, Settings } from "lucide-react";
+import { ChevronDown, LogOut, Settings, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { InstallButton } from "@/components/pwa/InstallButton";
 import { ThemeToggle } from "./ThemeToggle";
 
-// ─── User Avatar ──────────────────────────────────────────────────────────────
+// ─── Avatar ───────────────────────────────────────────────────────────────────
+
 function UserAvatar({ size = 32 }: { size?: number }) {
     const { data: session } = useSession();
-    const initial = session?.user?.name?.[0]?.toUpperCase()
-        ?? session?.user?.email?.[0]?.toUpperCase()
-        ?? "U";
+    const name = session?.user?.name ?? session?.user?.email ?? "U";
+    const initial = name.charAt(0).toUpperCase();
+    const image = session?.user?.image;
 
-    if (session?.user?.image) {
+    if (image) {
         return (
+            // eslint-disable-next-line @next/next/no-img-element
             <img
-                src={session.user.image}
-                alt={session.user.name ?? "User"}
+                src={image}
+                alt={name}
                 referrerPolicy="no-referrer"
-                crossOrigin="anonymous"
-                className="rounded-full object-cover shrink-0"
-                style={{
-                    width: size,
-                    height: size,
-                    boxShadow: "0 0 0 2.5px rgba(236,72,153,0.65)",
-                    display: "block",
-                }}
-                onError={(e) => {
-                    // Fallback to initial avatar if image fails
-                    const el = e.currentTarget;
-                    el.style.display = "none";
-                    const fallback = el.nextElementSibling as HTMLElement | null;
-                    if (fallback) fallback.style.display = "flex";
-                }}
+                style={{ width: size, height: size, borderRadius: "50%", display: "block", objectFit: "cover" }}
             />
         );
     }
 
     return (
         <div
-            className="flex items-center justify-center rounded-full text-white font-black shrink-0"
             style={{
-                width: size,
-                height: size,
-                fontSize: size * 0.38,
-                background: "linear-gradient(135deg, #ec4899, #a78bfa)",
-                boxShadow: "0 0 0 2.5px rgba(236,72,153,0.5)",
+                width: size, height: size, borderRadius: "50%",
+                background: "linear-gradient(135deg, #6366F1, #8B5CF6)",
+                color: "#fff", fontWeight: 700,
+                fontSize: size * 0.4,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                flexShrink: 0,
             }}
         >
             {initial}
@@ -58,6 +46,7 @@ function UserAvatar({ size = 32 }: { size?: number }) {
 }
 
 // ─── User Sheet ───────────────────────────────────────────────────────────────
+
 function UserSheet({ onClose }: { onClose: () => void }) {
     const { data: session } = useSession();
     const name = session?.user?.name ?? "User";
@@ -65,215 +54,164 @@ function UserSheet({ onClose }: { onClose: () => void }) {
 
     return (
         <>
-            <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-            <div className="fixed bottom-0 left-0 right-0 z-50">
+            {/* Backdrop */}
+            <div
+                className="fixed inset-0 z-[60] bg-black/40"
+                style={{ backdropFilter: "blur(4px)" }}
+                onClick={onClose}
+            />
+
+            {/* Sheet */}
+            <div className="fixed bottom-0 left-0 right-0 z-[61] animate-slide-up">
                 <div
-                    className="rounded-t-[28px] pb-10 overflow-hidden bg-[var(--surface)] border-t border-[var(--border-color)]"
+                    className="rounded-t-3xl neu-card"
                     style={{
-                        backdropFilter: "blur(24px)",
-                        boxShadow: "0 -20px 60px rgba(0,0,0,0.3)",
+                        background: "var(--surface)",
+                        borderTop: "1px solid var(--border-color)",
+                        borderRadius: "24px 24px 0 0",
+                        maxHeight: "90dvh",
+                        overflowY: "auto",
                     }}
                 >
                     {/* Handle */}
-                    <div className="flex justify-center pt-3 pb-1">
-                        <div className="h-1 w-10 rounded-full bg-[var(--border-color)]" />
+                    <div className="flex justify-center pt-2.5 pb-1">
+                        <div className="h-1 w-10 rounded-full" style={{ background: "var(--border-color)" }} />
                     </div>
 
                     {/* Header */}
-                    <div className="flex items-center justify-between px-5 pt-2 pb-4">
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-[#ec4899]">
-                            My Account
+                    <div className="flex items-center justify-between px-5 pt-1 pb-3 border-b" style={{ borderColor: "var(--border-color)" }}>
+                        <p className="text-[11px] font-semibold uppercase tracking-wider" style={{ color: "var(--foreground-muted)" }}>
+                            Account
                         </p>
                         <button
                             type="button"
                             onClick={onClose}
-                            className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--surface-elevated)] border border-[var(--border-color)] transition-colors hover:bg-[var(--border-color)]"
+                            className="h-7 w-7 flex items-center justify-center rounded-full transition-colors hover:bg-[var(--surface-elevated)]"
+                            style={{ color: "var(--foreground-muted)" }}
                             aria-label="Close"
                         >
-                            <X className="h-3.5 w-3.5 text-[var(--foreground-muted)]" />
+                            <X className="h-3.5 w-3.5" />
                         </button>
                     </div>
 
-                    {/* User info card */}
-                    <div
-                        className="mx-4 mb-4 flex items-center gap-3 p-4 rounded-2xl bg-[var(--surface-elevated)] border border-[var(--border-color)]"
-                    >
-                        <UserAvatar size={52} />
+                    {/* User info */}
+                    <div className="flex items-center gap-3 px-5 py-4">
+                        <UserAvatar size={44} />
                         <div className="min-w-0 flex-1">
-                            <p className="text-[15px] font-black text-[var(--foreground-color)] truncate">{name}</p>
-                            <p className="text-[11px] truncate mt-0.5 text-[var(--foreground-muted)]">{email}</p>
-                            <div
-                                className="mt-2 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-bold"
-                                style={{ background: "rgba(52,211,153,0.15)", color: "#10B981" }}
-                            >
-                                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                                Active
-                            </div>
+                            <p className="text-[15px] font-semibold truncate" style={{ color: "var(--foreground-color)" }}>
+                                {name}
+                            </p>
+                            <p className="text-[12px] truncate mt-0.5" style={{ color: "var(--foreground-muted)" }}>
+                                {email}
+                            </p>
                         </div>
                     </div>
 
-                    {/* Appearance row */}
-                    <div
-                        className="mx-4 mb-3 flex items-center justify-between rounded-2xl px-4 py-3.5 bg-[var(--surface-elevated)] border border-[var(--border-color)]"
-                    >
-                        <span className="text-[13px] font-semibold text-[var(--foreground-color)]">Appearance</span>
-                        <ThemeToggle />
+                    {/* Actions */}
+                    <div className="px-4 pb-2 space-y-1">
+                        {/* Appearance row */}
+                        <div
+                            className="flex items-center justify-between px-4 py-3 rounded-xl"
+                            style={{ background: "var(--surface-elevated)" }}
+                        >
+                            <span className="text-[13px] font-medium" style={{ color: "var(--foreground-color)" }}>Appearance</span>
+                            <ThemeToggle />
+                        </div>
+
+                        {/* Connected accounts */}
+                        <Link
+                            href="/accounts"
+                            onClick={onClose}
+                            className="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors hover:bg-[var(--surface-elevated)]"
+                        >
+                            <Settings className="h-4 w-4 shrink-0" style={{ color: "var(--foreground-muted)" }} />
+                            <span className="text-[13px] font-medium" style={{ color: "var(--foreground-color)" }}>
+                                Connected Platforms
+                            </span>
+                            <ChevronDown
+                                className="h-3.5 w-3.5 ml-auto -rotate-90"
+                                style={{ color: "var(--foreground-muted)" }}
+                            />
+                        </Link>
+
+                        {/* Sign out */}
+                        <button
+                            type="button"
+                            onClick={() => { onClose(); signOut({ callbackUrl: "/login" }); }}
+                            className="flex items-center justify-center gap-2.5 w-full px-4 py-3 rounded-xl transition-all font-semibold text-white active:scale-[0.98]"
+                            style={{
+                                background: "linear-gradient(135deg, #EF4444, #DC2626)",
+                                boxShadow: "0 2px 8px rgba(239,68,68,0.3)",
+                            }}
+                        >
+                            <LogOut className="h-4 w-4 shrink-0" />
+                            <span className="text-[14px]">Sign out</span>
+                        </button>
                     </div>
 
-                    {/* Connected Platforms link */}
-                    <Link
-                        href="/accounts"
-                        onClick={onClose}
-                        className="mx-4 mb-3 flex items-center gap-3 rounded-2xl px-4 py-3.5 transition-all bg-[var(--surface-elevated)] border border-[var(--border-color)] hover:border-[var(--muted)]"
-                    >
-                        <Settings className="h-4 w-4 shrink-0 text-[#ec4899]" />
-                        <span className="text-[13px] font-semibold text-[var(--foreground-color)]">Connected Platforms</span>
-                        <ChevronDown className="h-3.5 w-3.5 ml-auto -rotate-90 text-[var(--foreground-muted)]" />
-                    </Link>
-
-                    {/* Sign out → redirects to home page */}
-                    <button
-                        type="button"
-                        onClick={() => { onClose(); signOut({ callbackUrl: "/" }); }}
-                        className="mx-4 flex w-[calc(100%-32px)] items-center gap-3 rounded-2xl px-4 py-4 transition-all active:scale-[0.98]"
-                        style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)" }}
-                    >
-                        <LogOut className="h-4 w-4 text-red-500 shrink-0" />
-                        <span className="text-[13px] font-bold text-red-500">Sign out</span>
-                    </button>
+                    {/* Safe area + extra bottom spacing */}
+                    <div className="h-6" />
+                    <div className="h-[env(safe-area-inset-bottom,8px)]" />
                 </div>
             </div>
         </>
     );
 }
 
-// ─── Main MobileHeader ────────────────────────────────────────────────────────
+// ─── MobileHeader ─────────────────────────────────────────────────────────────
+
 export function MobileHeader() {
     const { data: session } = useSession();
     const [sheetOpen, setSheetOpen] = React.useState(false);
-    const [scrolled, setScrolled] = React.useState(false);
-
-    React.useEffect(() => {
-        const fn = () => setScrolled(window.scrollY > 8);
-        window.addEventListener("scroll", fn, { passive: true });
-        return () => window.removeEventListener("scroll", fn);
-    }, []);
 
     return (
         <>
             <header
                 className={cn(
-                    "lg:hidden sticky top-0 z-40 w-full mobile-header transition-all duration-200",
-                    scrolled ? "shadow-md" : ""
+                    "lg:hidden sticky top-0 z-40 w-full mobile-header",
+                    "flex items-center justify-between px-4 h-14"
                 )}
                 style={{
-                    background: scrolled ? "var(--surface)" : "var(--surface)",
-                    backdropFilter: "blur(20px)",
-                    WebkitBackdropFilter: "blur(20px)",
+                    background: "var(--surface)",
                     borderBottom: "1px solid var(--border-color)",
                 }}
             >
-                {/* Top gradient accent line */}
-                <div
-                    style={{
-                        height: 2,
-                        background: "linear-gradient(90deg, #ec4899 0%, #a78bfa 50%, #60a5fa 100%)",
-                    }}
-                />
-
-                <div className="flex items-center justify-between px-4 h-[60px]">
-
-                    {/* ── Logo ── */}
-                    <Link href="/accounts" className="flex items-center gap-2.5 shrink-0">
-                        <div
-                            className="relative rounded-[12px] overflow-hidden shrink-0"
-                            style={{
-                                width: 42,
-                                height: 42,
-                                boxShadow: "0 0 0 2px rgba(236,72,153,0.3), 0 4px 14px rgba(236,72,153,0.2)",
-                            }}
-                        >
-                            <Image
-                                src="/logo.png"
-                                alt="CrossPost AI"
-                                fill
-                                sizes="42px"
-                                className="object-cover"
-                                priority
-                                onError={(e) => {
-                                    const t = e.target as HTMLImageElement;
-                                    t.style.display = "none";
-                                    const p = t.parentElement;
-                                    if (p) {
-                                        p.style.background = "linear-gradient(135deg, #ec4899, #a78bfa)";
-                                        p.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:20px;color:white;font-weight:900;">✦</div>`;
-                                    }
-                                }}
-                            />
-                        </div>
-                        <div className="leading-none">
-                            <p className="font-black text-[16px] text-[var(--foreground-color)] tracking-tight leading-none">
-                                CrossPost{" "}
-                                <span
-                                    style={{
-                                        background: "linear-gradient(135deg, #ec4899, #a78bfa)",
-                                        WebkitBackgroundClip: "text",
-                                        WebkitTextFillColor: "transparent",
-                                    }}
-                                >
-                                    AI
-                                </span>
-                            </p>
-                            <p
-                                className="text-[9.5px] font-medium mt-0.5 tracking-wide text-[var(--foreground-muted)]"
-                            >
-                                Create Once. Post Everywhere.
-                            </p>
-                        </div>
-                    </Link>
-
-                    {/* ── Right controls ── */}
-                    <div className="flex items-center gap-2 shrink-0">
-                        {/* PWA Install button */}
-                        <InstallButton variant="header" />
-
-                        {/* Theme toggle — always visible */}
-                        <ThemeToggle />
-
-                        {/* Avatar opens user sheet */}
-                        {session ? (
-                            <button
-                                type="button"
-                                onClick={() => setSheetOpen(true)}
-                                aria-label="Open user menu"
-                                aria-expanded={sheetOpen}
-                                className="flex items-center gap-1.5 rounded-full transition-all hover:opacity-90 active:scale-95"
-                                style={{ outline: "none" }}
-                            >
-                                <UserAvatar size={38} />
-                                <ChevronDown
-                                    className={cn(
-                                        "h-3.5 w-3.5 text-[var(--foreground-muted)] transition-transform duration-200",
-                                        sheetOpen && "rotate-180"
-                                    )}
-                                />
-                            </button>
-                        ) : (
-                            <Link
-                                href="/login"
-                                className="px-4 py-2 rounded-xl text-sm font-bold text-white transition-all hover:scale-[1.02] active:scale-95"
-                                style={{
-                                    background: "linear-gradient(135deg, #ec4899, #a78bfa)",
-                                    boxShadow: "0 4px 14px rgba(236,72,153,0.4)",
-                                }}
-                            >
-                                Sign In →
-                            </Link>
-                        )}
+                {/* Logo */}
+                <Link href="/accounts" className="flex items-center gap-2 shrink-0">
+                    <div className="relative h-7 w-7 rounded-lg overflow-hidden shadow-sm shrink-0">
+                        <Image src="/logo.png" alt="CrossPost AI" fill sizes="28px" className="object-cover" priority />
                     </div>
+                    <span className="font-bold text-[15px] tracking-tight" style={{ color: "var(--foreground-color)" }}>
+                        CrossPost <span style={{ color: "#6366F1" }}>AI</span>
+                    </span>
+                </Link>
+
+                {/* Right controls */}
+                <div className="flex items-center gap-2 shrink-0">
+                    <InstallButton variant="header" />
+                    <ThemeToggle />
+
+                    {session ? (
+                        <button
+                            type="button"
+                            onClick={() => setSheetOpen(true)}
+                            aria-label="Open user menu"
+                            aria-expanded={sheetOpen}
+                            className="flex items-center gap-1.5 rounded-full transition-opacity hover:opacity-80 active:scale-95"
+                        >
+                            <UserAvatar size={34} />
+                        </button>
+                    ) : (
+                        <Link
+                            href="/login"
+                            className="px-3.5 py-1.5 rounded-lg text-[13px] font-semibold text-white transition-opacity hover:opacity-90"
+                            style={{ background: "linear-gradient(135deg, #6366F1, #8B5CF6)" }}
+                        >
+                            Sign In
+                        </Link>
+                    )}
                 </div>
             </header>
-
 
             {sheetOpen && <UserSheet onClose={() => setSheetOpen(false)} />}
         </>

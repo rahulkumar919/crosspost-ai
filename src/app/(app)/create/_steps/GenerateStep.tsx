@@ -26,7 +26,7 @@ function AILoadingCard({ label }: { label: string }) {
             <div
                 className="h-1 animate-gradient-shift"
                 style={{
-                    background: "linear-gradient(90deg, #6C5CE7, #A78BFA, #60A5FA)",
+                    background: "linear-gradient(90deg, #6366F1, #A78BFA, #60A5FA)",
                     backgroundSize: "200% 200%",
                 }}
             />
@@ -36,7 +36,7 @@ function AILoadingCard({ label }: { label: string }) {
                 <div className="flex items-center gap-4">
                     <div
                         className="relative flex h-11 w-11 items-center justify-center rounded-[var(--radius-md)] shrink-0"
-                        style={{ background: "rgba(108,92,231,0.15)" }}
+                        style={{ background: "rgba(99,102,241,0.15)" }}
                     >
                         <Sparkles className="h-5 w-5 text-primary animate-pulse" aria-hidden="true" />
                         <div
@@ -247,7 +247,7 @@ export function GenerateStep() {
                         generateMutation.isPending && "opacity-80"
                     )}
                     style={{
-                        background: "linear-gradient(135deg, #6C5CE7 0%, #8B5CF6 50%, #3B82F6 100%)",
+                        background: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #3B82F6 100%)",
                         boxShadow: "0 0 20px rgba(108, 92, 231, 0.4)",
                     }}
                 >
@@ -364,7 +364,7 @@ export function GenerateStep() {
                                 "transition-all duration-200 active:scale-[0.97]"
                             )}
                             style={{
-                                background: "linear-gradient(135deg, #6C5CE7 0%, #8B5CF6 100%)",
+                                background: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)",
                             }}
                         >
                             <Sparkles className="h-4 w-4" />
@@ -394,7 +394,7 @@ export function GenerateStep() {
                     {/* Gradient top highlight */}
                     <div
                         className="h-[3px] w-full"
-                        style={{ background: "linear-gradient(90deg, #6C5CE7, #A78BFA, #60A5FA)" }}
+                        style={{ background: "linear-gradient(90deg, #6366F1, #A78BFA, #60A5FA)" }}
                     />
 
                     <div className="px-6 pb-6 flex flex-col gap-6">
@@ -617,7 +617,7 @@ export function GenerateStep() {
                         "disabled:opacity-40 disabled:pointer-events-none"
                     )}
                     style={{
-                        background: "linear-gradient(135deg, #6C5CE7 0%, #8B5CF6 100%)",
+                        background: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)",
                         boxShadow: hasGenerated && !isWorking ? "0 0 24px rgba(108, 92, 231, 0.45)" : "none",
                     }}
                 >

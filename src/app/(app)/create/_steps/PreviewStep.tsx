@@ -586,8 +586,8 @@ export function PreviewStep() {
                         href="/accounts"
                         className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-white font-bold shrink-0 transition-all hover:scale-[1.02] active:scale-95 self-start sm:self-auto"
                         style={{
-                            background: "linear-gradient(135deg, #6C5CE7, #a29bfe)",
-                            boxShadow: "0 4px 12px rgba(108,92,231,0.4)",
+                            background: "linear-gradient(135deg, #6366F1, #A5B4FC)",
+                            boxShadow: "0 4px 12px rgba(99,102,241,0.4)",
                         }}
                     >
                         Connect Accounts
@@ -633,10 +633,10 @@ export function PreviewStep() {
                         className="flex items-center gap-2 px-5 h-11 rounded-xl text-sm font-bold text-white transition-all duration-200 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-40 disabled:pointer-events-none"
                         style={{
                             background: includedCount > 0
-                                ? "linear-gradient(135deg, #6C5CE7 0%, #A78BFA 100%)"
+                                ? "linear-gradient(135deg, #6366F1 0%, #A78BFA 100%)"
                                 : "var(--border-color)",
                             boxShadow: includedCount > 0
-                                ? "0 4px 20px rgba(108,92,231,0.5), 0 0 0 1px rgba(167,139,250,0.2)"
+                                ? "0 4px 20px rgba(99,102,241,0.5), 0 0 0 1px rgba(167,139,250,0.2)"
                                 : "none",
                         }}
                     >

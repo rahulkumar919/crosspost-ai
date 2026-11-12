@@ -37,11 +37,11 @@ function Section({
             className="rounded-3xl overflow-hidden transition-all duration-300"
             style={{
                 background: "var(--surface)",
-                border: "1px solid rgba(108, 92, 231, 0.12)",
+                border: "1px solid rgba(99,102,241, 0.12)",
                 borderTop: "1.5px solid rgba(255, 255, 255, 1)",
                 boxShadow: open
-                    ? "0 18px 40px -10px rgba(108, 92, 231, 0.1), 0 4px 16px -2px rgba(15, 23, 42, 0.04), inset 0 1px 1px rgba(255, 255, 255, 1)"
-                    : "0 8px 24px -6px rgba(108, 92, 231, 0.06), 0 2px 8px -2px rgba(15, 23, 42, 0.03), inset 0 1px 1px rgba(255, 255, 255, 1)",
+                    ? "0 18px 40px -10px rgba(99,102,241, 0.1), 0 4px 16px -2px rgba(15, 23, 42, 0.04), inset 0 1px 1px rgba(255, 255, 255, 1)"
+                    : "0 8px 24px -6px rgba(99,102,241, 0.06), 0 2px 8px -2px rgba(15, 23, 42, 0.03), inset 0 1px 1px rgba(255, 255, 255, 1)",
             }}
         >
             <button
@@ -68,17 +68,17 @@ function Section({
                 <div
                     className="h-8 w-8 rounded-full flex items-center justify-center transition-all duration-200"
                     style={{
-                        background: open ? "rgba(108, 92, 231, 0.12)" : "rgba(108, 92, 231, 0.05)",
+                        background: open ? "rgba(99,102,241, 0.12)" : "rgba(99,102,241, 0.05)",
                         boxShadow: "inset 0 1px 1px rgba(255,255,255,0.8)",
                     }}
                 >
                     {open
-                        ? <ChevronUp className="h-4 w-4 shrink-0" style={{ color: "#6C5CE7" }} />
+                        ? <ChevronUp className="h-4 w-4 shrink-0" style={{ color: "#6366F1" }} />
                         : <ChevronDown className="h-4 w-4 shrink-0" style={{ color: "var(--foreground-muted)" }} />}
                 </div>
             </button>
             {open && (
-                <div className="px-6 pb-6 pt-1 border-t" style={{ borderColor: "rgba(108, 92, 231, 0.08)" }}>
+                <div className="px-6 pb-6 pt-1 border-t" style={{ borderColor: "rgba(99,102,241, 0.08)" }}>
                     <div className="pt-4">{children}</div>
                 </div>
             )}
@@ -120,7 +120,7 @@ function DynamicList({
 
     const inputStyle: React.CSSProperties = {
         background: "#F8FAFD",
-        border: "1px solid rgba(108, 92, 231, 0.12)",
+        border: "1px solid rgba(99,102,241, 0.12)",
         boxShadow: "inset 2px 2px 5px rgba(15, 23, 42, 0.035), inset -2px -2px 5px rgba(255, 255, 255, 0.95)",
         color: "var(--foreground-color)",
         borderRadius: "12px",
@@ -178,10 +178,10 @@ function DynamicList({
                 onClick={addItem}
                 className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all hover:scale-[1.02] active:scale-95"
                 style={{
-                    background: "linear-gradient(135deg, rgba(108,92,231,0.1) 0%, rgba(236,72,153,0.06) 100%)",
-                    border: "1px solid rgba(108,92,231,0.2)",
-                    boxShadow: "0 2px 8px rgba(108,92,231,0.08), inset 0 1px 0 rgba(255,255,255,0.9)",
-                    color: "#6C5CE7",
+                    background: "linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(236,72,153,0.06) 100%)",
+                    border: "1px solid rgba(99,102,241,0.2)",
+                    boxShadow: "0 2px 8px rgba(99,102,241,0.08), inset 0 1px 0 rgba(255,255,255,0.9)",
+                    color: "#6366F1",
                 }}
             >
                 <Plus className="h-3.5 w-3.5" />
@@ -220,10 +220,10 @@ function TagsEditor({
                         key={tag}
                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold"
                         style={{
-                            background: "linear-gradient(135deg, rgba(108,92,231,0.12), rgba(236,72,153,0.06))",
-                            border: "1px solid rgba(108,92,231,0.22)",
-                            boxShadow: "0 2px 6px rgba(108,92,231,0.08), inset 0 1px 0 rgba(255,255,255,0.95)",
-                            color: "#6C5CE7",
+                            background: "linear-gradient(135deg, rgba(99,102,241,0.12), rgba(236,72,153,0.06))",
+                            border: "1px solid rgba(99,102,241,0.22)",
+                            boxShadow: "0 2px 6px rgba(99,102,241,0.08), inset 0 1px 0 rgba(255,255,255,0.95)",
+                            color: "#6366F1",
                         }}
                     >
                         {tag}
@@ -242,7 +242,7 @@ function TagsEditor({
                     className="flex-1 px-4 py-2.5 rounded-xl text-sm outline-none"
                     style={{
                         background: "#F8FAFD",
-                        border: "1px solid rgba(108, 92, 231, 0.12)",
+                        border: "1px solid rgba(99,102,241, 0.12)",
                         boxShadow: "inset 2px 2px 5px rgba(15, 23, 42, 0.035), inset -2px -2px 5px rgba(255, 255, 255, 0.95)",
                         color: "var(--foreground-color)",
                     }}
@@ -252,10 +252,10 @@ function TagsEditor({
                     onClick={add}
                     className="px-4 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-[1.02] active:scale-95"
                     style={{
-                        background: "linear-gradient(135deg, rgba(108,92,231,0.12), rgba(236,72,153,0.08))",
-                        border: "1px solid rgba(108,92,231,0.22)",
-                        boxShadow: "0 2px 8px rgba(108,92,231,0.1), inset 0 1px 0 rgba(255,255,255,0.9)",
-                        color: "#6C5CE7",
+                        background: "linear-gradient(135deg, rgba(99,102,241,0.12), rgba(236,72,153,0.08))",
+                        border: "1px solid rgba(99,102,241,0.22)",
+                        boxShadow: "0 2px 8px rgba(99,102,241,0.1), inset 0 1px 0 rgba(255,255,255,0.9)",
+                        color: "#6366F1",
                     }}
                 >
                     <Plus className="h-4 w-4" />
@@ -335,7 +335,7 @@ export default function KnowledgePage() {
 
     const inputStyle: React.CSSProperties = {
         background: "#F8FAFD",
-        border: "1px solid rgba(108, 92, 231, 0.12)",
+        border: "1px solid rgba(99,102,241, 0.12)",
         boxShadow: "inset 2px 2px 5px rgba(15, 23, 42, 0.035), inset -2px -2px 5px rgba(255, 255, 255, 0.95)",
         color: "var(--foreground-color)",
         borderRadius: "14px",
@@ -357,7 +357,7 @@ export default function KnowledgePage() {
     if (loading) {
         return (
             <div className="flex items-center justify-center flex-1 py-20">
-                <RefreshCw className="h-6 w-6 animate-spin" style={{ color: "#6C5CE7" }} />
+                <RefreshCw className="h-6 w-6 animate-spin" style={{ color: "#6366F1" }} />
             </div>
         );
     }
@@ -370,14 +370,14 @@ export default function KnowledgePage() {
                 <div
                     className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-black mb-3"
                     style={{
-                        background: "linear-gradient(135deg, rgba(108,92,231,0.12), rgba(236,72,153,0.08))",
-                        border: "1px solid rgba(108,92,231,0.22)",
-                        boxShadow: "0 2px 8px rgba(108,92,231,0.08), inset 0 1px 0 rgba(255,255,255,0.9)",
-                        color: "#6C5CE7",
+                        background: "linear-gradient(135deg, rgba(99,102,241,0.12), rgba(236,72,153,0.08))",
+                        border: "1px solid rgba(99,102,241,0.22)",
+                        boxShadow: "0 2px 8px rgba(99,102,241,0.08), inset 0 1px 0 rgba(255,255,255,0.9)",
+                        color: "#6366F1",
                     }}
                 >
                     <Bot className="h-3.5 w-3.5" style={{ color: "#EC4899" }} />
-                    <span style={{ background: "linear-gradient(135deg, #6C5CE7, #EC4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                    <span style={{ background: "linear-gradient(135deg, #6366F1, #EC4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                         AI BRAIN COGNITION
                     </span>
                 </div>
@@ -385,7 +385,7 @@ export default function KnowledgePage() {
                     <div>
                         <h1 className="text-2xl sm:text-3xl font-black tracking-tight" style={{ color: "var(--foreground-color)" }}>
                             Knowledge{" "}
-                            <span style={{ background: "linear-gradient(135deg, #6C5CE7 0%, #8B5CF6 50%, #EC4899 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                            <span style={{ background: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                                 Base
                             </span>
                         </h1>
@@ -401,10 +401,10 @@ export default function KnowledgePage() {
                         style={{
                             background: saved
                                 ? "linear-gradient(135deg, #10B981 0%, #059669 100%)"
-                                : "linear-gradient(135deg, #6C5CE7 0%, #8B5CF6 50%, #EC4899 100%)",
+                                : "linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%)",
                             boxShadow: saved
                                 ? "0 8px 24px -4px rgba(16, 185, 129, 0.4), inset 0 1px 1px rgba(255,255,255,0.4)"
-                                : "0 8px 24px -4px rgba(108, 92, 231, 0.45), 0 2px 8px rgba(236, 72, 153, 0.25), inset 0 1px 1.5px rgba(255, 255, 255, 0.45)",
+                                : "0 8px 24px -4px rgba(99,102,241, 0.45), 0 2px 8px rgba(236, 72, 153, 0.25), inset 0 1px 1.5px rgba(255, 255, 255, 0.45)",
                             border: "1px solid rgba(255, 255, 255, 0.25)",
                         }}
                     >
@@ -423,13 +423,13 @@ export default function KnowledgePage() {
                 <div
                     className="mt-5 flex items-start gap-3.5 rounded-2xl p-4.5"
                     style={{
-                        background: "linear-gradient(135deg, rgba(108,92,231,0.07) 0%, rgba(236,72,153,0.04) 100%)",
-                        border: "1px solid rgba(108,92,231,0.18)",
-                        boxShadow: "0 4px 16px -2px rgba(108,92,231,0.05), inset 0 1px 1px rgba(255,255,255,0.8)",
+                        background: "linear-gradient(135deg, rgba(99,102,241,0.07) 0%, rgba(236,72,153,0.04) 100%)",
+                        border: "1px solid rgba(99,102,241,0.18)",
+                        boxShadow: "0 4px 16px -2px rgba(99,102,241,0.05), inset 0 1px 1px rgba(255,255,255,0.8)",
                     }}
                 >
-                    <div className="h-7 w-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5" style={{ background: "rgba(108,92,231,0.15)" }}>
-                        <Sparkles className="h-4 w-4" style={{ color: "#6C5CE7" }} />
+                    <div className="h-7 w-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5" style={{ background: "rgba(99,102,241,0.15)" }}>
+                        <Sparkles className="h-4 w-4" style={{ color: "#6366F1" }} />
                     </div>
                     <p className="text-xs sm:text-[12.5px] leading-relaxed font-medium" style={{ color: "var(--foreground-muted)" }}>
                         Everything you curate here is embedded into your AI assistant. The richer your context, the more accurately your bot handles follower comments and DMs on autopilot.
@@ -441,7 +441,7 @@ export default function KnowledgePage() {
             <div className="space-y-5 max-w-3xl">
 
                 {/* Creator Identity */}
-                <Section icon={User} title="Creator Identity" subtitle="Your name, about, and niche topics" color="#6C5CE7" defaultOpen={true}>
+                <Section icon={User} title="Creator Identity" subtitle="Your name, about, and niche topics" color="#6366F1" defaultOpen={true}>
                     <div className="space-y-3">
                         <div>
                             <label className="block text-xs font-bold mb-1.5" style={{ color: "var(--foreground-muted)" }}>Creator / Brand Name</label>
@@ -472,7 +472,7 @@ export default function KnowledgePage() {
                 </Section>
 
                 {/* AI System Prompt */}
-                <Section icon={Bot} title="AI System Prompt" subtitle="Custom instructions for your AI bot personality" color="#a29bfe">
+                <Section icon={Bot} title="AI System Prompt" subtitle="Custom instructions for your AI bot personality" color="#A5B4FC">
                     <div>
                         <label className="block text-xs font-bold mb-1.5" style={{ color: "var(--foreground-muted)" }}>
                             Custom AI Prompt (optional — overrides default bot behavior)
@@ -577,8 +577,8 @@ export default function KnowledgePage() {
                         disabled={saving}
                         className="w-full py-3.5 rounded-xl text-sm font-black text-white transition-all hover:scale-[1.01] active:scale-95 flex items-center justify-center gap-2"
                         style={{
-                            background: saved ? "linear-gradient(135deg,#10B981,#34D399)" : "linear-gradient(135deg,#6C5CE7,#a29bfe)",
-                            boxShadow: "0 4px 18px rgba(108,92,231,0.4)",
+                            background: saved ? "linear-gradient(135deg,#10B981,#34D399)" : "linear-gradient(135deg,#6366F1,#A5B4FC)",
+                            boxShadow: "0 4px 18px rgba(99,102,241,0.4)",
                         }}
                     >
                         {saving ? <RefreshCw className="h-4 w-4 animate-spin" /> : saved ? <Check className="h-4 w-4" /> : <Save className="h-4 w-4" />}

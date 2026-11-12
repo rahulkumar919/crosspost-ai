@@ -127,7 +127,7 @@ function AccountsPageInner() {
                 }}
             >
                 {/* Ambient blobs */}
-                <div className="absolute -top-20 -left-20 w-64 h-64 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(108,92,231,0.3) 0%, transparent 70%)" }} />
+                <div className="absolute -top-20 -left-20 w-64 h-64 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(99,102,241,0.3) 0%, transparent 70%)" }} />
                 <div className="absolute -bottom-10 right-0 w-48 h-48 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(162,155,254,0.15) 0%, transparent 70%)" }} />
 
                 <div className="relative max-w-5xl mx-auto">
@@ -152,12 +152,12 @@ function AccountsPageInner() {
                     {/* Heading row */}
                     <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                         <div>
-                            <p className="text-xs font-bold tracking-widest uppercase mb-1.5 text-[#6C5CE7]">
+                            <p className="text-xs font-bold tracking-widest uppercase mb-1.5 text-[#6366F1]">
                                 Welcome back, {firstName} 👋
                             </p>
                             <h1 className="text-2xl sm:text-3xl font-black text-[var(--foreground-color)] leading-tight">
                                 Connected{" "}
-                                <span style={{ background: "linear-gradient(135deg, #6C5CE7, #8B5CF6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                                <span style={{ background: "linear-gradient(135deg, #6366F1, #8B5CF6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                                     Platforms
                                 </span>
                             </h1>
@@ -169,7 +169,7 @@ function AccountsPageInner() {
                         {/* Stats pills */}
                         <div className="flex gap-3 shrink-0">
                             <div className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-[var(--surface-elevated)] border border-[var(--border-color)] shadow-sm">
-                                <div className="h-2.5 w-2.5 rounded-full bg-[#6C5CE7]" style={{ boxShadow: "0 0 8px rgba(108,92,231,0.6)" }} />
+                                <div className="h-2.5 w-2.5 rounded-full bg-[#6366F1]" style={{ boxShadow: "0 0 8px rgba(99,102,241,0.6)" }} />
                                 <div>
                                     <p className="text-lg font-black text-[var(--foreground-color)] leading-none">{isLoading ? "–" : connectedCount}</p>
                                     <p className="text-[10px] mt-0.5 font-medium text-[var(--foreground-muted)]">Connected</p>
@@ -192,7 +192,7 @@ function AccountsPageInner() {
                                 <span className="text-xs font-medium text-[var(--foreground-muted)]">
                                     {connectedCount} of {totalCount} platforms connected
                                 </span>
-                                <span className="text-xs font-bold text-[#6C5CE7]">
+                                <span className="text-xs font-bold text-[#6366F1]">
                                     {Math.round((connectedCount / totalCount) * 100)}%
                                 </span>
                             </div>
@@ -201,8 +201,8 @@ function AccountsPageInner() {
                                     className="h-full rounded-full transition-all duration-700"
                                     style={{
                                         width: `${(connectedCount / totalCount) * 100}%`,
-                                        background: "linear-gradient(90deg, #6C5CE7, #8B5CF6)",
-                                        boxShadow: "0 0 10px rgba(108,92,231,0.5)",
+                                        background: "linear-gradient(90deg, #6366F1, #8B5CF6)",
+                                        boxShadow: "0 0 10px rgba(99,102,241,0.5)",
                                     }}
                                 />
                             </div>
@@ -375,8 +375,8 @@ function PlatformCard({
                         disabled={isLoading}
                         className="px-3 sm:px-5 py-2 rounded-xl text-xs font-bold text-white transition-all disabled:opacity-50 hover:shadow-lg hover:scale-[1.02] active:scale-95"
                         style={{
-                            background: "linear-gradient(135deg, #6C5CE7, #8B5CF6)",
-                            boxShadow: "0 4px 12px rgba(108,92,231,0.35)",
+                            background: "linear-gradient(135deg, #6366F1, #8B5CF6)",
+                            boxShadow: "0 4px 12px rgba(99,102,241,0.35)",
                         }}
                         aria-label={`Connect ${label}`}
                     >
@@ -407,8 +407,8 @@ function UploadBanner({ className }: { className?: string }) {
                 className
             )}
             style={{
-                background: "linear-gradient(135deg, #6C5CE7 0%, #4F46E5 50%, #7C3AED 100%)",
-                boxShadow: "0 8px 24px rgba(108,92,231,0.35)",
+                background: "linear-gradient(135deg, #6366F1 0%, #4F46E5 50%, #7C3AED 100%)",
+                boxShadow: "0 8px 24px rgba(99,102,241,0.35)",
             }}
         >
             {/* Ambient subtle light glow */}
@@ -455,14 +455,14 @@ function UploadBanner({ className }: { className?: string }) {
 
                 {/* CTA */}
                 <div
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-[#6C5CE7] bg-white transition-all group-hover:shadow-lg group-hover:scale-[1.02]"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-[#6366F1] bg-white transition-all group-hover:shadow-lg group-hover:scale-[1.02]"
                     style={{
                         boxShadow: "0 4px 14px rgba(0,0,0,0.15)",
                     }}
                 >
-                    <CloudUpload className="h-3.5 w-3.5 text-[#6C5CE7]" />
+                    <CloudUpload className="h-3.5 w-3.5 text-[#6366F1]" />
                     <span>Start Uploading</span>
-                    <ChevronRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform text-[#6C5CE7]" />
+                    <ChevronRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform text-[#6366F1]" />
                 </div>
             </div>
         </Link>
@@ -479,7 +479,7 @@ function AIToolsPanel() {
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                     <div
-                        className="h-8 w-8 flex items-center justify-center rounded-xl bg-[#6C5CE7]/10"
+                        className="h-8 w-8 flex items-center justify-center rounded-xl bg-[#6366F1]/10"
                     >
                         <span style={{ fontSize: "15px" }}>✨</span>
                     </div>
@@ -494,7 +494,7 @@ function AIToolsPanel() {
                 {aiTools.map(({ icon: Icon, label, desc, color, bg }) => (
                     <button
                         key={label}
-                        className="flex flex-col gap-2 p-3 rounded-xl text-left transition-all bg-[var(--surface-elevated)] border border-[var(--border-color)] hover:border-[#6C5CE7]/40 hover:scale-[1.02] active:scale-95 group"
+                        className="flex flex-col gap-2 p-3 rounded-xl text-left transition-all bg-[var(--surface-elevated)] border border-[var(--border-color)] hover:border-[#6366F1]/40 hover:scale-[1.02] active:scale-95 group"
                     >
                         <div
                             className="flex h-9 w-9 items-center justify-center rounded-xl shadow-sm"

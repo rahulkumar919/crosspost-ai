@@ -12,14 +12,18 @@ interface NavItem {
     isCenter?: boolean;
 }
 
+const NAV_ACTIVE = "#6366F1";
+const NAV_MUTED = "var(--foreground-muted)";
+
 const navItems: NavItem[] = [
     {
         href: "/accounts",
-        label: "Connection",
+        label: "Accounts",
         renderIcon: (active) => (
-            <svg viewBox="0 0 24 24" fill="none" className="h-[22px] w-[22px]" stroke="currentColor" strokeWidth={active ? "2.4" : "2"} strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 10.5L12 3l9 7.5v9.5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                <polyline points="9 22 9 12 15 12 15 22" />
+            <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" stroke="currentColor"
+                strokeWidth={active ? "2.2" : "1.8"} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
             </svg>
         ),
     },
@@ -27,7 +31,8 @@ const navItems: NavItem[] = [
         href: "/history",
         label: "History",
         renderIcon: (active) => (
-            <svg viewBox="0 0 24 24" fill="none" className="h-[22px] w-[22px]" stroke="currentColor" strokeWidth={active ? "2.4" : "2"} strokeLinecap="round" strokeLinejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" stroke="currentColor"
+                strokeWidth={active ? "2.2" : "1.8"} strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="9" />
                 <polyline points="12 7 12 12 15 15" />
             </svg>
@@ -38,10 +43,11 @@ const navItems: NavItem[] = [
         label: "Upload",
         isCenter: true,
         renderIcon: () => (
-            <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-white" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
-                <path d="M12 12v6" />
-                <path d="m15 15-3-3-3 3" />
+            <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 text-white" stroke="currentColor"
+                strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="17 8 12 3 7 8" />
+                <line x1="12" y1="3" x2="12" y2="15" />
             </svg>
         ),
     },
@@ -49,8 +55,9 @@ const navItems: NavItem[] = [
         href: "/calendar",
         label: "Calendar",
         renderIcon: (active) => (
-            <svg viewBox="0 0 24 24" fill="none" className="h-[22px] w-[22px]" stroke="currentColor" strokeWidth={active ? "2.4" : "2"} strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="4" width="18" height="18" rx="4" />
+            <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" stroke="currentColor"
+                strokeWidth={active ? "2.2" : "1.8"} strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="3" />
                 <line x1="16" y1="2" x2="16" y2="6" />
                 <line x1="8" y1="2" x2="8" y2="6" />
                 <line x1="3" y1="10" x2="21" y2="10" />
@@ -61,7 +68,8 @@ const navItems: NavItem[] = [
         href: "/automations",
         label: "Automate",
         renderIcon: (active) => (
-            <svg viewBox="0 0 24 24" fill="none" className="h-[22px] w-[22px]" stroke="currentColor" strokeWidth={active ? "2.4" : "2"} strokeLinecap="round" strokeLinejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" stroke="currentColor"
+                strokeWidth={active ? "2.2" : "1.8"} strokeLinecap="round" strokeLinejoin="round">
                 <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
             </svg>
         ),
@@ -71,44 +79,38 @@ const navItems: NavItem[] = [
 export function BottomNav() {
     const pathname = usePathname();
 
+    const isActive = (href: string) =>
+        pathname === href
+        || (href !== "/accounts" && pathname.startsWith(href + "/"))
+        || (href === "/accounts" && (pathname === "/accounts" || pathname === "/"));
+
     return (
         <nav
-            className="lg:hidden fixed bottom-0 left-0 right-0 z-50 flex flex-col items-center bg-[var(--surface)]/95 border-t border-[var(--border-color)] transition-colors duration-200"
+            className="lg:hidden fixed bottom-0 left-0 right-0 z-50"
             style={{
-                backdropFilter: "blur(24px)",
-                WebkitBackdropFilter: "blur(24px)",
-                boxShadow: "0 -4px 24px rgba(0,0,0,0.12)",
+                background: "rgba(255,255,255,0.97)",
+                borderTop: "1px solid #E5E0FF",
+                backdropFilter: "blur(20px)",
+                WebkitBackdropFilter: "blur(20px)",
+                boxShadow: "0 -4px 20px rgba(99,91,207,0.1), 0 -1px 0 #E5E0FF",
             }}
             aria-label="Mobile navigation"
         >
-            <div className="flex items-end justify-around w-full px-2 pt-2 pb-1">
+            <div className="flex items-end justify-around w-full px-1 pt-1.5 pb-1">
                 {navItems.map(({ href, label, renderIcon, isCenter }) => {
-                    const active = pathname === href
-                        || (href !== "/accounts" && pathname.startsWith(href + "/"))
-                        || (href === "/accounts" && (pathname === "/accounts" || pathname === "/"))
-                        || (href === "/automations" && pathname.startsWith("/automations"));
+                    const active = isActive(href);
 
                     if (isCenter) {
                         return (
-                            <div key={href} className="flex-1 flex justify-center" style={{ marginBottom: "4px" }}>
-                                <Link
-                                    href={href}
-                                    className="flex flex-col items-center gap-0.5 -mt-6 group"
-                                    aria-label={label}
-                                >
+                            <div key={href} className="flex-1 flex justify-center">
+                                <Link href={href} className="flex flex-col items-center -mt-5 gap-1" aria-label={label}>
                                     <div
-                                        className="flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-transform duration-200 group-hover:scale-105 active:scale-95"
-                                        style={{
-                                            background: "linear-gradient(135deg, #7C3AED 0%, #6366F1 100%)",
-                                            boxShadow: "0 8px 22px rgba(124, 58, 237, 0.45)",
-                                        }}
+                                        className="flex h-12 w-12 items-center justify-center rounded-full transition-transform duration-150 active:scale-95 neu-btn-primary"
+                                        style={{ borderRadius: "50%" }}
                                     >
                                         {renderIcon(true)}
                                     </div>
-                                    <span
-                                        className="text-[10px] font-black mt-0.5 tracking-tight"
-                                        style={{ color: "#7C3AED" }}
-                                    >
+                                    <span className="text-[10px] font-medium" style={{ color: NAV_ACTIVE }}>
                                         {label}
                                     </span>
                                 </Link>
@@ -120,30 +122,23 @@ export function BottomNav() {
                         <Link
                             key={href}
                             href={href}
-                            className={cn(
-                                "flex flex-1 flex-col items-center justify-center py-2 gap-1 transition-all duration-150",
-                                active ? "font-bold" : "font-medium"
-                            )}
-                            style={{ color: active ? "#ec4899" : "var(--foreground-muted)" }}
+                            className="flex flex-1 flex-col items-center justify-center py-1.5 gap-0.5 transition-all duration-150"
+                            style={{ color: active ? NAV_ACTIVE : NAV_MUTED }}
                             aria-label={label}
                             aria-current={active ? "page" : undefined}
                         >
-                            <div className={cn("transition-transform duration-150", active && "scale-110")}>
+                            <div className={cn("transition-transform duration-150", active && "scale-105")}>
                                 {renderIcon(active)}
                             </div>
-                            <span
-                                className="text-[10px] leading-none transition-colors"
-                                style={{ color: active ? "#ec4899" : "var(--foreground-muted)", fontWeight: active ? 700 : 500 }}
-                            >
+                            <span className="text-[10px] leading-none" style={{ fontWeight: active ? 600 : 400 }}>
                                 {label}
                             </span>
                         </Link>
                     );
                 })}
             </div>
-
-            {/* iOS Home Indicator Bar */}
-            <div className="w-32 h-1 rounded-full mb-1 mt-0.5 bg-[var(--border-color)]" />
+            {/* iOS safe area */}
+            <div className="h-[env(safe-area-inset-bottom,4px)]" />
         </nav>
     );
 }

@@ -57,7 +57,7 @@ function CompressionProgressBar({
                     <div className="flex items-center gap-3">
                         <div
                             className="flex h-10 w-10 items-center justify-center rounded-[var(--radius-md)]"
-                            style={{ background: "rgba(108,92,231,0.15)" }}
+                            style={{ background: "rgba(99,102,241,0.15)" }}
                         >
                             <Zap className="h-5 w-5 text-primary animate-pulse" aria-hidden="true" />
                         </div>
@@ -102,7 +102,7 @@ function CompressionProgressBar({
                             style={{
                                 width: `${progress.percent}%`,
                                 background: "var(--gradient-primary)",
-                                boxShadow: "0 0 8px rgba(108,92,231,0.4)",
+                                boxShadow: "0 0 8px rgba(99,102,241,0.4)",
                             }}
                             role="progressbar"
                             aria-valuenow={progress.percent}
@@ -315,7 +315,7 @@ export function UploadStep() {
                 style={{
                     background: "white",
                     boxShadow: "0 2px 12px rgba(0,0,0,0.05)",
-                    border: "1px solid rgba(108,92,231,0.1)",
+                    border: "1px solid rgba(99,102,241,0.1)",
                 }}
             >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -323,7 +323,7 @@ export function UploadStep() {
                         {/* Brand logo */}
                         <div
                             className="relative h-12 w-12 shrink-0 rounded-2xl overflow-hidden"
-                            style={{ boxShadow: "0 6px 20px rgba(108,92,231,0.4)" }}
+                            style={{ boxShadow: "0 6px 20px rgba(99,102,241,0.4)" }}
                         >
                             <NextImage
                                 src="/logo.png"
@@ -376,13 +376,13 @@ export function UploadStep() {
                     className="group relative flex flex-col items-center justify-center gap-6 cursor-pointer select-none overflow-hidden py-16 px-8 rounded-2xl bg-white transition-all duration-300"
                     style={{
                         border: isDragging
-                            ? "2px solid #6C5CE7"
-                            : "2px dashed rgba(108,92,231,0.3)",
+                            ? "2px solid #6366F1"
+                            : "2px dashed rgba(99,102,241,0.3)",
                         boxShadow: isDragging
-                            ? "0 0 0 4px rgba(108,92,231,0.1), 0 8px 32px rgba(108,92,231,0.15)"
+                            ? "0 0 0 4px rgba(99,102,241,0.1), 0 8px 32px rgba(99,102,241,0.15)"
                             : "0 2px 12px rgba(0,0,0,0.04)",
                         background: isDragging
-                            ? "rgba(108,92,231,0.04)"
+                            ? "rgba(99,102,241,0.04)"
                             : "white",
                         transform: isDragging ? "scale(1.01)" : undefined,
                     }}
@@ -390,7 +390,7 @@ export function UploadStep() {
                     {/* Background decoration */}
                     <div
                         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                        style={{ background: "radial-gradient(ellipse at 50% 60%, rgba(108,92,231,0.06) 0%, transparent 70%)" }}
+                        style={{ background: "radial-gradient(ellipse at 50% 60%, rgba(99,102,241,0.06) 0%, transparent 70%)" }}
                     />
 
                     {/* Floating upload icon */}
@@ -401,8 +401,8 @@ export function UploadStep() {
                             isDragging ? "scale-110" : "animate-float group-hover:scale-105"
                         )}
                         style={{
-                            background: isDragging ? "var(--gradient-primary)" : "rgba(108,92,231,0.12)",
-                            boxShadow: isDragging ? "var(--glow-primary)" : "0 8px 32px rgba(108,92,231,0.12)",
+                            background: isDragging ? "var(--gradient-primary)" : "rgba(99,102,241,0.12)",
+                            boxShadow: isDragging ? "var(--glow-primary)" : "0 8px 32px rgba(99,102,241,0.12)",
                         }}
                     >
                         {isDragging ? (
@@ -430,9 +430,9 @@ export function UploadStep() {
                                     key={fmt}
                                     className="px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wide"
                                     style={{
-                                        background: "rgba(108,92,231,0.1)",
+                                        background: "rgba(99,102,241,0.1)",
                                         color: "var(--color-primary)",
-                                        border: "1px solid rgba(108,92,231,0.2)",
+                                        border: "1px solid rgba(99,102,241,0.2)",
                                     }}
                                 >
                                     {fmt}
@@ -463,7 +463,7 @@ export function UploadStep() {
                 )}>
                     <div
                         className="flex h-10 w-10 items-center justify-center rounded-[var(--radius-md)] shrink-0"
-                        style={{ background: "rgba(108,92,231,0.12)" }}
+                        style={{ background: "rgba(99,102,241,0.12)" }}
                     >
                         <Loader2 className="h-5 w-5 text-primary animate-spin" aria-hidden="true" />
                     </div>
@@ -545,7 +545,7 @@ export function UploadStep() {
                         <div className={cn(
                             "flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius-md)]",
                         )}
-                            style={{ background: "rgba(108,92,231,0.12)" }}
+                            style={{ background: "rgba(99,102,241,0.12)" }}
                         >
                             {mediaFile.type === "video" ? (
                                 <Film className="h-4 w-4 text-primary" aria-hidden="true" />

@@ -80,13 +80,13 @@ function timeAgo(dateStr: string): string {
 
 function channelIcon(channel: AutomationChannel) {
     if (channel === "WHATSAPP") return <Phone className="h-5 w-5" style={{ color: "#25D366" }} />;
-    if (channel === "BOTH") return <MessageSquare className="h-5 w-5" style={{ color: "#a29bfe" }} />;
+    if (channel === "BOTH") return <MessageSquare className="h-5 w-5" style={{ color: "#A5B4FC" }} />;
     return <Camera className="h-5 w-5" style={{ color: "#e1306c" }} />;
 }
 
 function channelBg(channel: AutomationChannel) {
     if (channel === "WHATSAPP") return "rgba(37,211,102,0.12)";
-    if (channel === "BOTH") return "rgba(108,92,231,0.12)";
+    if (channel === "BOTH") return "rgba(99,102,241,0.12)";
     return "rgba(225,48,108,0.12)";
 }
 
@@ -94,7 +94,7 @@ function channelBg(channel: AutomationChannel) {
 
 function StatCard({ label, value, icon: Icon, color }: { label: string; value: number; icon: React.ElementType; color: string }) {
     return (
-        <div className="flex flex-col gap-1 rounded-2xl p-4 flex-1" style={{ background: "var(--surface)", border: "1px solid var(--border-color)" }}>
+        <div className="neu-card flex flex-col gap-1 rounded-2xl p-4 flex-1" style={{ borderRadius: "16px" }}>
             <div className="flex items-center gap-2">
                 <div className="h-7 w-7 rounded-lg flex items-center justify-center" style={{ background: `${color}20` }}>
                     <Icon className="h-3.5 w-3.5" style={{ color }} />
@@ -117,7 +117,7 @@ function LogsPanel({ automationId, onClose }: { automationId: string; onClose: (
     }, [automationId]);
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: "rgba(0,0,0,0.6)", backdropFilter: "blur(8px)" }} onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4" style={{ background: "rgba(0,0,0,0.6)", backdropFilter: "blur(8px)" }} onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
             <div className="w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden" style={{ background: "var(--surface)", border: "1px solid var(--border-color)" }}>
                 <div className="flex items-center justify-between px-6 py-4 border-b" style={{ borderColor: "var(--border-color)" }}>
                     <div>
@@ -128,7 +128,7 @@ function LogsPanel({ automationId, onClose }: { automationId: string; onClose: (
                 </div>
                 <div className="p-6 max-h-[70vh] overflow-y-auto space-y-3">
                     {loading ? (
-                        <div className="flex items-center justify-center py-12"><RefreshCw className="h-5 w-5 animate-spin" style={{ color: "#6C5CE7" }} /></div>
+                        <div className="flex items-center justify-center py-12"><RefreshCw className="h-5 w-5 animate-spin" style={{ color: "#6366F1" }} /></div>
                     ) : logs.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-12 text-center">
                             <Activity className="h-8 w-8 mb-3" style={{ color: "var(--foreground-muted)" }} />
@@ -199,7 +199,7 @@ function AutomationCard({ automation, onToggle, onDelete, onViewLogs, onEdit, de
     }, [igPostId]);
 
     return (
-        <div className="rounded-2xl p-5 transition-all duration-200" style={{ background: "var(--surface)", border: `1px solid ${isActive ? "rgba(108,92,231,0.3)" : "var(--border-color)"}`, boxShadow: isActive ? "0 4px 20px rgba(108,92,231,0.1)" : "0 4px 16px rgba(0,0,0,0.15)" }}>
+        <div className="neu-card rounded-2xl p-4 transition-all duration-200" style={{ borderColor: isActive ? "rgba(99,102,241,0.3)" : "var(--border-color)" }}>
             <div className="flex items-start justify-between gap-3 mb-4">
                 <div className="flex items-center gap-3">
                     <div className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 overflow-hidden" style={{ background: channelBg(automation.channel) }}>
@@ -219,7 +219,7 @@ function AutomationCard({ automation, onToggle, onDelete, onViewLogs, onEdit, de
             </div>
             <div className="flex flex-wrap gap-1.5 mb-3">
                 {triggers.map((t) => (
-                    <span key={t.id} className="px-2 py-0.5 rounded-full text-[10px] font-bold" style={{ background: "rgba(108,92,231,0.12)", color: "#a29bfe", border: "1px solid rgba(108,92,231,0.2)" }}>
+                    <span key={t.id} className="px-2 py-0.5 rounded-full text-[10px] font-bold" style={{ background: "rgba(99,102,241,0.12)", color: "#A5B4FC", border: "1px solid rgba(99,102,241,0.2)" }}>
                         ⚡ {TRIGGER_LABELS[t.type] ?? t.type}
                     </span>
                 ))}
@@ -245,11 +245,11 @@ function AutomationCard({ automation, onToggle, onDelete, onViewLogs, onEdit, de
                 </div>
                 <div className="flex items-center gap-2">
                     {execCount > 0 && (
-                        <button onClick={() => onViewLogs(automation.id)} className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-bold" style={{ background: "rgba(108,92,231,0.1)", border: "1px solid rgba(108,92,231,0.2)", color: "#a29bfe" }}>
+                        <button onClick={() => onViewLogs(automation.id)} className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-bold" style={{ background: "rgba(99,102,241,0.1)", border: "1px solid rgba(99,102,241,0.2)", color: "#A5B4FC" }}>
                             <BarChart2 className="h-3.5 w-3.5" />Logs
                         </button>
                     )}
-                    <button onClick={() => onEdit(automation.id)} className="h-8 w-8 rounded-xl flex items-center justify-center" style={{ background: "rgba(108,92,231,0.1)", border: "1px solid rgba(108,92,231,0.2)", color: "#a29bfe" }}>
+                    <button onClick={() => onEdit(automation.id)} className="h-8 w-8 rounded-xl flex items-center justify-center" style={{ background: "rgba(99,102,241,0.1)", border: "1px solid rgba(99,102,241,0.2)", color: "#A5B4FC" }}>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                         </svg>
@@ -291,8 +291,8 @@ interface IgMedia {
 
 function TypeSelector({ onSelect, onClose }: { onSelect: (type: AutomationType) => void; onClose: () => void }) {
     return (
-        <div className="fixed inset-0 z-50 flex items-end justify-center" style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(10px)" }} onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-            <div className="w-full rounded-t-[32px] shadow-2xl" style={{ background: "var(--surface)", border: "1px solid var(--border-color)", paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
+        <div className="fixed inset-0 z-[60] flex items-end justify-center" style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(10px)" }} onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+            <div className="w-full rounded-t-[32px] shadow-2xl" style={{ background: "var(--surface)", border: "1px solid var(--border-color)", paddingBottom: "0px" }}>
                 <div className="flex justify-center pt-3 pb-1"><div className="w-10 h-1 rounded-full" style={{ background: "var(--border-color)" }} /></div>
                 <div className="flex items-center justify-between px-5 pt-3 pb-4">
                     <div>
@@ -326,8 +326,8 @@ function TypeSelector({ onSelect, onClose }: { onSelect: (type: AutomationType) 
                     {/* DM Auto-Reply */}
                     <button type="button" onClick={() => onSelect("dm")}
                         className="flex items-start gap-4 px-5 py-4 rounded-2xl text-left transition-all active:scale-[0.98]"
-                        style={{ background: "rgba(108,92,231,0.08)", border: "1.5px solid rgba(108,92,231,0.3)" }}>
-                        <div className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 text-2xl" style={{ background: "rgba(108,92,231,0.15)" }}>📩</div>
+                        style={{ background: "rgba(99,102,241,0.08)", border: "1.5px solid rgba(99,102,241,0.3)" }}>
+                        <div className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 text-2xl" style={{ background: "rgba(99,102,241,0.15)" }}>📩</div>
                         <div className="flex-1 min-w-0">
                             <p className="text-sm font-black" style={{ color: "var(--foreground-color)" }}>DM Auto-Reply</p>
                             <p className="text-xs mt-1 leading-relaxed" style={{ color: "var(--foreground-muted)" }}>
@@ -335,11 +335,11 @@ function TypeSelector({ onSelect, onClose }: { onSelect: (type: AutomationType) 
                             </p>
                             <div className="flex flex-wrap gap-1.5 mt-2">
                                 {["DM keyword", "→ auto reply", "AI reply option"].map(tag => (
-                                    <span key={tag} className="px-2 py-0.5 rounded-full text-[10px] font-bold" style={{ background: "rgba(108,92,231,0.12)", color: "#a29bfe" }}>{tag}</span>
+                                    <span key={tag} className="px-2 py-0.5 rounded-full text-[10px] font-bold" style={{ background: "rgba(99,102,241,0.12)", color: "#A5B4FC" }}>{tag}</span>
                                 ))}
                             </div>
                         </div>
-                        <div className="h-5 w-5 rounded-full flex items-center justify-center shrink-0 mt-1" style={{ background: "#6C5CE7" }}>
+                        <div className="h-5 w-5 rounded-full flex items-center justify-center shrink-0 mt-1" style={{ background: "#6366F1" }}>
                             <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" className="h-3 w-3"><polyline points="9 18 15 12 9 6" /></svg>
                         </div>
                     </button>
@@ -406,7 +406,7 @@ function DMWizard({ onClose, onSave, saving, savingError, prefill, mode = "creat
                 return (
                     <React.Fragment key={s}>
                         <button type="button" onClick={() => done ? setStep(s) : undefined} className="flex items-center gap-1 shrink-0" style={{ cursor: done ? "pointer" : "default" }}>
-                            <div className="h-6 w-6 rounded-full flex items-center justify-center text-[10px] font-black" style={done ? { background: "#10B981", color: "#fff" } : active ? { background: "linear-gradient(135deg,#6C5CE7,#a78bfa)", color: "#fff", boxShadow: "0 2px 8px rgba(108,92,231,0.4)" } : { background: "var(--surface-elevated)", color: "var(--foreground-muted)" }}>
+                            <div className="h-6 w-6 rounded-full flex items-center justify-center text-[10px] font-black" style={done ? { background: "#10B981", color: "#fff" } : active ? { background: "linear-gradient(135deg,#6366F1,#a78bfa)", color: "#fff", boxShadow: "0 2px 8px rgba(99,102,241,0.4)" } : { background: "var(--surface-elevated)", color: "var(--foreground-muted)" }}>
                                 {done ? "✓" : s}
                             </div>
                             <span className="text-[10px] font-bold" style={{ color: active ? "var(--foreground-color)" : "var(--foreground-muted)" }}>{DM_STEP_LABELS[s]}</span>
@@ -419,8 +419,8 @@ function DMWizard({ onClose, onSave, saving, savingError, prefill, mode = "creat
     );
 
     return (
-        <div className="fixed inset-0 z-50 flex items-end justify-center" style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(10px)" }} onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-            <div className="w-full rounded-t-[32px] shadow-2xl flex flex-col" style={{ background: "var(--surface)", border: "1px solid var(--border-color)", maxHeight: "94dvh", paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
+        <div className="fixed inset-0 z-[60] flex items-end justify-center" style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(10px)" }} onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+            <div className="w-full rounded-t-[32px] shadow-2xl flex flex-col neu-card" style={{ borderRadius: "32px 32px 0 0", maxHeight: "calc(100dvh - 60px)", paddingBottom: "0px" }}>
                 <div className="flex justify-center pt-3 pb-1 shrink-0"><div className="w-10 h-1 rounded-full" style={{ background: "var(--border-color)" }} /></div>
                 <div className="flex items-center justify-between px-5 pt-3 pb-0 shrink-0">
                     <div>
@@ -437,12 +437,12 @@ function DMWizard({ onClose, onSave, saving, savingError, prefill, mode = "creat
                                 <p className="text-sm font-black" style={{ color: "var(--foreground-color)" }}>When someone sends you a DM…</p>
                                 <p className="text-xs mt-0.5" style={{ color: "var(--foreground-muted)" }}>Trigger on any DM or only when it contains a specific keyword.</p>
                             </div>
-                            <div className="flex items-center justify-between px-4 py-3 rounded-xl cursor-pointer" style={{ background: anyKeyword ? "rgba(108,92,231,0.08)" : "var(--surface-elevated)", border: `1px solid ${anyKeyword ? "rgba(108,92,231,0.3)" : "var(--border-color)"}` }} onClick={() => setAnyKeyword(v => !v)}>
+                            <div className="flex items-center justify-between px-4 py-3 rounded-xl cursor-pointer" style={{ background: anyKeyword ? "rgba(99,102,241,0.08)" : "var(--surface-elevated)", border: `1px solid ${anyKeyword ? "rgba(99,102,241,0.3)" : "var(--border-color)"}` }} onClick={() => setAnyKeyword(v => !v)}>
                                 <div>
                                     <p className="text-sm font-bold" style={{ color: "var(--foreground-color)" }}>Any DM</p>
                                     <p className="text-xs" style={{ color: "var(--foreground-muted)" }}>Reply to every incoming DM regardless of content</p>
                                 </div>
-                                <div className="relative inline-flex h-6 w-11 rounded-full shrink-0" style={{ background: anyKeyword ? "#6C5CE7" : "var(--border-color)" }}>
+                                <div className="relative inline-flex h-6 w-11 rounded-full shrink-0" style={{ background: anyKeyword ? "#6366F1" : "var(--border-color)" }}>
                                     <span className="absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform duration-300" style={{ transform: anyKeyword ? "translateX(20px)" : "translateX(0)" }} />
                                 </div>
                             </div>
@@ -450,19 +450,19 @@ function DMWizard({ onClose, onSave, saving, savingError, prefill, mode = "creat
                                 <>
                                     <div className="flex gap-2">
                                         {(["CONTAINS", "EXACT"] as const).map(t => (
-                                            <button key={t} type="button" onClick={() => setMatchType(t)} className="flex-1 py-2 rounded-xl text-xs font-bold" style={matchType === t ? { background: "rgba(108,92,231,0.12)", border: "1px solid #6C5CE7", color: "#a29bfe" } : { background: "var(--surface-elevated)", border: "1px solid var(--border-color)", color: "var(--foreground-muted)" }}>{t === "CONTAINS" ? "Contains" : "Exact match"}</button>
+                                            <button key={t} type="button" onClick={() => setMatchType(t)} className="flex-1 py-2 rounded-xl text-xs font-bold" style={matchType === t ? { background: "rgba(99,102,241,0.12)", border: "1px solid #6366F1", color: "#A5B4FC" } : { background: "var(--surface-elevated)", border: "1px solid var(--border-color)", color: "var(--foreground-muted)" }}>{t === "CONTAINS" ? "Contains" : "Exact match"}</button>
                                         ))}
                                     </div>
                                     <div>
                                         <p className="text-xs font-bold mb-1.5" style={{ color: "var(--foreground-muted)" }}>Keywords <span className="font-normal">(comma-separated)</span></p>
-                                        <input value={keywords} onChange={(e) => setKeywords(e.target.value)} placeholder="e.g. price, link, hi, hello" className="w-full px-4 py-2.5 rounded-xl text-sm outline-none" style={{ ...inputStyle, border: "1.5px solid rgba(108,92,231,0.35)" }} autoFocus />
+                                        <input value={keywords} onChange={(e) => setKeywords(e.target.value)} placeholder="e.g. price, link, hi, hello" className="w-full px-4 py-2.5 rounded-xl text-sm outline-none" style={{ ...inputStyle, border: "1.5px solid rgba(99,102,241,0.35)" }} autoFocus />
                                     </div>
                                 </>
                             )}
                             <div className="rounded-xl px-4 py-3 text-xs" style={{ background: "var(--surface-elevated)", border: "1px solid var(--border-color)" }}>
                                 <p className="font-bold mb-1" style={{ color: "var(--foreground-color)" }}>Will trigger when:</p>
                                 <p style={{ color: "var(--foreground-muted)" }}>Someone sends you a DM{" "}
-                                    {anyKeyword ? <strong style={{ color: "#a29bfe" }}>with any content</strong> : matchType === "CONTAINS" ? <strong style={{ color: "#a29bfe" }}>containing &ldquo;{keywords || "…"}&rdquo;</strong> : <strong style={{ color: "#a29bfe" }}>exactly &ldquo;{keywords || "…"}&rdquo;</strong>} on Instagram.
+                                    {anyKeyword ? <strong style={{ color: "#A5B4FC" }}>with any content</strong> : matchType === "CONTAINS" ? <strong style={{ color: "#A5B4FC" }}>containing &ldquo;{keywords || "…"}&rdquo;</strong> : <strong style={{ color: "#A5B4FC" }}>exactly &ldquo;{keywords || "…"}&rdquo;</strong>} on Instagram.
                                 </p>
                             </div>
                         </div>
@@ -474,31 +474,31 @@ function DMWizard({ onClose, onSave, saving, savingError, prefill, mode = "creat
                                 <p className="text-xs mt-0.5" style={{ color: "var(--foreground-muted)" }}>Fixed reply or AI-generated based on your knowledge base.</p>
                             </div>
                             <div className="flex gap-2">
-                                <button type="button" onClick={() => setUseAI(false)} className="flex-1 flex flex-col items-center gap-1.5 px-4 py-3 rounded-xl" style={!useAI ? { background: "rgba(108,92,231,0.12)", border: "1.5px solid #6C5CE7" } : { background: "var(--surface-elevated)", border: "1px solid var(--border-color)" }}>
-                                    <MessageCircle className="h-5 w-5" style={{ color: !useAI ? "#a29bfe" : "var(--foreground-muted)" }} />
-                                    <span className="text-xs font-bold" style={{ color: !useAI ? "#a29bfe" : "var(--foreground-muted)" }}>Fixed Message</span>
+                                <button type="button" onClick={() => setUseAI(false)} className="flex-1 flex flex-col items-center gap-1.5 px-4 py-3 rounded-xl" style={!useAI ? { background: "rgba(99,102,241,0.12)", border: "1.5px solid #6366F1" } : { background: "var(--surface-elevated)", border: "1px solid var(--border-color)" }}>
+                                    <MessageCircle className="h-5 w-5" style={{ color: !useAI ? "#A5B4FC" : "var(--foreground-muted)" }} />
+                                    <span className="text-xs font-bold" style={{ color: !useAI ? "#A5B4FC" : "var(--foreground-muted)" }}>Fixed Message</span>
                                     <span className="text-[10px] text-center" style={{ color: "var(--foreground-muted)" }}>Always the same reply</span>
                                 </button>
-                                <button type="button" onClick={() => setUseAI(true)} className="flex-1 flex flex-col items-center gap-1.5 px-4 py-3 rounded-xl" style={useAI ? { background: "rgba(108,92,231,0.12)", border: "1.5px solid #6C5CE7" } : { background: "var(--surface-elevated)", border: "1px solid var(--border-color)" }}>
-                                    <Bot className="h-5 w-5" style={{ color: useAI ? "#a29bfe" : "var(--foreground-muted)" }} />
-                                    <span className="text-xs font-bold" style={{ color: useAI ? "#a29bfe" : "var(--foreground-muted)" }}>AI Reply</span>
+                                <button type="button" onClick={() => setUseAI(true)} className="flex-1 flex flex-col items-center gap-1.5 px-4 py-3 rounded-xl" style={useAI ? { background: "rgba(99,102,241,0.12)", border: "1.5px solid #6366F1" } : { background: "var(--surface-elevated)", border: "1px solid var(--border-color)" }}>
+                                    <Bot className="h-5 w-5" style={{ color: useAI ? "#A5B4FC" : "var(--foreground-muted)" }} />
+                                    <span className="text-xs font-bold" style={{ color: useAI ? "#A5B4FC" : "var(--foreground-muted)" }}>AI Reply</span>
                                     <span className="text-[10px] text-center" style={{ color: "var(--foreground-muted)" }}>Personalised using knowledge base</span>
                                 </button>
                             </div>
                             {!useAI ? (
                                 <div>
-                                    <textarea value={replyMessage} onChange={(e) => setReplyMessage(e.target.value)} rows={4} maxLength={1000} placeholder="Hey! 👋 Thanks for reaching out…" className="w-full px-4 py-2.5 rounded-xl text-sm outline-none resize-none" style={{ ...inputStyle, border: "1.5px solid rgba(108,92,231,0.35)" }} />
+                                    <textarea value={replyMessage} onChange={(e) => setReplyMessage(e.target.value)} rows={4} maxLength={1000} placeholder="Hey! 👋 Thanks for reaching out…" className="w-full px-4 py-2.5 rounded-xl text-sm outline-none resize-none" style={{ ...inputStyle, border: "1.5px solid rgba(99,102,241,0.35)" }} />
                                     <p className="text-[10px] mt-1 text-right" style={{ color: "var(--foreground-muted)" }}>{replyMessage.length}/1000</p>
                                     <div className="mt-2 rounded-2xl p-4" style={{ background: "var(--surface-elevated)", border: "1px solid var(--border-color)" }}>
                                         <div className="flex items-end gap-2">
-                                            <div className="h-7 w-7 rounded-full flex items-center justify-center shrink-0 text-[10px] font-black text-white" style={{ background: "linear-gradient(135deg,#6C5CE7,#a78bfa)" }}>You</div>
-                                            <div className="rounded-2xl rounded-bl-sm px-3.5 py-2.5 text-xs max-w-[85%]" style={{ background: "linear-gradient(135deg,#6C5CE7,#a78bfa)", color: "#fff" }}>{replyMessage || "Your message…"}</div>
+                                            <div className="h-7 w-7 rounded-full flex items-center justify-center shrink-0 text-[10px] font-black text-white" style={{ background: "linear-gradient(135deg,#6366F1,#a78bfa)" }}>You</div>
+                                            <div className="rounded-2xl rounded-bl-sm px-3.5 py-2.5 text-xs max-w-[85%]" style={{ background: "linear-gradient(135deg,#6366F1,#a78bfa)", color: "#fff" }}>{replyMessage || "Your message…"}</div>
                                         </div>
                                     </div>
                                 </div>
                             ) : (
-                                <div className="rounded-2xl px-4 py-4 space-y-2 text-xs" style={{ background: "rgba(108,92,231,0.08)", border: "1px solid rgba(108,92,231,0.2)" }}>
-                                    <p className="font-bold" style={{ color: "#a29bfe" }}>✨ AI will handle replies automatically</p>
+                                <div className="rounded-2xl px-4 py-4 space-y-2 text-xs" style={{ background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.2)" }}>
+                                    <p className="font-bold" style={{ color: "#A5B4FC" }}>✨ AI will handle replies automatically</p>
                                     <p style={{ color: "var(--foreground-muted)" }}>Reads the DM, checks your Knowledge Base (topics, FAQs, resources), and writes a personalised reply under 200 words.</p>
                                     <p style={{ color: "var(--foreground-muted)" }}>If the user asks to talk to a human, the conversation switches to Human mode automatically.</p>
                                     <p className="font-bold" style={{ color: "var(--foreground-muted)" }}>→ Fill in your Knowledge Base for best results.</p>
@@ -542,14 +542,14 @@ function DMWizard({ onClose, onSave, saving, savingError, prefill, mode = "creat
                         </div>
                     )}
                 </div>
-                <div className="shrink-0 flex items-center justify-between gap-3 px-5 py-4" style={{ borderTop: "1px solid var(--border-color)" }}>
+                <div className="shrink-0 flex items-center justify-between gap-3 px-4 pt-3 pb-5 lg:pb-4" style={{ borderTop: "1px solid var(--border-color)", paddingBottom: "calc(1.25rem + env(safe-area-inset-bottom, 0px))" }}>
                     {step > 1 ? (
-                        <button type="button" onClick={() => setStep(s => (s - 1) as DMStep)} className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-bold" style={{ background: "var(--surface-elevated)", border: "1px solid var(--border-color)", color: "var(--foreground-muted)" }}>← Back</button>
+                        <button type="button" onClick={() => setStep(s => (s - 1) as DMStep)} className="flex items-center gap-1.5 px-4 py-3 rounded-xl text-sm font-bold" style={{ background: "var(--surface-elevated)", border: "1px solid var(--border-color)", color: "var(--foreground-muted)" }}>← Back</button>
                     ) : <div />}
                     {step < 3 ? (
-                        <button type="button" onClick={() => canAdvance() && setStep(s => (s + 1) as DMStep)} disabled={!canAdvance()} className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-black text-white disabled:opacity-50" style={{ background: "linear-gradient(135deg,#6C5CE7,#a78bfa)", boxShadow: "0 4px 16px rgba(108,92,231,0.35)" }}>Next →</button>
+                        <button type="button" onClick={() => canAdvance() && setStep(s => (s + 1) as DMStep)} disabled={!canAdvance()} className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black text-white disabled:opacity-50 ml-auto" style={{ background: "linear-gradient(135deg,#6366F1,#a78bfa)", boxShadow: "0 4px 16px rgba(99,102,241,0.35)" }}>Next →</button>
                     ) : (
-                        <button type="button" onClick={handleSave} disabled={saving || !automationName.trim()} className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-black text-white disabled:opacity-50" style={{ background: "linear-gradient(135deg,#6C5CE7,#a78bfa)", boxShadow: "0 4px 16px rgba(108,92,231,0.35)" }}>
+                        <button type="button" onClick={handleSave} disabled={saving || !automationName.trim()} className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black text-white disabled:opacity-50 ml-auto" style={{ background: "linear-gradient(135deg,#6366F1,#a78bfa)", boxShadow: "0 4px 16px rgba(99,102,241,0.35)" }}>
                             {saving ? <><RefreshCw className="h-4 w-4 animate-spin" />{isEdit ? "Saving…" : "Creating…"}</> : <><Check className="h-4 w-4" />{isEdit ? "Save Changes" : "Create & Activate"}</>}
                         </button>
                     )}
@@ -673,13 +673,13 @@ function CommentWizard({ onClose, onSave, saving, savingError, prefill, mode = "
     );
 
     return (
-        <div className="fixed inset-0 z-50 flex items-end justify-center" style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(10px)" }} onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-            <div className="w-full rounded-t-[32px] shadow-2xl flex flex-col" style={{ background: "var(--surface)", border: "1px solid var(--border-color)", maxHeight: "94dvh", paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
+        <div className="fixed inset-0 z-[60] flex items-end justify-center" style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(10px)" }} onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+            <div className="w-full rounded-t-[32px] shadow-2xl flex flex-col neu-card" style={{ borderRadius: "32px 32px 0 0", maxHeight: "calc(100dvh - 60px)", paddingBottom: "0px" }}>
                 <div className="flex justify-center pt-3 pb-1 shrink-0"><div className="w-10 h-1 rounded-full" style={{ background: "var(--border-color)" }} /></div>
-                <div className="flex items-center justify-between px-5 pt-3 pb-0 shrink-0">
+                <div className="flex items-center justify-between px-4 pt-2 pb-0 shrink-0">
                     <div>
-                        <h2 className="text-base font-black" style={{ color: "var(--foreground-color)" }}>{isEdit ? "Edit Automation" : "Comment → DM Automation"}</h2>
-                        <p className="text-[11px] mt-0.5" style={{ color: "var(--foreground-muted)" }}>{step === 1 ? "Select the post to watch" : step === 2 ? "Set the keyword" : step === 3 ? "Write the private DM" : "Public reply & review"}</p>
+                        <h2 className="text-[15px] font-black" style={{ color: "var(--foreground-color)" }}>{isEdit ? "Edit Automation" : "Comment → DM"}</h2>
+                        <p className="text-[11px] mt-0.5" style={{ color: "var(--foreground-muted)" }}>{step === 1 ? "Pick a post to watch" : step === 2 ? "Set keyword trigger" : step === 3 ? "Write the DM" : "Review & activate"}</p>
                     </div>
                     <button onClick={onClose} className="h-8 w-8 rounded-full flex items-center justify-center" style={{ background: "var(--surface-elevated)", color: "var(--foreground-muted)" }}><X className="h-4 w-4" /></button>
                 </div>
@@ -718,7 +718,7 @@ function CommentWizard({ onClose, onSave, saving, savingError, prefill, mode = "
                                 <p className="text-xs text-center py-6" style={{ color: "var(--foreground-muted)" }}>No posts found.</p>
                             ) : (
                                 <>
-                                    <div className="grid grid-cols-3 gap-2 overflow-y-auto" style={{ maxHeight: "36dvh" }}>
+                                    <div className="grid grid-cols-3 gap-2 overflow-y-auto no-scrollbar" style={{ maxHeight: "clamp(140px, 24dvh, 260px)" }}>
                                         {visibleMedia.map(item => {
                                             const thumb = item.thumbnail_url || item.media_url || "";
                                             const isSel = selectedPostId === item.id;
@@ -850,11 +850,11 @@ function CommentWizard({ onClose, onSave, saving, savingError, prefill, mode = "
                         </div>
                     )}
                 </div>
-                <div className="shrink-0 flex items-center justify-between gap-3 px-5 py-4" style={{ borderTop: "1px solid var(--border-color)" }}>
-                    {step > 1 ? <button type="button" onClick={() => setStep(s => (s - 1) as CWStep)} className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-bold" style={{ background: "var(--surface-elevated)", border: "1px solid var(--border-color)", color: "var(--foreground-muted)" }}>← Back</button> : <div />}
+                <div className="shrink-0 flex items-center justify-between gap-3 px-4 pt-3 pb-5 lg:pb-4" style={{ borderTop: "1px solid var(--border-color)", paddingBottom: "calc(1.25rem + env(safe-area-inset-bottom, 0px))" }}>
+                    {step > 1 ? <button type="button" onClick={() => setStep(s => (s - 1) as CWStep)} className="flex items-center gap-1.5 px-4 py-3 rounded-xl text-sm font-bold" style={{ background: "var(--surface-elevated)", border: "1px solid var(--border-color)", color: "var(--foreground-muted)" }}>← Back</button> : <div />}
                     {step < 4
-                        ? <button type="button" onClick={() => canAdvance() && setStep(s => (s + 1) as CWStep)} disabled={!canAdvance()} className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-black text-white disabled:opacity-50" style={{ background: "linear-gradient(135deg,#e1306c,#a78bfa)", boxShadow: "0 4px 16px rgba(225,48,108,0.35)" }}>Next →</button>
-                        : <button type="button" onClick={handleSave} disabled={saving || !step4Valid} className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-black text-white disabled:opacity-50" style={{ background: "linear-gradient(135deg,#e1306c,#a78bfa)", boxShadow: "0 4px 16px rgba(225,48,108,0.35)" }}>
+                        ? <button type="button" onClick={() => canAdvance() && setStep(s => (s + 1) as CWStep)} disabled={!canAdvance()} className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black text-white disabled:opacity-50 ml-auto" style={{ background: "linear-gradient(135deg,#e1306c,#a78bfa)", boxShadow: "0 4px 16px rgba(225,48,108,0.35)" }}>Next →</button>
+                        : <button type="button" onClick={handleSave} disabled={saving || !step4Valid} className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black text-white disabled:opacity-50 ml-auto" style={{ background: "linear-gradient(135deg,#e1306c,#a78bfa)", boxShadow: "0 4px 16px rgba(225,48,108,0.35)" }}>
                             {saving ? <><RefreshCw className="h-4 w-4 animate-spin" />{isEdit ? "Saving…" : "Creating…"}</> : <><Check className="h-4 w-4" />{isEdit ? "Save Changes" : "Create & Activate"}</>}
                         </button>}
                 </div>
@@ -1000,7 +1000,7 @@ export default function AutomationsPage() {
             {/* Header */}
             <div className="mb-4">
                 <div className="flex items-center justify-between gap-3">
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold" style={{ background: "rgba(108,92,231,0.12)", border: "1px solid rgba(108,92,231,0.25)", color: "#a29bfe" }}>
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold" style={{ background: "rgba(99,102,241,0.12)", border: "1px solid rgba(99,102,241,0.25)", color: "#A5B4FC" }}>
                         <Zap className="h-3 w-3" /><span>AUTOMATION</span>
                     </div>
                     <button onClick={() => setShowTypeSelector(true)}
@@ -1025,7 +1025,7 @@ export default function AutomationsPage() {
             {/* Stats */}
             {stats && (
                 <div className="flex gap-2 mb-3 overflow-x-auto pb-1 no-scrollbar">
-                    <StatCard label="Total" value={stats.total} icon={Zap} color="#a29bfe" />
+                    <StatCard label="Total" value={stats.total} icon={Zap} color="#A5B4FC" />
                     <StatCard label="Active" value={stats.active} icon={Activity} color="#10B981" />
                     <StatCard label="Runs" value={stats.totalExecs} icon={BarChart2} color="#F59E0B" />
                     <StatCard label="Succeeded" value={stats.successExecs} icon={CheckCircle2} color="#10B981" />
@@ -1035,15 +1035,15 @@ export default function AutomationsPage() {
 
             {/* List */}
             {loading ? (
-                <div className="flex items-center justify-center py-20"><RefreshCw className="h-6 w-6 animate-spin" style={{ color: "#6C5CE7" }} /></div>
+                <div className="flex items-center justify-center py-20"><RefreshCw className="h-6 w-6 animate-spin" style={{ color: "#6366F1" }} /></div>
             ) : automations.length === 0 ? (
-                <div className="flex flex-col items-center justify-center flex-1 rounded-2xl py-20" style={{ background: "var(--surface)", border: "2px dashed rgba(108,92,231,0.2)" }}>
-                    <div className="h-16 w-16 rounded-2xl flex items-center justify-center mb-4" style={{ background: "linear-gradient(135deg,#6C5CE7,#a29bfe)", boxShadow: "0 8px 28px rgba(108,92,231,0.35)" }}><Zap className="h-8 w-8 text-white" /></div>
+                <div className="flex flex-col items-center justify-center flex-1 rounded-2xl py-20" style={{ background: "var(--surface)", border: "2px dashed rgba(99,102,241,0.2)" }}>
+                    <div className="h-16 w-16 rounded-2xl flex items-center justify-center mb-4" style={{ background: "linear-gradient(135deg,#6366F1,#A5B4FC)", boxShadow: "0 8px 28px rgba(99,102,241,0.35)" }}><Zap className="h-8 w-8 text-white" /></div>
                     <h2 className="text-lg font-black mb-2" style={{ color: "var(--foreground-color)" }}>No automations yet</h2>
                     <p className="text-sm text-center max-w-sm mb-6 leading-relaxed" style={{ color: "var(--foreground-muted)" }}>
                         Create your first automation to auto-reply to comments and DMs — even while you sleep.
                     </p>
-                    <button onClick={() => setShowTypeSelector(true)} className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white" style={{ background: "linear-gradient(135deg,#6C5CE7,#a29bfe)", boxShadow: "0 4px 18px rgba(108,92,231,0.4)" }}>
+                    <button onClick={() => setShowTypeSelector(true)} className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white" style={{ background: "linear-gradient(135deg,#6366F1,#A5B4FC)", boxShadow: "0 4px 18px rgba(99,102,241,0.4)" }}>
                         <Plus className="h-4 w-4" />Create First Automation
                     </button>
                 </div>
@@ -1057,8 +1057,8 @@ export default function AutomationsPage() {
 
             {/* How it works */}
             {!loading && (
-                <div className="mt-6 rounded-2xl p-5" style={{ background: "rgba(108,92,231,0.08)", border: "1px solid rgba(108,92,231,0.2)" }}>
-                    <div className="flex items-center gap-2 mb-3"><Sparkles className="h-4 w-4" style={{ color: "#a29bfe" }} /><span className="text-xs font-black" style={{ color: "#a29bfe" }}>HOW AUTOMATIONS WORK</span></div>
+                <div className="mt-6 rounded-2xl p-5" style={{ background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.2)" }}>
+                    <div className="flex items-center gap-2 mb-3"><Sparkles className="h-4 w-4" style={{ color: "#A5B4FC" }} /><span className="text-xs font-black" style={{ color: "#A5B4FC" }}>HOW AUTOMATIONS WORK</span></div>
                     <div className="flex flex-col sm:flex-row gap-4">
                         {[
                             { icon: MessageCircle, title: "1. Trigger", desc: "A DM or comment arrives on your connected Instagram account." },
@@ -1066,7 +1066,7 @@ export default function AutomationsPage() {
                             { icon: Bot, title: "3. Action", desc: "Send a fixed reply, link, or let AI craft a personalized response." },
                         ].map(({ icon: Icon, title, desc }) => (
                             <div key={title} className="flex gap-3 flex-1">
-                                <div className="h-8 w-8 rounded-xl flex items-center justify-center shrink-0" style={{ background: "rgba(108,92,231,0.15)" }}><Icon className="h-4 w-4" style={{ color: "#a29bfe" }} /></div>
+                                <div className="h-8 w-8 rounded-xl flex items-center justify-center shrink-0" style={{ background: "rgba(99,102,241,0.15)" }}><Icon className="h-4 w-4" style={{ color: "#A5B4FC" }} /></div>
                                 <div>
                                     <p className="text-xs font-black" style={{ color: "var(--foreground-color)" }}>{title}</p>
                                     <p className="text-[11px] leading-relaxed mt-0.5" style={{ color: "var(--foreground-muted)" }}>{desc}</p>

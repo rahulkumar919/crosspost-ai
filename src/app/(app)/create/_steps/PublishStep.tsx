@@ -185,8 +185,8 @@ function PlatformResultCard({
                             href="/accounts"
                             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-white shadow-sm transition-all hover:scale-105 active:scale-95"
                             style={{
-                                background: "linear-gradient(135deg, #6C5CE7, #a29bfe)",
-                                boxShadow: "0 2px 10px rgba(108,92,231,0.35)",
+                                background: "linear-gradient(135deg, #6366F1, #A5B4FC)",
+                                boxShadow: "0 2px 10px rgba(99,102,241,0.35)",
                             }}
                         >
                             <span>Connect {platformLabel(platform)}</span>
@@ -393,7 +393,7 @@ export function PublishStep() {
                         <div className="flex items-center gap-3">
                             <div
                                 className="flex h-10 w-10 items-center justify-center rounded-[var(--radius-md)] shrink-0"
-                                style={{ background: "rgba(108,92,231,0.15)" }}
+                                style={{ background: "rgba(99,102,241,0.15)" }}
                             >
                                 <Rocket className="h-5 w-5 text-primary animate-pulse" />
                             </div>
@@ -411,7 +411,7 @@ export function PublishStep() {
                                 style={{
                                     width: `${uploadProgress}%`,
                                     background: "var(--gradient-primary)",
-                                    boxShadow: "0 0 8px rgba(108,92,231,0.5)",
+                                    boxShadow: "0 0 8px rgba(99,102,241,0.5)",
                                 }}
                                 role="progressbar"
                                 aria-valuenow={uploadProgress}

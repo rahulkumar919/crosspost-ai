@@ -201,9 +201,9 @@ function PostHistoryTab() {
                         disabled={isFetching}
                         className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50"
                         style={{
-                            background: "rgba(108,92,231,0.08)",
-                            border: "1px solid rgba(108,92,231,0.18)",
-                            color: "#6C5CE7",
+                            background: "rgba(99,102,241,0.08)",
+                            border: "1px solid rgba(99,102,241,0.18)",
+                            color: "#6366F1",
                         }}
                     >
                         <RefreshCw className={cn("h-3.5 w-3.5", isFetching && "animate-spin")} />
@@ -214,8 +214,8 @@ function PostHistoryTab() {
                         href="/create"
                         className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white shadow-sm hover:shadow-none hover:scale-[1.02] active:scale-95 transition-all"
                         style={{
-                            background: "linear-gradient(135deg, #6C5CE7, #a29bfe)",
-                            boxShadow: "0 4px 14px rgba(108,92,231,0.35)",
+                            background: "linear-gradient(135deg, #6366F1, #A5B4FC)",
+                            boxShadow: "0 4px 14px rgba(99,102,241,0.35)",
                         }}
                     >
                         <Sparkles className="h-3.5 w-3.5" />
@@ -367,7 +367,7 @@ function PostHistoryTab() {
                     >
                         <div
                             className="flex h-16 w-16 items-center justify-center rounded-2xl mb-4"
-                            style={{ background: "linear-gradient(135deg, #6C5CE7, #a29bfe)", boxShadow: "0 8px 24px rgba(108,92,231,0.35)" }}
+                            style={{ background: "linear-gradient(135deg, #6366F1, #A5B4FC)", boxShadow: "0 8px 24px rgba(99,102,241,0.35)" }}
                         >
                             <Film className="h-8 w-8 text-white" />
                         </div>
@@ -384,7 +384,7 @@ function PostHistoryTab() {
                         <Link
                             href="/create"
                             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold text-white shadow-md hover:shadow-lg transition-all"
-                            style={{ background: "linear-gradient(135deg, #6C5CE7, #a29bfe)" }}
+                            style={{ background: "linear-gradient(135deg, #6366F1, #A5B4FC)" }}
                         >
                             <Sparkles className="h-4 w-4" />
                             <span>Create Your First Post →</span>

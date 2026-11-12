@@ -55,7 +55,7 @@ export function StepIndicator({ steps, currentStep }: StepIndicatorProps) {
                                         style={
                                             status === "complete"
                                                 ? {
-                                                    background: "linear-gradient(135deg, #6C5CE7, #8B5CF6)",
+                                                    background: "linear-gradient(135deg, #6366F1, #8B5CF6)",
                                                     boxShadow: "0 0 16px rgba(108, 92, 231, 0.45)",
                                                     color: "#FFFFFF",
                                                 }
@@ -109,7 +109,7 @@ export function StepIndicator({ steps, currentStep }: StepIndicatorProps) {
                                             className="absolute inset-y-0 left-0 rounded-full transition-all duration-700 ease-in-out"
                                             style={{
                                                 width: index < currentIndex ? "100%" : "0%",
-                                                background: "linear-gradient(90deg, #6C5CE7, #A78BFA, #60A5FA)",
+                                                background: "linear-gradient(90deg, #6366F1, #A78BFA, #60A5FA)",
                                                 boxShadow: index < currentIndex ? "0 0 10px rgba(167, 139, 250, 0.6)" : "none",
                                             }}
                                         />

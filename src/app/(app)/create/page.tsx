@@ -43,7 +43,7 @@ export default function CreatePage() {
                 {/* Top accent line */}
                 <div
                     className="h-[2px] w-full"
-                    style={{ background: "linear-gradient(90deg, #6C5CE7 0%, #A78BFA 50%, #60A5FA 100%)" }}
+                    style={{ background: "linear-gradient(90deg, #6366F1 0%, #A78BFA 50%, #60A5FA 100%)" }}
                 />
 
                 <div className="mx-auto max-w-3xl px-4 sm:px-6 pt-3 pb-4">
@@ -54,7 +54,7 @@ export default function CreatePage() {
                                 Create{" "}
                                 <span
                                     style={{
-                                        background: "linear-gradient(135deg, #6C5CE7 0%, #8B5CF6 100%)",
+                                        background: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)",
                                         WebkitBackgroundClip: "text",
                                         WebkitTextFillColor: "transparent",
                                     }}
@@ -71,14 +71,14 @@ export default function CreatePage() {
                         <div
                             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black"
                             style={{
-                                background: "rgba(108,92,231,0.12)",
-                                border: "1px solid rgba(108,92,231,0.25)",
-                                color: "#6C5CE7",
+                                background: "rgba(99,102,241,0.12)",
+                                border: "1px solid rgba(99,102,241,0.25)",
+                                color: "#6366F1",
                             }}
                         >
                             <span
                                 className="flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-black"
-                                style={{ background: "linear-gradient(135deg, #6C5CE7, #A78BFA)", color: "#fff" }}
+                                style={{ background: "linear-gradient(135deg, #6366F1, #A78BFA)", color: "#fff" }}
                             >
                                 {currentIndex + 1}
                             </span>
