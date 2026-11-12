@@ -19,9 +19,11 @@ export function usePostHistory(filters: PostHistoryFilters) {
         staleTime: 5000,
         refetchInterval: (data) => {
             // Auto-refresh every 4 seconds if there are any publishing or queued posts
-            const hasActiveJobs = data?.state?.data?.posts?.some((p) =>
+            const posts = data?.state?.data?.posts;
+            if (!posts?.length) return false;
+            const hasActiveJobs = posts.some((p) =>
                 p.status === "PUBLISHING" ||
-                p.targets?.some((t) => t.publish_status === "QUEUED" || t.publish_status === "UPLOADING" || t.publish_status === "PENDING")
+                (p.targets ?? []).some((t) => t.publish_status === "QUEUED" || t.publish_status === "UPLOADING" || t.publish_status === "PENDING")
             );
             return hasActiveJobs ? 4000 : false;
         },

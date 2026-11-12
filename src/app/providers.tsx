@@ -25,10 +25,19 @@ const queryClient = new QueryClient({
 function SessionSync() {
     const { data: session, status } = useSession();
 
-    // On mount: if sessionStorage is empty, try to bootstrap from the httpOnly cookie
-    // via the server-side /api/token route. This covers page refreshes and new tabs.
+    // On mount: ping the backend health endpoint to wake up Render free tier,
+    // then bootstrap the JWT from the httpOnly cookie if sessionStorage is empty.
     React.useEffect(() => {
         if (typeof window === "undefined") return;
+
+        const API_URL = process.env.NEXT_PUBLIC_API_URL ||
+            (window.location.hostname !== "localhost"
+                ? "https://crosspost-bcakend.onrender.com"
+                : "http://localhost:4000");
+
+        // Fire-and-forget ping — wakes Render from sleep before any real API calls
+        fetch(`${API_URL}/health`, { method: "GET" }).catch(() => undefined);
+
         const existing = sessionStorage.getItem("crosspost_jwt");
         if (!existing) {
             fetch("/api/token")
@@ -38,9 +47,9 @@ function SessionSync() {
                         sessionStorage.setItem("crosspost_jwt", data.token);
                     }
                 })
-                .catch(() => undefined); // silent — the 401 interceptor in client.ts will retry
+                .catch(() => undefined);
         }
-    }, []); // run once on mount
+    }, []);
 
     // Keep sessionStorage in sync as the session evolves
     React.useEffect(() => {

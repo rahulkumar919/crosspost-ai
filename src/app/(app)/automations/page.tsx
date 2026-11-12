@@ -61,7 +61,7 @@ const OPERATOR_LABELS: Record<AutomationConditionOperator, string> = {
 type AutomationType = "comment" | "dm";
 
 function detectAutomationType(auto: Automation): AutomationType {
-    const t = auto.triggers[0]?.type;
+    const t = (auto.triggers ?? [])[0]?.type;
     if (t === "INSTAGRAM_DM" || t === "INSTAGRAM_DM_KEYWORD" || t === "WHATSAPP_MESSAGE" || t === "WHATSAPP_KEYWORD") return "dm";
     return "comment";
 }
@@ -183,7 +183,13 @@ function AutomationCard({ automation, onToggle, onDelete, onViewLogs, onEdit, de
     const isActive = automation.status === "ACTIVE";
     const execCount = automation._count?.executions ?? 0;
     const [expanded, setExpanded] = React.useState(false);
-    const igPostId = automation.triggers.find((t) => t.ig_post_id)?.ig_post_id ?? null;
+
+    // Guard against API responses that don't include relations
+    const triggers = automation.triggers ?? [];
+    const conditions = automation.conditions ?? [];
+    const actions = automation.actions ?? [];
+
+    const igPostId = triggers.find((t) => t.ig_post_id)?.ig_post_id ?? null;
     const [thumbUrl, setThumbUrl] = React.useState<string | null>(null);
     React.useEffect(() => {
         if (!igPostId) return;
@@ -212,17 +218,17 @@ function AutomationCard({ automation, onToggle, onDelete, onViewLogs, onEdit, de
                 </div>
             </div>
             <div className="flex flex-wrap gap-1.5 mb-3">
-                {automation.triggers.map((t) => (
+                {triggers.map((t) => (
                     <span key={t.id} className="px-2 py-0.5 rounded-full text-[10px] font-bold" style={{ background: "rgba(108,92,231,0.12)", color: "#a29bfe", border: "1px solid rgba(108,92,231,0.2)" }}>
                         ⚡ {TRIGGER_LABELS[t.type] ?? t.type}
                     </span>
                 ))}
-                {automation.conditions.map((c) => (
+                {conditions.map((c) => (
                     <span key={c.id} className="px-2 py-0.5 rounded-full text-[10px] font-bold" style={{ background: "rgba(236,72,153,0.1)", color: "#f472b6", border: "1px solid rgba(236,72,153,0.2)" }}>
                         if {OPERATOR_LABELS[c.operator] ?? c.operator} &quot;{c.value}&quot;
                     </span>
                 ))}
-                {automation.actions.map((a) => (
+                {actions.map((a) => (
                     <span key={a.id} className="px-2 py-0.5 rounded-full text-[10px] font-bold" style={{ background: "rgba(16,185,129,0.1)", color: "#10B981", border: "1px solid rgba(16,185,129,0.2)" }}>
                         → {ACTION_LABELS[a.type] ?? a.type}
                     </span>
@@ -256,9 +262,9 @@ function AutomationCard({ automation, onToggle, onDelete, onViewLogs, onEdit, de
                     </button>
                 </div>
             </div>
-            {expanded && automation.actions.length > 0 && (
+            {expanded && actions.length > 0 && (
                 <div className="mt-3 rounded-xl p-3 text-xs" style={{ background: "var(--background)", border: "1px solid var(--border-color)", color: "var(--foreground-muted)" }}>
-                    {automation.actions.map((a, i) => {
+                    {actions.map((a, i) => {
                         const cfg = a.config as Record<string, unknown>;
                         const text = (cfg.message || cfg.prompt || cfg.tagName || cfg.url) as string | undefined;
                         return text ? <p key={i}><span className="font-bold" style={{ color: "var(--foreground-color)" }}>{ACTION_LABELS[a.type]}:</span> &ldquo;{String(text).slice(0, 120)}{String(text).length > 120 ? "…" : ""}&rdquo;</p> : null;
@@ -946,10 +952,13 @@ export default function AutomationsPage() {
     // Build prefill for edit — comment wizard
     const editingAuto = editingId ? automations.find(a => a.id === editingId) : null;
     const commentPrefill = editingAuto && editingType === "comment" ? (() => {
-        const trigger = editingAuto.triggers[0];
-        const condition = editingAuto.conditions[0];
-        const dmAction = editingAuto.actions.find(a => a.type === "SEND_PRIVATE_REPLY");
-        const pubAction = editingAuto.actions.find(a => a.type === "SEND_PUBLIC_REPLY");
+        const editTriggers = editingAuto.triggers ?? [];
+        const editConditions = editingAuto.conditions ?? [];
+        const editActions = editingAuto.actions ?? [];
+        const trigger = editTriggers[0];
+        const condition = editConditions[0];
+        const dmAction = editActions.find(a => a.type === "SEND_PRIVATE_REPLY");
+        const pubAction = editActions.find(a => a.type === "SEND_PUBLIC_REPLY");
         const cfg = dmAction?.config as Record<string, unknown> | undefined;
         const pubCfg = pubAction?.config as Record<string, unknown> | undefined;
         return {
@@ -958,7 +967,7 @@ export default function AutomationsPage() {
             selectedPost: null,
             keywords: condition?.value ?? "",
             matchType: (condition?.operator === "EXACT" ? "EXACT" : "CONTAINS") as "CONTAINS" | "EXACT",
-            anyKeyword: !condition || condition.operator === "ANY" || editingAuto.conditions.length === 0,
+            anyKeyword: !condition || condition.operator === "ANY" || editConditions.length === 0,
             dmMessage: (cfg?.message as string) ?? "",
             resourceUrl: (cfg?.resource_url as string) ?? "",
             publicReplyEnabled: !!pubAction,
@@ -969,14 +978,16 @@ export default function AutomationsPage() {
 
     // Build prefill for edit — DM wizard
     const dmPrefill = editingAuto && editingType === "dm" ? (() => {
-        const condition = editingAuto.conditions[0];
-        const action = editingAuto.actions[0];
+        const editConditions = editingAuto.conditions ?? [];
+        const editActions = editingAuto.actions ?? [];
+        const condition = editConditions[0];
+        const action = editActions[0];
         const cfg = action?.config as Record<string, unknown> | undefined;
         return {
             name: editingAuto.name,
             keywords: condition?.value ?? "",
             matchType: (condition?.operator === "EXACT" ? "EXACT" : "CONTAINS") as "CONTAINS" | "EXACT",
-            anyKeyword: !condition || condition.operator === "ANY" || editingAuto.conditions.length === 0,
+            anyKeyword: !condition || condition.operator === "ANY" || editConditions.length === 0,
             replyMessage: (cfg?.message as string) ?? "",
             useAI: action?.type === "AI_REPLY",
             cooldown: editingAuto.cooldown_seconds,
