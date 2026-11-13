@@ -15,13 +15,13 @@ export default auth((req: NextRequest & { auth: { user?: unknown } | null }) => 
 
     // Public paths — always allow through
     const isPublic =
-        pathname === "/" ||
         pathname.startsWith("/login") ||
         pathname.startsWith("/api/auth") ||
         pathname.startsWith("/api/refresh-backend-token") ||
         pathname.startsWith("/api/token") ||
         pathname.startsWith("/api/set-token") ||
         pathname.startsWith("/privacy-policy") ||
+        pathname.startsWith("/privacy") ||
         pathname.startsWith("/terms") ||
         // PWA files — must be publicly accessible
         pathname === "/sw.js" ||
@@ -29,7 +29,17 @@ export default auth((req: NextRequest & { auth: { user?: unknown } | null }) => 
 
     if (isPublic) return;
 
-    // If no session, redirect to login
+    // Root path: if authenticated → go to app, if not → go to login
+    if (pathname === "/") {
+        if (req.auth?.user) {
+            return Response.redirect(new URL("/accounts", req.url));
+        }
+        // Not authenticated — allow landing page to show
+        // (or redirect to login if you prefer no landing page at all)
+        return;
+    }
+
+    // If no session on a protected route, redirect to login
     if (!req.auth?.user) {
         const loginUrl = new URL("/login", req.url);
         loginUrl.searchParams.set("callbackUrl", pathname);

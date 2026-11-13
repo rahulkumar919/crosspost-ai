@@ -89,9 +89,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             if (url.startsWith(base)) return url;
             // Block redirects to localhost when running in production
             if (process.env.NODE_ENV === "production" && url.includes("localhost")) {
-                return `${base}/accounts`;
+                return `${base}/login`;
             }
-            return base;
+            // Default: go to login, not root
+            return `${base}/login`;
         },
         async jwt({ token, user, account, profile }) {
             if (user) {
