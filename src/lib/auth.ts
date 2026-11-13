@@ -80,6 +80,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         strategy: "jwt",
     },
     callbacks: {
+        async redirect({ url, baseUrl }) {
+            // Always use the actual deployment URL, never localhost in production
+            const base = process.env.NEXTAUTH_URL || baseUrl;
+            // Allow relative URLs
+            if (url.startsWith("/")) return `${base}${url}`;
+            // Allow same-origin absolute URLs
+            if (url.startsWith(base)) return url;
+            // Block redirects to localhost when running in production
+            if (process.env.NODE_ENV === "production" && url.includes("localhost")) {
+                return `${base}/accounts`;
+            }
+            return base;
+        },
         async jwt({ token, user, account, profile }) {
             if (user) {
                 token.id = user.id;
