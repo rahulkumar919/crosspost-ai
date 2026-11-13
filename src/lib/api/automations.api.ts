@@ -164,3 +164,27 @@ export async function fetchAutomationLogs(id: string, limit = 50): Promise<Autom
     });
     return res.data.logs;
 }
+
+export interface RecentActivityItem {
+    id: string;
+    automation_id: string;
+    conversation_id: string | null;
+    external_message_id: string | null;
+    channel: string;
+    success: boolean;
+    error_message: string | null;
+    actions_executed: any;
+    executed_at: string;
+    automation: {
+        id: string;
+        name: string;
+        channel: string;
+    };
+}
+
+export async function fetchRecentActivity(limit = 10): Promise<RecentActivityItem[]> {
+    const res = await apiClient.get<{ activity: RecentActivityItem[] }>("/automations/recent-activity", {
+        params: { limit },
+    });
+    return res.data.activity;
+}

@@ -12,6 +12,7 @@ import {
     fetchAutomations,
     fetchAutomationStats,
     fetchAutomationLogs,
+    fetchRecentActivity,
     createAutomation,
     updateAutomation,
     deleteAutomation,
@@ -20,6 +21,7 @@ import {
     type Automation,
     type AutomationExecution,
     type AutomationStats,
+    type RecentActivityItem,
     type CreateAutomationInput,
     type AutomationChannel,
     type AutomationTriggerType,
@@ -877,6 +879,7 @@ export default function AutomationsPage() {
     const [editingId, setEditingId] = React.useState<string | null>(null);
     const [editingType, setEditingType] = React.useState<AutomationType | null>(null);
 
+    const [activity, setActivity] = React.useState<RecentActivityItem[]>([]);
     const [saving, setSaving] = React.useState(false);
     const [savingError, setSavingError] = React.useState<string | null>(null);
     const [toggling, setToggling] = React.useState<string | null>(null);
@@ -886,8 +889,14 @@ export default function AutomationsPage() {
     const load = React.useCallback(async () => {
         setLoading(true); setLoadError(null);
         try {
-            const [autoList, autoStats] = await Promise.all([fetchAutomations(), fetchAutomationStats()]);
-            setAutomations(autoList); setStats(autoStats);
+            const [autoList, autoStats, autoActivity] = await Promise.all([
+                fetchAutomations(),
+                fetchAutomationStats(),
+                fetchRecentActivity(5).catch(() => []),
+            ]);
+            setAutomations(autoList);
+            setStats(autoStats);
+            setActivity(autoActivity);
         } catch (err) {
             setLoadError(err instanceof Error ? err.message : "Failed to load automations.");
         } finally { setLoading(false); }
@@ -1052,6 +1061,46 @@ export default function AutomationsPage() {
                     {automations.map(auto => (
                         <AutomationCard key={auto.id} automation={auto} onToggle={handleToggle} onDelete={handleDelete} onViewLogs={setLogsFor} onEdit={handleEditOpen} deleting={deleting} toggling={toggling} />
                     ))}
+                </div>
+            )}
+
+            {/* Recent Activity */}
+            {!loading && activity.length > 0 && (
+                <div className="mt-5 rounded-2xl p-4" style={{ background: "var(--surface)", border: "1px solid var(--border-color)" }}>
+                    <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                            <Activity className="h-4 w-4" style={{ color: "#6366F1" }} />
+                            <span className="text-xs font-black" style={{ color: "var(--foreground-color)" }}>RECENT ACTIVITY</span>
+                        </div>
+                        <span className="text-[10px]" style={{ color: "var(--foreground-muted)" }}>Last {activity.length} events</span>
+                    </div>
+                    <div className="space-y-2">
+                        {activity.map((act) => (
+                            <div key={act.id} className="flex items-start justify-between gap-3 p-2.5 rounded-xl text-xs" style={{ background: "var(--background)", border: `1px solid ${act.success ? "rgba(16,185,129,0.2)" : "rgba(239,68,68,0.2)"}` }}>
+                                <div className="flex items-start gap-2 min-w-0">
+                                    {act.success ? (
+                                        <CheckCheck className="h-4 w-4 shrink-0 mt-0.5" style={{ color: "#10B981" }} />
+                                    ) : (
+                                        <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" style={{ color: "#EF4444" }} />
+                                    )}
+                                    <div className="min-w-0">
+                                        <div className="flex items-center gap-2">
+                                            <span className="font-bold truncate" style={{ color: "var(--foreground-color)" }}>{act.automation?.name ?? "Automation"}</span>
+                                            <span className="text-[10px] px-1.5 py-0.5 rounded font-semibold" style={act.success ? { background: "rgba(16,185,129,0.15)", color: "#10B981" } : { background: "rgba(239,68,68,0.15)", color: "#EF4444" }}>
+                                                {act.success ? "Sent" : "Failed"}
+                                            </span>
+                                        </div>
+                                        {act.error_message && (
+                                            <p className="text-[11px] mt-1 break-words" style={{ color: "#EF4444" }}>
+                                                {act.error_message}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                                <span className="text-[10px] shrink-0" style={{ color: "var(--foreground-muted)" }}>{timeAgo(act.executed_at)}</span>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             )}
 
