@@ -233,7 +233,7 @@ function AccountsPageInner() {
                                 </>
                             ) : (
                                 PLATFORMS.map((platform) => {
-                                    const account = accounts.find((a) => a.platform === platform);
+                                    const account = (accounts ?? []).find((a) => a.platform === platform);
                                     const isThisLoading =
                                         (isConnecting && connectingPlatform === platform) ||
                                         (isDisconnecting && disconnectingPlatform === platform);

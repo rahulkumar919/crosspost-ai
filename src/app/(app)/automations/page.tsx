@@ -146,20 +146,29 @@ function LogsPanel({ automationId, onClose }: { automationId: string; onClose: (
                                 </div>
                                 <span className="text-xs" style={{ color: "var(--foreground-muted)" }}>{timeAgo(log.executed_at)}</span>
                             </div>
-                            {log.actions_executed.length > 0 && (
-                                <div className="flex flex-wrap gap-1.5 mt-2">
-                                    {log.actions_executed.map((a, i) => (
-                                        <span key={i} className="px-2 py-0.5 rounded-full text-[10px] font-bold" style={a.success ? { background: "rgba(16,185,129,0.1)", color: "#10B981", border: "1px solid rgba(16,185,129,0.2)" } : { background: "rgba(239,68,68,0.1)", color: "#EF4444", border: "1px solid rgba(239,68,68,0.2)" }}>
-                                            {a.type}{a.error ? ` — ${a.error}` : ""}
-                                        </span>
-                                    ))}
-                                </div>
-                            )}
-                            {log.actions_executed.some(a => a.sentText) && (
-                                <p className="text-[11px] mt-2 px-3 py-1.5 rounded-lg" style={{ background: "var(--surface)", color: "var(--foreground-muted)" }}>
-                                    &ldquo;{log.actions_executed.find(a => a.sentText)?.sentText}&rdquo;
-                                </p>
-                            )}
+                            {(() => {
+                                const actionsList = Array.isArray(log.actions_executed)
+                                    ? log.actions_executed
+                                    : ((log.actions_executed as unknown as { actions?: typeof log.actions_executed })?.actions ?? []);
+                                return (
+                                    <>
+                                        {actionsList.length > 0 && (
+                                            <div className="flex flex-wrap gap-1.5 mt-2">
+                                                {actionsList.map((a, i) => (
+                                                    <span key={i} className="px-2 py-0.5 rounded-full text-[10px] font-bold" style={a.success ? { background: "rgba(16,185,129,0.1)", color: "#10B981", border: "1px solid rgba(16,185,129,0.2)" } : { background: "rgba(239,68,68,0.1)", color: "#EF4444", border: "1px solid rgba(239,68,68,0.2)" }}>
+                                                        {a.type}{a.error ? ` — ${a.error}` : ""}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        )}
+                                        {actionsList.some(a => a.sentText) && (
+                                            <p className="text-[11px] mt-2 px-3 py-1.5 rounded-lg" style={{ background: "var(--surface)", color: "var(--foreground-muted)" }}>
+                                                &ldquo;{actionsList.find(a => a.sentText)?.sentText}&rdquo;
+                                            </p>
+                                        )}
+                                    </>
+                                );
+                            })()}
                             {log.error_message && <p className="text-[11px] mt-2" style={{ color: "#EF4444" }}>{log.error_message}</p>}
                         </div>
                     ))}
